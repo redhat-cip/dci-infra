@@ -1,0 +1,105 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+# Create DCI database and user
+#
+- name: ensure database is created
+  postgresql_db: name={{dbname}}
+  become: yes
+  become_user: postgres
+
+- name: ensure user has access to database
+  postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+  become: yes
+  become_user: postgres
+
+- name: ensure user does not have unnecessary privilege
+  postgresql_user: name={{dbuser}} role_attr_flags=SUPERUSER,CREATEDB
+  become: yes
+  become_user: postgres
+
+# Install DCI dependencies
+#
+- name: Ensure yum DCI dependencies are installed
+  yum: name={{item}} state=present
+  with_items:
+    - nodejs
+    - npm
+    - git
+    - tar
+    - bzip2
+
+- name: Ensure npm DCI dependencies are installed
+  npm: name={{item}} global=yes
+  with_items:
+    - gulp
+    - npm-cache
+
+- name: Ensure pip is installed
+  command: easy_install pip
+
+# Install DCI itself
+#
+- name: Ensure base directory is created
+  command: mkdir -p $(dirname {{path_to_dci}})
+
+- name: Install DCI
+  git: repo=http://softwarefactory-project.io/r/dci-control-server dest={{path_to_dci}}
+  ignore_errors: True
+
+- name: Ensure the dci user has proper acl on /srv/www/dci-control-server
+  acl: name={{path_to_dci}} entity=dci etype=user permissions="rwx" state=present
+
+# TODO(spredzy): to remove when http://softwarefactory-project.io/r/#/c/2101/ is merged
+- name: Patch init_openshift_db.py
+  copy: src=init_openshift_db.py
+        dest={{path_to_dci}}/dci/cmd/init_openshift_db.py
+
+- name: Run pip install
+  pip: requirements={{path_to_dci}}/requirements.txt
+
+- name: Run pip install -e dci-control-server
+  pip: name='file://{{path_to_dci}}'
+
+- name: Run npm install
+  command: npm install chdir={{path_to_dci}}/dci/dci_databrowser
+
+- name: Gulp build
+  command: gulp build chdir={{path_to_dci}}/dci/dci_databrowser
+
+- name: Initiate db schema
+  command: python init_openshift_db.py chdir={{path_to_dci}}/dci/cmd
+  environment:
+    OPENSHIFT_POSTGRESQL_DB_URL: postgresql://{{dbuser}}:{{dbpassword}}@{{dbhost}}/{{dbname}}
+    DCI_LOGIN: admin
+    DCI_PASSWORD: admin
+
+# TODO(spredzy) : to remove when wsgi.py script will be fixed
+- name: Create DCI systemd unit file
+  template: src=dci.service dest=/etc/systemd/system/dci.service
+  notify:
+    - reload systemd
+
+# TODO(spredzy) : to remove when wsgi.py script will be fixed
+- name: Start runtestserver.py in background
+  service: name=dci state=started
+
+# TODO(spredzy) : switch src to 00_dci.conf whn wsgi.py script will be fixed
+- name: Create vhost file
+  template: src=01_dci_proxy.conf dest=/etc/httpd/conf.d/dci.conf
+  notify:
+    - reload httpd
