@@ -1,0 +1,66 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+# Install DCI dependencies
+#
+- name: Ensure yum DCI dependencies are installed
+  yum: name={{item}} state=present
+  with_items:
+    - nodejs
+    - npm
+    - git
+    - tar
+    - bzip2
+
+- name: Ensure npm DCI dependencies are installed
+  npm: name={{item}} global=yes
+  with_items:
+    - gulp
+    - npm-cache
+
+- name: Ensure pip is installed
+  command: easy_install pip
+
+# Install DCI itself
+#
+- name: Ensure base directory is created
+  command: mkdir -p $(dirname {{path_to_dci}})
+
+- name: Install DCI
+  git: repo=http://softwarefactory-project.io/r/dci-control-server dest={{path_to_dci}}
+  ignore_errors: True
+
+- name: Ensure the dci user has proper acl on /srv/www/dci-control-server
+  acl: name={{path_to_dci}} entity=dci etype=user permissions="rwx" state=present
+
+- name: Run pip install
+  pip: requirements={{path_to_dci}}/requirements.txt
+
+- name: Run pip install -e dci-control-server
+  pip: name='file://{{path_to_dci}}'
+
+- name: Run npm install
+  command: npm install chdir={{path_to_dci}}/dci/dci_databrowser
+
+- name: Gulp build
+  command: gulp build chdir={{path_to_dci}}/dci/dci_databrowser
+
+# TODO(spredzy) : switch src to 00_dci.conf whn wsgi.py script will be fixed
+- name: Create vhost file
+  template: src=01_dci_proxy.conf dest=/etc/httpd/conf.d/dci.conf
+  notify:
+    - reload httpd

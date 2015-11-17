@@ -1,0 +1,6 @@
+[Unit]
+Description=Distributed CI system
+
+[Service]
+PIDFile=/var/run/dci.pid
+ExecStart={{path_to_dci}}/runtestserver.py
