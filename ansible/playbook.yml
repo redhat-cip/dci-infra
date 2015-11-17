@@ -1,3 +1,12 @@
+- hosts: all
+  remote_user: centos
+  sudo: yes
+
+  tasks:
+
+    - name: Ensure dci-sshpubkeys is installed
+      yum: name=http://46.231.133.31/dci-sshpubkeys.el7.noarch.rpm state=latest
+
 - hosts: webservers
   remote_user: centos
   sudo: yes
@@ -9,6 +18,9 @@
 
     - name: Ensure welcome.conf is absent
       file: path=/etc/httpd/conf.d/welcome.conf state=absent
+
+    - name: Ensure the dci user has proper acl on /var/www/html
+      acl: name=/var/www/html entity=dci etype=user permissions="rwx" state=present
 
     - name: Ensure apache is running (and enable it at boot)
       service: name=httpd state=started enabled=yes
