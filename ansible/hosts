@@ -1,0 +1,14 @@
+[reposervers]
+my.dci-example.com
+
+[elasticsearch]
+my.dci-example.com
+
+[postgresql]
+my.dci-example.com
+
+[dci-api]
+my.dci-example.com
+
+[dci-ui]
+my.dci-example.com
