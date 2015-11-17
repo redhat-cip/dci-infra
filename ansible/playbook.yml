@@ -1,0 +1,50 @@
+- hosts: webservers
+  remote_user: centos
+  sudo: yes
+
+  tasks:
+
+    - name: Ensure apache is at the latest version
+      yum: name=httpd state=latest
+
+    - name: Ensure welcome.conf is absent
+      file: path=/etc/httpd/conf.d/welcome.conf state=absent
+
+    - name: Ensure apache is running (and enable it at boot)
+      service: name=httpd state=started enabled=yes
+
+- hosts: reposervers
+  remote_user: centos
+  sudo: yes
+
+  tasks:
+
+    - name: Ensure createrepo is at the latest version
+      yum: name=createrepo state=latest
+
+    - name: Ensure proper file hierarchy is created
+      file: path=/var/www/html/{{ item }} state=directory
+      with_items:
+        - repos/development/fedora/22/x86_64
+        - repos/development/fedora/22/sources/SRPMS
+        - repos/development/fedora/23/x86_64
+        - repos/development/fedora/23/sources/SRPMS
+        - repos/development/el/7/x86_64
+        - repos/development/el/7/sources/SRPMS
+        - repos/current/fedora/22/x86_64
+        - repos/current/fedora/22/sources/SRPMS
+        - repos/current/fedora/23/x86_64
+        - repos/current/fedora/23/sources/SRPMS
+        - repos/current/el/7/x86_64
+        - repos/current/el/7/sources/SRPMS
+
+    - name: Ensure each repository is bootstrapped
+      shell: createrepo /var/www/html/{{ item }}
+      with_items:
+        - repos/development/fedora/22/x86_64
+        - repos/development/fedora/23/x86_64
+        - repos/development/el/7/x86_64
+        - repos/current/fedora/22/x86_64
+        - repos/current/fedora/23/x86_64
+        - repos/current/el/7/x86_64
+
