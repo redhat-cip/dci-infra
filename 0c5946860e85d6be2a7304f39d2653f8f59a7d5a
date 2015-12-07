@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_97a6a3c0",
+        "filename": "ansible/playbook.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_3709f72c",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c5547823",
         "filename": "ansible/roles/common/tasks/main.yml",
         "patchSetId": 8
@@ -30,6 +48,24 @@
       "writtenOn": "2015-12-04T21:01:43Z",
       "side": 1,
       "message": "maybe add a :\n\n- name: upgrade all packages\n  yum: name\u003d* state\u003dlatest",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_37ab378b",
+        "filename": "ansible/roles/common/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c5547823",
       "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_57b03bf4",
+        "filename": "ansible/roles/dci/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_65310c0b",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_85367002",
         "filename": "ansible/roles/dci/tasks/main.yml",
         "patchSetId": 8
@@ -64,6 +118,24 @@
       "writtenOn": "2015-12-04T21:01:43Z",
       "side": 1,
       "message": "Use the software factory repo if we lost the synchro with github (it doesn\u0027t append often, but it can avoid some weird problem)",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_f794cf45",
+        "filename": "ansible/roles/dci/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_85367002",
       "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -104,6 +176,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_1792b357",
+        "filename": "ansible/roles/elasticsearch/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_77ff7f02",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_c52b1893",
         "filename": "ansible/roles/httpd/tasks/main.yml",
         "patchSetId": 8
@@ -115,6 +205,24 @@
       "writtenOn": "2015-12-04T21:01:43Z",
       "side": 1,
       "message": "On fedora you have userdir.conf too but I don\u0027t know on CentOS",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_b79e4762",
+        "filename": "ansible/roles/httpd/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_c52b1893",
       "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -138,6 +246,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_d79bcb70",
+        "filename": "ansible/roles/httpd/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_65182c85",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_570efb35",
         "filename": "ansible/roles/postgresql/tasks/main.yml",
         "patchSetId": 8
@@ -149,6 +275,24 @@
       "writtenOn": "2015-12-04T21:01:43Z",
       "side": 1,
       "message": "Why this dependencies ?",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_37825701",
+        "filename": "ansible/roles/postgresql/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "This is needed to use core ansible module postresql_user and postgresql_db",
+      "parentUuid": "bada0100_570efb35",
       "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
@@ -172,6 +316,24 @@
     },
     {
       "key": {
+        "uuid": "bada0100_7788df22",
+        "filename": "ansible/roles/postgresql/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_d7198b7a",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_1710734d",
         "filename": "ansible/roles/postgresql/tasks/main.yml",
         "patchSetId": 8
@@ -183,6 +345,24 @@
       "writtenOn": "2015-12-04T21:01:43Z",
       "side": 1,
       "message": "I think you have to add :\nhost      all     all     0.0.0.0/0      md5\n\nTo permit different hosts (like the api, if the api is not present on the same host) to connect to the DB.\n\nAnd you have to add a listen_addresses\u003d\u0027*\u0027 to listen on 0.0.0.0 and not 127.0.0.1. This prepare the multi-node installation",
+      "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_978d4334",
+        "filename": "ansible/roles/postgresql/tasks/main.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2015-12-07T11:16:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_1710734d",
       "revId": "0c5946860e85d6be2a7304f39d2653f8f59a7d5a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
