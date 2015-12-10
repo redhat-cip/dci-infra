@@ -195,6 +195,49 @@ resources:
       size: 160
       image: CentOS 7 (1510) x86_64
 
+  monitor:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: key_name }
+      flavor: m1.small
+      block_device_mapping:
+        - device_name: vda
+          volume_id: { get_resource : monitor_volume }
+          delete_on_termination: true
+      networks:
+        - port: { get_resource: monitor_port }
+
+  monitor_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_param: private_net_id }
+      security_groups: [{ get_resource: monitor_sec_group },{ get_resource: ssh_sec_group }]
+
+  monitor_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_net_id }
+      port_id: { get_resource: monitor_port }
+
+  monitor_sec_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: Security group for Monitoring
+      name: monitor_sec_group
+      rules:
+        - port_range_min: 80
+          port_range_max: 80
+          direction: ingress
+          protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+
+  monitor_volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: 20
+      image: CentOS 7 (1510) x86_64
+
+
   ssh_sec_group:
     type: OS::Neutron::SecurityGroup
     properties:
