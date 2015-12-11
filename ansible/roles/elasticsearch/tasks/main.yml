@@ -27,5 +27,11 @@
 - name: Ensure elasticsearch is installed
   yum: name=elasticsearch state=present
 
+- name: Ensure Elasticsearch listen to all addresses
+  lineinfile: dest=/etc/elasticsearch/elasticsearch.yml
+              regexp="^network.host: 0.0.0.0"
+              insertafter="^# network.host:"
+              line="network.host: 0.0.0.0"
+
 - name: Ensure elasticsearch is started
   service: name=elasticsearch state=started enabled=yes
