@@ -1,0 +1,15 @@
+{
+  "rabbitmq": {
+    "host": "{{sensu_rabbitmq_listen_address}}",
+    "vhost": "{{sensu_rabbitmq_vhost}}",
+    "user": "{{sensu_rabbitmq_user}}",
+    "password": "{{sensu_rabbitmq_password}}"
+  },
+  "redis": {
+    "host": "{{sensu_redis_listen_address}}"
+  },
+  "api": {
+    "host": "{{sensu_api_listen_address}}",
+    "port": {{sensu_api_port}}
+  }
+}

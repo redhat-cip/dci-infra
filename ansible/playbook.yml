@@ -51,3 +51,28 @@
   roles:
     - httpd
     - reposerver
+
+- hosts: rabbitmq
+  remote_user: dci
+  sudo: yes
+  roles:
+    - rabbitmq
+
+- hosts: redis
+  remote_user: dci
+  sudo: yes
+  roles:
+    - { role: geerlingguy.redis }
+
+- hosts: sensu
+  remote_user: dci
+  sudo: yes
+  roles:
+    - httpd
+    - sensu
+
+- hosts: all
+  remote_user: dci
+  sudo: yes
+  roles:
+    - sensu-client
