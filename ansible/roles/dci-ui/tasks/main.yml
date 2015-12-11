@@ -37,9 +37,6 @@
 
 # Install DCI itself
 #
-- name: Ensure base directory is created
-  command: mkdir -p $(dirname {{path_to_dci}})
-
 - name: Install DCI
   git: repo=http://softwarefactory-project.io/r/dci-control-server dest={{path_to_dci}}
   ignore_errors: True

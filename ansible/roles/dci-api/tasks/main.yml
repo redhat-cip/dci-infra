@@ -15,6 +15,17 @@
 # under the License.
 
 ---
+# Install DCI dependencies
+#
+- name: Ensure yum DCI dependencies are installed
+  yum: name={{item}} state=present
+  with_items:
+    - git
+    - python-psycopg2
+
+- name: Ensure pip is installed
+  command: easy_install pip
+
 # Create DCI database and user
 #
 - name: ensure database is created
@@ -32,21 +43,8 @@
   become: yes
   become_user: postgres
 
-# Install DCI dependencies
-#
-- name: Ensure yum DCI dependencies are installed
-  yum: name={{item}} state=present
-  with_items:
-    - git
-
-- name: Ensure pip is installed
-  command: easy_install pip
-
 # Install DCI itself
 #
-- name: Ensure base directory is created
-  command: mkdir -p $(dirname {{path_to_dci}})
-
 - name: Install DCI
   git: repo=http://softwarefactory-project.io/r/dci-control-server dest={{path_to_dci}}
   ignore_errors: True
