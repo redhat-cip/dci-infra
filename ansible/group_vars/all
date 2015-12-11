@@ -22,3 +22,5 @@ dbpassword: dci
 dbhost: 127.0.0.1
 servername: dci.enovance.com
 serveradmin: distributed-ci@redhat.com
+rabbitmq_sensu_password: secret
+monitoring_servername: monitoring.dci.enovance.com
