@@ -1,0 +1,61 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Install sensu repositories
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
+
+- name: Create rabbitmq sensu vhost
+  command: rabbitmqctl add_vhost /sensu
+  ignore_errors: True
+
+- name: Create rabbitmq sensu user
+  command: rabbitmqctl add_user sensu {{sensu_rabbitmq_password}}
+  ignore_errors: True
+
+- name: Grant permission to sensu user on sensu vhost
+  command: rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"
+
+- name: Install sensu and uchiwa
+  yum: name={{item}} state=present
+  with_items:
+    - sensu
+    - uchiwa
+
+- name: Generate sensu config.json
+  template: src=config.json dest=/etc/sensu/conf.d/config.json
+
+- name: Copy check definitions
+  copy: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
+  with_items:
+    - check_disk
+
+- name: Start sensu
+  service: name={{item}} state=started enabled=yes
+  with_items:
+    - sensu-server
+    - sensu-api
+
+- name: Generate uchiwa.conf
+  template: src=uchiwa.json dest=/etc/sensu/uchiwa.json
+
+- name: Start uchiwa
+  service: name=uchiwa state=started enabled=yes
+
+- name: Create vhost
+  template: src=02_uchiwa.conf dest=/etc/httpd/conf.d/02_uchiwa.conf
+  notify:
+    - reload httpd

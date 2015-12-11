@@ -1,0 +1,13 @@
+{
+  "sensu": [
+    {
+      "name": "{{sensu_datacenter_name}}",
+      "host": "{{sensu_api_listen_address}}",
+      "port": {{sensu_api_port}}
+    }
+  ],
+  "dashboard": {
+    "host": "{{sensu_dashboard_listen_address}}",
+    "port": {{sensu_dashboard_port}}
+  }
+}

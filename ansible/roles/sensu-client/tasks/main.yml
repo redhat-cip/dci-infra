@@ -15,28 +15,24 @@
 # under the License.
 
 ---
-path_to_dci: /srv/www/dci-control-server
-dbname: dci
-dbuser: dci
-dbpassword: dci
-dbhost: 127.0.0.1
-servername: dci.enovance.com
-serveradmin: distributed-ci@redhat.com
-monitoring_servername: monitoring.dci.enovance.com
+- name: Install sensu repositories
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
 
-# Sensu
-#
-sensu_datacenter_name: 'Distributed-CI'
+- name: Install sensu client
+  yum: name=sensu state=present
 
-sensu_rabbitmq_listen_address: '127.0.0.1'
-sensu_rabbitmq_vhost: '/sensu'
-sensu_rabbitmq_user: sensu
-sensu_rabbitmq_password: secret
+- name: Generate sensu config.json
+  template: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
+  with_items:
+    - config
+    - client
 
-sensu_redis_listen_address: '127.0.0.1'
+- name: Install sensu-plugins
+  command: sensu-install -p {{item}}
+  sudo: yes
+  with_items:
+    - disk-checks:1.0.2
 
-sensu_api_listen_address: '127.0.0.1'
-sensu_api_port: 4567
+- name: Start sensu
+  service: name=sensu-client state=started enabled=yes
 
-sensu_dashboard_listen_address: '0.0.0.0'
-sensu_dashboard_port: 3000
