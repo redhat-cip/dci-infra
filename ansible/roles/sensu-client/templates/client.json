@@ -1,0 +1,9 @@
+{
+  "client": {
+    "name": "my.dci-example.com",
+    "address": "192.168.121.22",
+    "subscriptions": [
+      "base"
+    ]
+  }
+}
