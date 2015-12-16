@@ -52,6 +52,13 @@
     - httpd
     - reposerver
 
+- hosts: dci-doc
+  remote_user: dci
+  sudo: yes
+  roles:
+    - httpd
+    - dci-doc
+
 - hosts: rabbitmq
   remote_user: dci
   sudo: yes
