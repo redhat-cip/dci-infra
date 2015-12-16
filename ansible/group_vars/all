@@ -23,6 +23,7 @@ dbhost: 127.0.0.1
 servername: dci.enovance.com
 serveradmin: distributed-ci@redhat.com
 monitoring_servername: monitoring.dci.enovance.com
+doc_servername: doc.dci.enovance.com
 
 # Sensu
 #
