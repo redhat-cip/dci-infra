@@ -13,6 +13,9 @@ my.dci-example.com
 [dci-ui]
 my.dci-example.com
 
+[dci-doc]
+my.dci-example.com
+
 [rabbitmq]
 my.dci-example.com
 

@@ -15,6 +15,11 @@
 # under the License.
 
 ---
+- name: Create vhost for repos
+  template: src=02_dci_repo.conf dest=/etc/httpd/conf.d/02_dci_repo.conf
+  notify:
+    -  reload httpd
+
 - name: Ensure createrepo is at the latest version
   yum: name=createrepo state=latest
 
