@@ -44,12 +44,6 @@
 - name: Ensure the dci user has proper acl on /srv/www/dci-control-server
   acl: name={{path_to_dci}} entity=dci etype=user permissions="rwx" state=present
 
-- name: Run pip install
-  pip: requirements={{path_to_dci}}/requirements.txt
-
-- name: Run pip install -e dci-control-server
-  pip: name='file://{{path_to_dci}}'
-
 - name: Run npm install
   command: npm install chdir={{path_to_dci}}/dci/dci_databrowser
 
