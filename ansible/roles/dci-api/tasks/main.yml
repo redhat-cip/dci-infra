@@ -53,7 +53,10 @@
   pip: requirements={{path_to_dci}}/requirements.txt
 
 - name: Run pip install -e dci-control-server
-  pip: name='file://{{path_to_dci}}'
+  command: pip install -e . chdir={{path_to_dci}}
+  sudo: yes
+  # TODO (spredzy) : Enable when ansible 2.0 is out
+  #pip: name='file://{{path_to_dci}}' editable=true
 
 - name: Initiate db schema
   command: python init_openshift_db.py chdir={{path_to_dci}}/dci/cmd
