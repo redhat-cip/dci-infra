@@ -14,71 +14,82 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-- hosts: all
+- name: Common-Configuration
+  hosts: all
   remote_user: centos
   sudo: yes
   roles:
     - common
 
-- hosts: postgresql
+- name: Install-PostgreSQL
+  hosts: postgresql
   remote_user: dci
   sudo: yes
   roles:
     - postgresql
 
-- hosts: elasticsearch
+- name: Install-ElasticSearch
+  hosts: elasticsearch
   remote_user: dci
   sudo: yes
   roles:
     - elasticsearch
 
-- hosts: dci-api
+- name: Install-DCI-Control-Server
+  hosts: dci-api
   remote_user: dci
   sudo: yes
   roles:
     - dci-api
 
-- hosts: dci-ui
+- name: Install-WebAPP
+  hosts: dci-ui
   remote_user: dci
   sudo: yes
   roles:
     - httpd
     - dci-ui
 
-- hosts: reposervers
+- name: Install-reposervers
+  hosts: reposervers
   remote_user: dci
   sudo: yes
   roles:
     - httpd
     - reposerver
 
-- hosts: dci-doc
+- name: Deploy-DCI-DOC
+  hosts: dci-doc
   remote_user: dci
   sudo: yes
   roles:
     - httpd
     - dci-doc
 
-- hosts: rabbitmq
+- name: Install-RabbitMQ
+  hosts: rabbitmq
   remote_user: dci
   sudo: yes
   roles:
     - rabbitmq
 
-- hosts: redis
+- name: Install-Redis
+  hosts: redis
   remote_user: dci
   sudo: yes
   roles:
     - { role: geerlingguy.redis }
 
-- hosts: sensu
+- name: Install-sensu
+  hosts: sensu
   remote_user: dci
   sudo: yes
   roles:
     - httpd
     - sensu
 
-- hosts: all
+- name: Install-Sensu-client
+  hosts: all
   remote_user: dci
   sudo: yes
   roles:
