@@ -15,47 +15,17 @@
 # under the License.
 
 ---
-# Install DCI dependencies
+# Ensure dci-release is installed
+- name: Ensure dci-sshpubkeys is installed
+  yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
+
+# Install DCI-UI
 #
-- name: Ensure yum DCI dependencies are installed
-  yum: name={{item}} state=present
-  with_items:
-    - nodejs
-    - npm
-    - git
-    - tar
-    - bzip2
+- name: Ensure DCI-UI is installed
+  yum: name=dci-ui state=present
 
-- name: Ensure npm DCI dependencies are installed
-  npm: name={{item}} global=yes
-  with_items:
-    - gulp
-    - npm-cache
-
-- name: Ensure pip is installed
-  command: easy_install pip
-
-# Install DCI itself
+# Configure DCI-UI
 #
-- name: Install DCI
-  git: repo=http://softwarefactory-project.io/r/dci-control-server dest={{path_to_dci}}
-  ignore_errors: True
-
-- name: Ensure the dci user has proper acl on /srv/www/dci-control-server
-  acl: name={{path_to_dci}} entity=dci etype=user permissions="rwx" state=present
-
-- name: Run pip install
-  pip: requirements={{path_to_dci}}/requirements.txt
-
-- name: Run pip install -e dci-control-server
-  pip: name='file://{{path_to_dci}}'
-
-- name: Run npm install
-  command: npm install chdir={{path_to_dci}}/dci/dci_databrowser
-
-- name: Gulp build
-  command: gulp build chdir={{path_to_dci}}/dci/dci_databrowser
-
 - name: Create vhost file
   template: src=dci.conf dest=/etc/httpd/conf.d/dci.conf
   notify:
