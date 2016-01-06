@@ -15,16 +15,28 @@
 # under the License.
 
 ---
-# Install DCI dependencies
-#
-- name: Ensure yum DCI dependencies are installed
-  yum: name={{item}} state=present
-  with_items:
-    - git
-    - python-psycopg2
+# Ensure dci-release is installed
+- name: Ensure dci-release is installed
+  yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
 
+# Install currently missing dependencies
+#
 - name: Ensure pip is installed
   command: easy_install pip
+
+- name: Install unpackaged pip
+  pip: name={{item}} state=latest
+  with_items:
+    - voluptuous
+    - SQLAlchemy-Utils
+
+# Install DCI-API
+#
+- name: Ensure DCI is installed
+  yum: name={{item}} state=present
+  with_items:
+    - dci-common
+    - dci-api
 
 # Create DCI database and user
 #
@@ -45,18 +57,8 @@
 
 # Install DCI itself
 #
-- name: Install DCI
-  git: repo=http://softwarefactory-project.io/r/dci-control-server dest={{path_to_dci}}
-  ignore_errors: True
-
-- name: Run pip install
-  pip: requirements={{path_to_dci}}/requirements.txt
-
-- name: Run pip install -e dci-control-server
-  pip: name='file://{{path_to_dci}}'
-
 - name: Initiate db schema
-  command: python init_openshift_db.py chdir={{path_to_dci}}/dci/cmd
+  command: dci-openshift-dbinit
   environment:
     OPENSHIFT_POSTGRESQL_DB_URL: postgresql://{{dbuser}}:{{dbpassword}}@{{dbhost}}/{{dbname}}
     DCI_LOGIN: admin
