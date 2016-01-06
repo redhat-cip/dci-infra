@@ -15,7 +15,7 @@
 # under the License.
 
 ---
-path_to_dci: /srv/www/dci-control-server
+path_to_dci: /usr/lib/python2.7/site-packages/dci/
 dbname: dci
 dbuser: dci
 dbpassword: dci
