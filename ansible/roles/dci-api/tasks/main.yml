@@ -56,7 +56,7 @@
   pip: name='file://{{path_to_dci}}'
 
 - name: Initiate db schema
-  command: python init_openshift_db.py chdir={{path_to_dci}}/dci/cmd
+  command: python dbinit.py chdir={{path_to_dci}}/dci/cmd
   environment:
     OPENSHIFT_POSTGRESQL_DB_URL: postgresql://{{dbuser}}:{{dbpassword}}@{{dbhost}}/{{dbname}}
     DCI_LOGIN: admin
