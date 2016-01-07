@@ -26,6 +26,12 @@
 - name: Ensure proper file hierarchy is created
   file: path=/var/www/html/{{ item }} state=directory
   with_items:
+    - repos/extras/fedora/22/x86_64
+    - repos/extras/fedora/22/sources/SRPMS
+    - repos/extras/fedora/23/x86_64
+    - repos/extras/fedora/23/sources/SRPMS
+    - repos/extras/el/7/x86_64
+    - repos/extras/el/7/sources/SRPMS
     - repos/development/fedora/22/x86_64
     - repos/development/fedora/22/sources/SRPMS
     - repos/development/fedora/23/x86_64
@@ -42,6 +48,9 @@
 - name: Ensure each repository is bootstrapped
   shell: createrepo /var/www/html/{{ item }}
   with_items:
+    - repos/extras/fedora/22/x86_64
+    - repos/extras/fedora/23/x86_64
+    - repos/extras/el/7/x86_64
     - repos/development/fedora/22/x86_64
     - repos/development/fedora/23/x86_64
     - repos/development/el/7/x86_64
