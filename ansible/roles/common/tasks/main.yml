@@ -15,9 +15,6 @@
 # under the License.
 
 ---
-- name: Disabled SELinux
-  selinux: state=permissive policy=targeted
-
 - name: Ensure dci-sshpubkeys is installed
   yum: name=http://dci.enovance.com/dci-sshpubkeys.el7.noarch.rpm state=present
 
