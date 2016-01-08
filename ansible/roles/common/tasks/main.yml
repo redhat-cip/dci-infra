@@ -15,8 +15,11 @@
 # under the License.
 
 ---
-- name: Disabled SELinux
-  selinux: state=permissive policy=targeted
+- name: Ensure SELinux is enforced
+  selinux: state=enforcing policy=targeted
+
+- name: Ensure semanage is installed for SELinux boolean manipulation
+  yum: name=policycoreutils-python state=present
 
 - name: Ensure dci-sshpubkeys is installed
   yum: name=http://dci.enovance.com/dci-sshpubkeys.el7.noarch.rpm state=present

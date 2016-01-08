@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe file('/etc/selinux/config') do
-  its(:content) { should match /^SELINUX=permissive$/ }
+  its(:content) { should match /^SELINUX=enforcing$/ }
 end
 
 describe file('/etc/yum.repos.d/epel.repo') do
