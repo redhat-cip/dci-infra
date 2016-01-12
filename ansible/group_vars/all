@@ -15,15 +15,20 @@
 # under the License.
 
 ---
-path_to_dci: /usr/lib/python2.7/site-packages/dci/
+# Database
+#
 dbname: dci
 dbuser: dci
 dbpassword: dci
 dbhost: 127.0.0.1
-servername: dci.enovance.com
-serveradmin: distributed-ci@redhat.com
+
+# HTTPD
+#
+api_servername: api.dci.enovance.com
+ui_servername: dci.enovance.com
 monitoring_servername: monitoring.dci.enovance.com
 doc_servername: doc.dci.enovance.com
+serveradmin: distributed-ci@redhat.com
 
 # Sensu
 #
