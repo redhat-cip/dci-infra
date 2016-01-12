@@ -15,6 +15,13 @@
 # under the License.
 
 ---
+# Ensure the needed SELinux booleans are enabled
+- name: Ensure the needed SELinux booleans are enabled
+  seboolean: name={{item}} state=yes persistent=yes
+  with_items:
+    - httpd_can_network_connect
+    - httpd_can_network_connect_db
+
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
@@ -22,10 +29,12 @@
 # Install DCI-API
 #
 - name: Ensure DCI is installed
-  yum: name={{item}} state=present
+  yum: name={{item}} state=latest
   with_items:
     - dci-common
     - dci-api
+  notify:
+    - reload httpd
 
 # Create DCI database and user
 #
@@ -52,3 +61,10 @@
     OPENSHIFT_POSTGRESQL_DB_URL: postgresql://{{dbuser}}:{{dbpassword}}@{{dbhost}}/{{dbname}}
     DCI_LOGIN: admin
     DCI_PASSWORD: admin
+
+# Configure DCI-API vhost
+#
+- name: Create vhost file
+  template: src=dci_api.conf dest=/etc/httpd/conf.d/dci_api.conf
+  notify:
+    - reload httpd
