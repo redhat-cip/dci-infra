@@ -15,13 +15,6 @@
 # under the License.
 
 ---
-# Ensure the needed SELinux booleans are enabled
-- name: Ensure the needed SELinux booleans are enabled
-  seboolean: name={{item}} state=yes persistent=yes
-  with_items:
-    - httpd_can_network_connect
-    - httpd_can_network_connect_db
-
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
@@ -29,11 +22,20 @@
 # Install DCI-UI
 #
 - name: Ensure DCI-UI is installed
-  yum: name=dci-ui state=present
+  yum: name=dci-ui state=latest
+  notify:
+    - reload httpd
 
-# Configure DCI-UI
+# Configure DCI-UI config.json
+#
+- name: configure DCI-UI config.json
+  template: src=config.json dest=/etc/dci-ui/config.json
+  notify:
+    - reload httpd
+
+# Configure DCI-UI vhost
 #
 - name: Create vhost file
-  template: src=dci.conf dest=/etc/httpd/conf.d/dci.conf
+  template: src=dci_ui.conf dest=/etc/httpd/conf.d/dci_ui.conf
   notify:
     - reload httpd
