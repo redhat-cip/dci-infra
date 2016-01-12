@@ -1,0 +1,3 @@
+{
+  "apiURL": "http://{{ api_servername }}"
+}
