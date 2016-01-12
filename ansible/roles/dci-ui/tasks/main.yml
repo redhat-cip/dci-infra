@@ -15,7 +15,7 @@
 # under the License.
 
 ---
-# Ensure the needed SELinux booleans are enabled
+## Ensure the needed SELinux booleans are enabled
 - name: Ensure the needed SELinux booleans are enabled
   seboolean: name={{item}} state=yes persistent=yes
   with_items:
@@ -29,11 +29,20 @@
 # Install DCI-UI
 #
 - name: Ensure DCI-UI is installed
-  yum: name=dci-ui state=present
+  yum: name=dci-ui state=latest
+  notify:
+    - reload httpd
 
-# Configure DCI-UI
+# Configure DCI-UI config.json
+#
+- name: configure DCI-UI config.json
+  template: src=config.json dest=/srv/www/dci-ui/config.json
+  notify:
+    - reload httpd
+
+# Configure DCI-UI vhost
 #
 - name: Create vhost file
-  template: src=dci.conf dest=/etc/httpd/conf.d/dci.conf
+  template: src=dci_ui.conf dest=/etc/httpd/conf.d/dci_ui.conf
   notify:
     - reload httpd
