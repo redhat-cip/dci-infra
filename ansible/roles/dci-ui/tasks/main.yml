@@ -22,7 +22,7 @@
 # Install DCI-UI
 #
 - name: Ensure DCI-UI is installed
-  yum: name=dci-ui state=latest
+  yum: name=dci-ui state=latest update_cache=yes
   notify:
     - reload httpd
 

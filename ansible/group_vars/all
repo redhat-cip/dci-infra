@@ -20,7 +20,15 @@
 dbname: dci
 dbuser: dci
 dbpassword: dci
-dbhost: 127.0.0.1
+dbhost: 46.231.133.46
+
+# API
+#
+apihost: 46.231.133.44
+
+# Elasticsearch
+#
+eshost: 46.231.133.45
 
 # HTTPD
 #
