@@ -106,8 +106,13 @@ resources:
       description: Security group for API
       name: api_sec_group
       rules:
-        - port_range_min: 5000
-          port_range_max: 5000
+        - port_range_min: 80
+          port_range_max: 80
+          direction: ingress
+          protocol: tcp
+          remote_ip_prefix: 0.0.0.0/0
+        - port_range_min: 443
+          port_range_max: 443
           direction: ingress
           protocol: tcp
           remote_ip_prefix: 0.0.0.0/0
@@ -152,8 +157,7 @@ resources:
           port_range_max: 5432
           direction: ingress
           protocol: tcp
-          remote_group_id: { get_resource: api_sec_group }
-          remote_mode: remote_group_id
+          remote_ip_prefix: 46.231.133.0/0
 
   db_volume:
     type: OS::Cinder::Volume
