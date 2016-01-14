@@ -36,10 +36,27 @@
   lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
               regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
               insertafter="^#\sIPv4\slocal.+"
-              line="host    all             all  127.0.0.1/32            {{item}}"
+              line="host    all             all  {{ apihost }}/32            {{item}}"
   with_items:
     - password
     - md5
 
 - name: Ensure PostgreSQL service is started
   service: name=postgresql state=started enabled=yes
+#
+# Create DCI database and user
+#
+- name: ensure database is created
+  postgresql_db: name={{dbname}}
+  become: yes
+  become_user: postgres
+
+- name: ensure user has access to database
+  postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+  become: yes
+  become_user: postgres
+
+- name: ensure user does not have unnecessary privilege
+  postgresql_user: name={{dbuser}} role_attr_flags=SUPERUSER,CREATEDB
+  become: yes
+  become_user: postgres
