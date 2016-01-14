@@ -36,23 +36,6 @@
   notify:
     - reload httpd
 
-# Create DCI database and user
-#
-- name: ensure database is created
-  postgresql_db: name={{dbname}}
-  become: yes
-  become_user: postgres
-
-- name: ensure user has access to database
-  postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
-  become: yes
-  become_user: postgres
-
-- name: ensure user does not have unnecessary privilege
-  postgresql_user: name={{dbuser}} role_attr_flags=SUPERUSER,CREATEDB
-  become: yes
-  become_user: postgres
-
 # Install DCI itself
 #
 - name: Initiate db schema
