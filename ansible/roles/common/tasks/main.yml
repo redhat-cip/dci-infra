@@ -28,4 +28,4 @@
   yum: name=epel-release state=present
 
 - name: Ensure packages are up to their latest release
-  yum: name=* state=latest
+  yum: name=* state=latest update_cache=yes
