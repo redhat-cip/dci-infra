@@ -20,6 +20,8 @@
   sudo: yes
   roles:
     - common
+  tags:
+    - dci-core
 
 - name: Install-PostgreSQL
   hosts: postgresql
@@ -27,6 +29,8 @@
   sudo: yes
   roles:
     - postgresql
+  tags:
+    - dci-core
 
 - name: Install-ElasticSearch
   hosts: elasticsearch
@@ -34,6 +38,8 @@
   sudo: yes
   roles:
     - elasticsearch
+  tags:
+    - dci-core
 
 - name: Install-DCI-Control-Server
   hosts: dci-api
@@ -42,6 +48,8 @@
   roles:
     - httpd
     - dci-api
+  tags:
+    - dci-core
 
 - name: Install-WebAPP
   hosts: dci-ui
@@ -50,6 +58,8 @@
   roles:
     - httpd
     - dci-ui
+  tags:
+    - dci-core
 
 - name: Install-reposervers
   hosts: reposervers
