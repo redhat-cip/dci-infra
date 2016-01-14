@@ -17,3 +17,9 @@
 ---
 - name: reload httpd
   service: name=httpd state=reloaded
+
+- name: run dbsync
+  command: dci-dbsync
+  environment:
+    DCI_LOGIN: admin
+    DCI_PASSWORD: admin
