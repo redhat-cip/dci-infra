@@ -1,26 +1,11 @@
-[reposervers]
-my.dci-example.com
-
 [elasticsearch]
-my.dci-example.com
+46.231.133.45
 
 [postgresql]
-my.dci-example.com
+46.231.133.46
 
 [dci-api]
-my.dci-example.com
+46.231.133.44
 
 [dci-ui]
-my.dci-example.com
-
-[dci-doc]
-my.dci-example.com
-
-[rabbitmq]
-my.dci-example.com
-
-[redis]
-my.dci-example.com
-
-[sensu]
-my.dci-example.com
+46.231.133.47
