@@ -1,0 +1,6 @@
+766a767,771
+>     if not update_all:
+>         rc, out, err = module.run_command(yum_basecmd + ['-q', 'check-update'] + items)
+>     else:
+>         rc, out, err = module.run_command(yum_basecmd + ['-q', 'check-update'])
+>
