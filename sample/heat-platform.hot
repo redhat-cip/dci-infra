@@ -12,6 +12,21 @@ parameters:
   public_net_id:
     type: string
     description: ID of public network to get Floating IPs
+  webapp_fip_id:
+    type: string
+    description: Floating IP ID for the WebAPP
+  db_fip_id:
+    type: string
+    description: Floating IP ID for the DB
+  es_fip_id:
+    type: string
+    description: Floating IP ID for the ES
+  api_fip_id:
+    type: string
+    description: Floating IP ID for the API
+  monitor_fip_id:
+    type: string
+    description: Floating IP ID for the Monitor
 
 resources:
   webapp:
@@ -33,9 +48,9 @@ resources:
       security_groups: [{ get_resource: webapp_sec_group },{ get_resource: ssh_sec_group }]
 
   webapp_ip:
-    type: OS::Neutron::FloatingIP
+    type: OS::Neutron::FloatingIPAssociation
     properties:
-      floating_network: { get_param: public_net_id }
+      floatingip_id: { get_param: webapp_fip_id }
       port_id: { get_resource: webapp_port }
 
   webapp_sec_group:
@@ -80,9 +95,9 @@ resources:
       security_groups: [{ get_resource: api_sec_group },{ get_resource: ssh_sec_group }]
 
   api_ip:
-    type: OS::Neutron::FloatingIP
+    type: OS::Neutron::FloatingIPAssociation
     properties:
-      floating_network: { get_param: public_net_id }
+      floatingip_id: { get_param: api_fip_id }
       port_id: { get_resource: api_port }
 
   api_sec_group:
@@ -122,9 +137,9 @@ resources:
       security_groups: [{ get_resource: db_sec_group },{ get_resource: ssh_sec_group }]
 
   db_ip:
-    type: OS::Neutron::FloatingIP
+    type: OS::Neutron::FloatingIPAssociation
     properties:
-      floating_network: { get_param: public_net_id }
+      floatingip_id: { get_param: db_fip_id }
       port_id: { get_resource: db_port }
 
   db_sec_group:
@@ -165,9 +180,9 @@ resources:
       security_groups: [{ get_resource: es_sec_group },{ get_resource: ssh_sec_group }]
 
   es_ip:
-    type: OS::Neutron::FloatingIP
+    type: OS::Neutron::FloatingIPAssociation
     properties:
-      floating_network: { get_param: public_net_id }
+      floatingip_id: { get_param: es_fip_id }
       port_id: { get_resource: es_port }
 
   es_sec_group:
@@ -214,9 +229,9 @@ resources:
       security_groups: [{ get_resource: monitor_sec_group },{ get_resource: ssh_sec_group }]
 
   monitor_ip:
-    type: OS::Neutron::FloatingIP
+    type: OS::Neutron::FloatingIPAssociation
     properties:
-      floating_network: { get_param: public_net_id }
+      floatingip_id: { get_param: monitor_fip_id }
       port_id: { get_resource: monitor_port }
 
   monitor_sec_group:
