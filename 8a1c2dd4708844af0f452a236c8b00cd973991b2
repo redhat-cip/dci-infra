@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_ed08812f",
+        "filename": "sample/heat-platform.hot",
+        "patchSetId": 14
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 107
+      },
+      "writtenOn": "2016-01-18T13:57:29Z",
+      "side": 1,
+      "message": "not good to open worldwide our PgSQL",
+      "revId": "8a1c2dd4708844af0f452a236c8b00cd973991b2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
