@@ -1,6 +1,14 @@
-766a767,771
->     if not update_all:
->         rc, out, err = module.run_command(yum_basecmd + ['-q', 'check-update'] + items)
->     else:
->         rc, out, err = module.run_command(yum_basecmd + ['-q', 'check-update'])
->
+--- yum.py.orig	2016-01-19 02:44:04.338000000 -0500
++++ yum.py	2016-01-19 02:45:23.685000000 -0500
+@@ -729,6 +729,11 @@
+     if '*' in items:
+         update_all = True
+ 
++    if not update_all:
++        rc, out, err = module.run_command(yum_basecmd + ['-q', 'check-update'] + items)
++    else:
++        rc, out, err = module.run_command(yum_basecmd + ['check-update'])
++
+     # run check-update to see if we have packages pending
+     rc, out, err = module.run_command(yum_basecmd + ['check-update'])
+     if rc == 0 and update_all:
