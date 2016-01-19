@@ -51,7 +51,7 @@
   command: dci-dbinit
   environment:
     DCI_LOGIN: admin
-    DCI_PASSWORD: admin
+    DCI_PASSWORD: '{{ adminpassword }}'
 
 # Configure DCI-API vhost
 #
