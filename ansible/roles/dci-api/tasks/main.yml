@@ -26,6 +26,17 @@
 - name: Ensure dci-release is installed
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
 
+# Ensure postgresql client tools are installed
+- name: Ensure postgresql client toos installed
+  yum: name=postgresql state=present
+
+# Ensure a backup of the database is made before
+# any update takes place
+- name: Ensure backup is made
+  shell: pg_dump -U {{ dbuser }} -h {{ dbhost }} -w {{ dbname }} > {{ dbbackuppath }}/$(rpm -q --queryformat '%{VERSION}' dci-api | sed 's/[0-9].[0-9].\(.*\)/\1/g').sql
+  environment:
+    PGPASSWORD: '{{ dbpassword }}'
+
 # Install DCI-API
 #
 - name: Ensure DCI is installed
@@ -37,7 +48,6 @@
     - reload httpd
     - run dbsync
 
-#
 # Configure DCI-API configuration file
 #
 - name: Create config file
