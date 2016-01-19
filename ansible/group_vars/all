@@ -21,6 +21,7 @@ dbname: dci
 dbuser: dci
 dbpassword: dci
 dbhost: 127.0.0.1
+dbbackuppath: /var/tmp
 
 # API
 #
