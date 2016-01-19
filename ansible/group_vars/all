@@ -15,6 +15,10 @@
 # under the License.
 
 ---
+# DCI
+#
+adminpassword: admin
+
 # Database
 #
 dbname: dci
