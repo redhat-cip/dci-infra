@@ -1,7 +1,7 @@
 {
   "checks": {
-    "disk": {
-      "command": "check-disk-usage.rb -w 85 -c 95",
+    "ssh": {
+      "command": "check-ports.rb -h 0.0.0.0 -p 22 -t 30",
       "interval": 10,
       "handlers": ["file"],
       "subscribers": [
