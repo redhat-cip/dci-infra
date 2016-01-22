@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "uchiwa": {
+      "command": "check-ports.rb -h 0.0.0.0 -p 80 -t 30",
+      "interval": 10,
+      "standalone": true,
+      "handlers": ["file"]
+    }
+  }
+}
