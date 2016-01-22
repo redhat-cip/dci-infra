@@ -15,17 +15,29 @@
 # under the License.
 
 ---
+- name: Set the server hostname
+  hostname: name={{ hostname }}
+
 - name: Ensure SELinux is enforced
   selinux: state=enforcing policy=targeted
+
+- name: Ensure EPEL is installed
+  yum: name=epel-release state=present
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
   yum: name=policycoreutils-python state=present
 
+- name: Ensure rubygems is installed for Sensu plugins
+  yum: name=rubygems state=present
+
+- name: Install Sensu plugins checks dependencies
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - bc
+
 - name: Ensure dci-sshpubkeys is installed
   yum: name=http://dci.enovance.com/dci-sshpubkeys.el7.noarch.rpm state=present
-
-- name: Ensure EPEL is installed
-  yum: name=epel-release state=present
 
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes
