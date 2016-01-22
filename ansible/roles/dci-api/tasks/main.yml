@@ -15,6 +15,11 @@
 # under the License.
 
 ---
+- name: Install sensu-plugins
+  command: sensu-install -p {{item}}
+  with_items:
+    - http
+
 # Ensure the needed SELinux booleans are enabled
 - name: Ensure the needed SELinux booleans are enabled
   seboolean: name={{item}} state=yes persistent=yes

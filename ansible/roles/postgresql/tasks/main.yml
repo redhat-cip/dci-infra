@@ -19,8 +19,14 @@
   yum: name={{item}} state=present
   with_items:
     - postgresql
+    - postgresql-devel
     - postgresql-server
     - python-psycopg2
+
+- name: Install sensu-plugins
+  command: sensu-install -p {{item}}
+  with_items:
+    - postgres
 
 - name: Initialize postgresql
   shell: postgresql-setup initdb

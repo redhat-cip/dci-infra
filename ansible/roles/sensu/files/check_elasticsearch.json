@@ -1,12 +1,13 @@
 {
   "checks": {
-    "disk": {
-      "command": "check-disk-usage.rb -w 85 -c 95",
+    "elasticsearch-node-status": {
+      "command": "check-es-node-status.rb",
       "interval": 10,
       "handlers": ["file"],
       "subscribers": [
-        "base"
+        "elasticsearch"
       ]
     }
   }
 }
+
