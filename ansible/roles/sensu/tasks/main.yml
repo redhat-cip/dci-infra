@@ -15,6 +15,8 @@
 # under the License.
 
 ---
+# TODO(spredzy): Remove this command when we handle proper irc notification
+#
 - name: Install sensu repositories
   copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
 
@@ -35,6 +37,9 @@
     - sensu
     - uchiwa
 
+- name: Create tmp sensu_alerts folder
+  file: path=/var/tmp/sensu_alerts state=directory mode=0755 owner=sensu group=sensu
+
 - name: Generate sensu config.json
   template: src=config.json dest=/etc/sensu/conf.d/config.json
 
@@ -42,6 +47,12 @@
   copy: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
   with_items:
     - check_disk
+    - check_ssh
+    - check_uchiwa
+    - check_memory
+    - check_postgresql
+  notify:
+    - restart sensu-client
 
 - name: Start sensu
   service: name={{item}} state=started enabled=yes
