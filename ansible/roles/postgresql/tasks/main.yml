@@ -19,6 +19,7 @@
   yum: name={{item}} state=present
   with_items:
     - postgresql
+    - postgresql-devel
     - postgresql-server
     - python-psycopg2
 
@@ -69,3 +70,16 @@
   postgresql_user: name={{dbuser}} role_attr_flags=SUPERUSER,CREATEDB
   become: yes
   become_user: postgres
+
+# Install sensu check plugins
+#
+#- name: Install sensu check plugins
+#  gem: name={{ item }} state=present executable=/opt/sensu/embedded/bin/gem
+#  with_items:
+#    - sensu-plugins-postgres
+- name: Copy check definitions
+  copy: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
+  with_items:
+    - check_postgresql
+  notify:
+    - restart sensu-client

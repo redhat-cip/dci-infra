@@ -26,12 +26,24 @@
   with_items:
     - config
     - client
+  notify:
+    - reload sensu-client
 
 - name: Install sensu-plugins
   command: sensu-install -p {{item}}
   sudo: yes
   with_items:
-    - disk-checks:1.0.2
+    - disk-checks
+    - network-checks
+    - memory-checks
+
+# Install sensu check plugins
+#
+#- name: Install sensu check plugins
+#  gem: name={{ item }} state=present executable=/opt/sensu/embedded/bin/gem
+#  with_items:
+#    - sensu-plugins-network-checks
+#    - sensu-plugins-disk-checks
 
 - name: Start sensu
   service: name=sensu-client state=started enabled=yes
