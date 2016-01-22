@@ -26,12 +26,28 @@
   with_items:
     - config
     - client
+  notify:
+    - reload sensu-client
+
+- name: Copy extra  configuration
+  copy: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
+  with_items:
+    - handler_file
+  notify:
+    - reload sensu-client
 
 - name: Install sensu-plugins
   command: sensu-install -p {{item}}
   sudo: yes
   with_items:
-    - disk-checks:1.0.2
+    - disk-checks
+    - network-checks
+    - memory-checks
+
+- name: Copy plugins definitions
+  copy: src={{item}} dest=/etc/sensu/plugins mode=0755
+  with_items:
+    - event-file.rb
 
 - name: Start sensu
   service: name=sensu-client state=started enabled=yes
