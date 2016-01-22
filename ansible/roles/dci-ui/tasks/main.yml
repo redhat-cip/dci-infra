@@ -15,6 +15,11 @@
 # under the License.
 
 ---
+- name: Install sensu-plugins
+  command: sensu-install -p {{item}}
+  with_items:
+    - http
+
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present

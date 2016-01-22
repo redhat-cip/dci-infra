@@ -15,17 +15,24 @@
 # under the License.
 
 ---
+# TODO(spredzy): To remove when the ntp sensu check support chrony
+- yum: name=ntp state=present
+- service: name=ntpd state=started
+
+- name: Set the server hostname
+  hostname: name={{ hostname }}
+
 - name: Ensure SELinux is enforced
   selinux: state=enforcing policy=targeted
+
+- name: Ensure EPEL is installed
+  yum: name=epel-release state=present
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
   yum: name=policycoreutils-python state=present
 
 - name: Ensure dci-sshpubkeys is installed
   yum: name=http://dci.enovance.com/dci-sshpubkeys.el7.noarch.rpm state=present
-
-- name: Ensure EPEL is installed
-  yum: name=epel-release state=present
 
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes

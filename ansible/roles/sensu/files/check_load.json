@@ -1,7 +1,7 @@
 {
   "checks": {
-    "disk": {
-      "command": "check-disk-usage.rb -w 85 -c 95",
+    "load": {
+      "command": "check-load.rb",
       "interval": 10,
       "handlers": ["file"],
       "subscribers": [
