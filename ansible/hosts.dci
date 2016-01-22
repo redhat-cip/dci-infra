@@ -1,11 +1,20 @@
 [elasticsearch]
-46.231.133.45
+46.231.133.45 sensu_rabbitmq_listen_address='46.231.133.106' hostname='elasticsearch' public_ip='46.231.133.45'
 
 [postgresql]
-46.231.133.46 apihost='46.231.133.44'
+46.231.133.46 apihost='46.231.133.44' sensu_rabbitmq_listen_address='46.231.133.106' hostname='postgresql' public_ip='46.231.133.46'
 
 [dci-api]
-46.231.133.44 dbhost='46.231.133.46' eshost='46.231.133.45' adminpassword='Wr6NAnGhSBNYma'
+46.231.133.44 dbhost='46.231.133.46' eshost='46.231.133.45' adminpassword='Wr6NAnGhSBNYma' sensu_rabbitmq_listen_address='46.231.133.106' hostname='dci-api' public_ip='46.231.133.44'
 
 [dci-ui]
-46.231.133.47 apihost='46.231.133.44'
+46.231.133.47 apihost='46.231.133.44' sensu_rabbitmq_listen_address='46.231.133.106' hostname='dci-ui' public_ip='46.231.133.47'
+
+[rabbitmq]
+46.231.133.106 sensu_rabbitmq_listen_address='46.231.133.106' hostname='monitoring' public_ip='46.231.133.106'
+
+[redis]
+46.231.133.106 sensu_rabbitmq_listen_address='46.231.133.106' hostname='monitoring' public_ip='46.231.133.106'
+
+[sensu]
+46.231.133.106 sensu_rabbitmq_listen_address='46.231.133.106' hostname='monitoring' public_ip='46.231.133.106'
