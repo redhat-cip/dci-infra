@@ -57,11 +57,19 @@
 
 # Install DCI itself
 #
+- name: Check if db is already in place
+  shell: psql -U {{ dbuser }} -h {{ dbhost }} -d {{ dbname }} -w -c 'SELECT * FROM users'
+  environment:
+    PGPASSWORD: '{{ dbpassword }}'
+  register: dbexist
+  ignore_errors: yes
+
 - name: Initiate db schema
   command: dci-dbinit
   environment:
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
+  when: dbexist|failed
 
 # Configure DCI-API vhost
 #
