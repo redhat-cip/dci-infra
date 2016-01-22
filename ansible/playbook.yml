@@ -23,6 +23,13 @@
   tags:
     - dci-core
 
+- name: Install-Sensu-client
+  hosts: all
+  remote_user: dci
+  sudo: yes
+  roles:
+    - sensu-client
+
 - name: Install-PostgreSQL
   hosts: postgresql
   remote_user: dci
@@ -99,9 +106,3 @@
     - httpd
     - sensu
 
-- name: Install-Sensu-client
-  hosts: all
-  remote_user: dci
-  sudo: yes
-  roles:
-    - sensu-client
