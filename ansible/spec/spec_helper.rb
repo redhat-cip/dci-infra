@@ -1,7 +1,9 @@
 require 'serverspec'
 require 'net/ssh'
+require 'yaml'
 
-set :backend, :ssh
+local_data = YAML.load_file('properties.yml')
+set_property local_data
 
 if ENV['ASK_SUDO_PASSWORD']
   begin
@@ -15,6 +17,12 @@ else
 end
 
 host = ENV['TARGET_HOST']
+
+if host == 'localhost'
+  set :backend, :exec
+else
+  set :backend, :ssh
+end
 
 options = Net::SSH::Config.for(host)
 
