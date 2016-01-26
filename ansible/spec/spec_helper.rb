@@ -1,8 +1,6 @@
 require 'serverspec'
 require 'net/ssh'
 
-set :backend, :ssh
-
 if ENV['ASK_SUDO_PASSWORD']
   begin
     require 'highline/import'
@@ -15,6 +13,12 @@ else
 end
 
 host = ENV['TARGET_HOST']
+
+if host == 'localhost'
+  set :backend, :exec
+else
+  set :backend, :ssh
+end
 
 options = Net::SSH::Config.for(host)
 
