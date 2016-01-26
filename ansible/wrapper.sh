@@ -44,6 +44,27 @@ case $action in
     actual_command=$(echo "${current_result}" | sed s"#|\s*\(.*\)\s*|\s*${2}\s*|\s*\([^|]*\).*#dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} team-delete --id \1--etag \2#g")
     $actual_command
   ;;
+  'user-list')
+    dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} user-list
+  ;;
+  'user-create')
+    list_result="$(dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} team-list)"
+    current_result=$(echo "${list_result}" | grep -E "\|\s*${2}\s*\|")
+    team_id=$(echo "${current_result}" | sed s"#|\s*\(.*\)\s*|\s*${2}\s*|\s*\([^|]*\).*#\1#g")
+    dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} user-create --name ${2} --password ${3} --team_id ${team_id}
+  ;;
+  'user-update')
+    list_result="$(dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} user-list)"
+    current_result=$(echo "${list_result}" | grep -E "\|\s*${2}\s*\|")
+    actual_command=$(echo "${current_result}" | sed s"#|\s*\(.*\)\s*|\s*\(.*\)\s*|\s*${2}\s*|\s*\([^|]*\).*#dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} user-update --id \1--etag \2 --name ${3}#g")
+    $actual_command
+  ;;
+  'user-delete')
+    list_result="$(dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} user-list)"
+    current_result=$(echo "${list_result}" | grep -E "\|\s*${2}\s*\|")
+    actual_command=$(echo "${current_result}" | sed s"#|\s*\(.*\)\s*|\s*\(.*\)\s*|\s*${2}\s*|\s*\([^|]*\).*#dcictl --dci-login=${dci_login} --dci-password=${dci_password} --dci-cs-url=${dci_cs_url} user-delete --id \1--etag \2#g")
+    $actual_command
+  ;;
   *)
     echo "wrapper.sh: ${action} this command does not exist"
     exit 1
