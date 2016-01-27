@@ -1,8 +1,7 @@
 ---
 admin_account: admin
-admin_password: admin
-# NOTE(spredzy): should point to 127.0.0.1 in /etc/hosts
-controlserver_url: http://api.dci.enovance.com
+admin_password: Wr6NAnGhSBNYma
+controlserver_url: http://46.231.133.44
 
 test_account: demo
 test_account_updated: demo2
