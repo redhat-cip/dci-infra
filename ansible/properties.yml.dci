@@ -1,7 +1,7 @@
 ---
 admin_account: admin
-admin_password: admin
-controlserver_url: http://127.0.0.1
+admin_password: Wr6NAnGhSBNYma
+controlserver_url: http://46.231.133.44
 
 test_account: demo
 test_account_updated: demo2
