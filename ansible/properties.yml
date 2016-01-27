@@ -9,3 +9,6 @@ test_password: demo
 
 test_name: firsttest
 test_name_updated: secondtest
+
+test_remoteci_name: anewremoteci
+test_remoteci_name_updated: anevennewerremoteci

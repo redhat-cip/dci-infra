@@ -95,6 +95,7 @@ def team_management(ctx):
 
     return command
 
+
 def test_management(ctx):
     base_command = ['dcictl', '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
 
@@ -124,6 +125,41 @@ def test_management(ctx):
     return command
 
 
+def remoteci_management(ctx):
+    base_command = ['dcictl', '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    if 'list' in ctx['action']:
+        command = base_command + [ctx['action']]
+    elif 'create' in ctx['action']:
+        command = base_command + ['--format', 'json', 'team-list']
+        response = subprocess.check_output(command)
+        for team in json.loads(response)['teams']:
+            if team['name'] == ctx['parameters'][1]:
+                team_id = team['id']
+                break
+        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--team_id', team_id ]
+    elif 'update' in ctx['action']:
+        command = base_command + ['--format', 'json', 'remoteci-list']
+        response = subprocess.check_output(command)
+        for remoteci in json.loads(response)['remotecis']:
+            if remoteci['name'] == ctx['parameters'][0]:
+                remoteci_id = remoteci['id']
+                remoteci_etag = remoteci['etag']
+                break
+        command = base_command + [ctx['action']] + ['--id', remoteci_id, '--etag', remoteci_etag, '--name', ctx['parameters'][1]]
+    elif 'delete' in ctx['action']:
+        command = base_command + ['--format', 'json', 'remoteci-list']
+        response = subprocess.check_output(command)
+        for remoteci in json.loads(response)['remotecis']:
+            if remoteci['name'] == ctx['parameters'][0]:
+                remoteci_id = remoteci['id']
+                remoteci_etag = remoteci['etag']
+                break
+        command = base_command + [ctx['action']] + ['--id', remoteci_id, '--etag', remoteci_etag]
+
+    return command
+
+
 def route(ctx):
     if 'user' in ctx['action']:
         command = user_management(ctx)
@@ -131,6 +167,8 @@ def route(ctx):
         command = team_management(ctx)
     elif 'test' in ctx['action']:
         command = test_management(ctx)
+    elif 'remoteci' in ctx['action']:
+        command = remoteci_management(ctx)
 
     print subprocess.check_output(command)
 
