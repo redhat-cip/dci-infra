@@ -15,3 +15,5 @@ test_remoteci_name_updated: anevennewerremoteci
 
 test_component_name: thisisacomponent
 test_component_type: puddle
+
+test_jobdefinition_name: thisisajobdefinitionname
