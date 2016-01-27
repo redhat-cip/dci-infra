@@ -95,12 +95,42 @@ def team_management(ctx):
 
     return command
 
+def test_management(ctx):
+    base_command = ['dcictl', '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    if 'list' in ctx['action']:
+        command = base_command + [ctx['action']]
+    elif 'create' in ctx['action']:
+        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0]]
+    elif 'update' in ctx['action']:
+        command = base_command + ['--format', 'json', 'test-list']
+        response = subprocess.check_output(command)
+        for test in json.loads(response)['tests']:
+            if test['name'] == ctx['parameters'][0]:
+                test_id = test['id']
+                test_etag = test['etag']
+                break
+        command = base_command + [ctx['action']] + ['--id', test_id, '--etag', test_etag, '--name', ctx['parameters'][1]]
+    elif 'delete' in ctx['action']:
+        command = base_command + ['--format', 'json', 'test-list']
+        response = subprocess.check_output(command)
+        for test in json.loads(response)['tests']:
+            if test['name'] == ctx['parameters'][0]:
+                test_id  = test['id']
+                test_etag  = test['etag']
+                break
+        command = base_command + [ctx['action']] + ['--id', test_id, '--etag', test_etag]
+
+    return command
+
 
 def route(ctx):
     if 'user' in ctx['action']:
         command = user_management(ctx)
     elif 'team' in ctx['action']:
         command = team_management(ctx)
+    elif 'test' in ctx['action']:
+        command = test_management(ctx)
 
     print subprocess.check_output(command)
 
