@@ -160,6 +160,26 @@ def remoteci_management(ctx):
     return command
 
 
+def component_management(ctx):
+    base_command = ['dcictl',  '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    if 'list' in ctx['action']:
+        command = base_command + [ctx['action']]
+    elif 'create' in ctx['action']:
+        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--type', ctx['parameters'][1]]
+    elif 'delete' in ctx['action']:
+        command = base_command + ['--format', 'json', 'component-list']
+        response = subprocess.check_output(command)
+        for component in json.loads(response)['components']:
+            if component['name'] == ctx['parameters'][0]:
+                component_id  = component['id']
+                component_etag  = component['etag']
+                break
+        command = base_command + [ctx['action']] + ['--id', component_id, '--etag', component_etag]
+
+    return command
+
+
 def route(ctx):
     if 'user' in ctx['action']:
         command = user_management(ctx)
@@ -169,6 +189,8 @@ def route(ctx):
         command = test_management(ctx)
     elif 'remoteci' in ctx['action']:
         command = remoteci_management(ctx)
+    elif 'component' in ctx['action']:
+        command = component_management(ctx)
 
     print subprocess.check_output(command)
 

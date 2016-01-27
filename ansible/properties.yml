@@ -12,3 +12,6 @@ test_name_updated: secondtest
 
 test_remoteci_name: anewremoteci
 test_remoteci_name_updated: anevennewerremoteci
+
+test_component_name: thisisacomponent
+test_component_type: puddle
