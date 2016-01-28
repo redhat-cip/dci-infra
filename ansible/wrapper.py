@@ -204,6 +204,48 @@ def jobdefinition_management(ctx):
 
     return command
 
+def jobstate_management(ctx):
+    base_command = ['dcictl',  '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    if 'list' in ctx['action']:
+        command = base_command + [ctx['action']]
+
+    return command
+
+def file_management(ctx):
+    base_command = ['dcictl',  '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    if 'list' in ctx['action']:
+        command = base_command + [ctx['action']]
+
+    return command
+
+def feeder_management(ctx):
+    command = ['dci-feeder-%s' % (ctx['parameters'][0]), '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url'], ctx['parameters'][1]]
+
+    return command
+
+def agent_management(ctx):
+    base_command = ['dcictl',  '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    command = base_command + ['--format', 'json', 'remoteci-list']
+    response = subprocess.check_output(command)
+    for remoteci in json.loads(response)['remotecis']:
+        if remoteci['name'] == ctx['parameters'][1]:
+            remoteci_id = remoteci['id']
+            break
+
+    command = base_command + ['--format', 'json', 'team-list']
+    response = subprocess.check_output(command)
+    for team in json.loads(response)['teams']:
+        if team['name'] == ctx['parameters'][2]:
+            team_id = team['id']
+            break
+
+    command = ['dci-agent-%s' % (ctx['parameters'][0]), '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url'], remoteci_id, team_id]
+
+    return command
+
 def route(ctx):
     if 'user' in ctx['action']:
         command = user_management(ctx)
@@ -217,6 +259,14 @@ def route(ctx):
         command = component_management(ctx)
     elif 'jobdefinition' in ctx['action']:
         command = jobdefinition_management(ctx)
+    elif 'jobstate' in ctx['action']:
+        command = jobstate_management(ctx)
+    elif 'file' in ctx['action']:
+        command = file_management(ctx)
+    elif 'feeder' in ctx['action']:
+        command = feeder_management(ctx)
+    elif 'agent' in ctx['action']:
+        command = agent_management(ctx)
 
     print subprocess.check_output(command)
 
