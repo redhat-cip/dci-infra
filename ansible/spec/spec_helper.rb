@@ -38,7 +38,7 @@ set :ssh_options, options
 
 
 # Set environment variables
-# set :env, :LANG => 'C', :LC_MESSAGES => 'C'
+set :env, :LANG => 'en_US.UTF-8', :LC_MESSAGES => 'en_US.UTF-8'
 
 # Set PATH
 # set :path, '/sbin:/usr/local/sbin:$PATH'
