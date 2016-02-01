@@ -55,8 +55,16 @@
 
 # Configure DCI-API configuration file
 #
-- name: Create config file
-  template: src=settings.py dest=/etc/dci-api/settings.py
+- name: Ensure HOST is configurerd in settingss.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^HOST =' line="HOST = '{{ apihost }}'"
+  notify:
+    - reload httpd
+- name: Ensure ES_HOST is configurerd in settingss.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^ES_HOST =' line="ES_HOST = '{{ eshost }}'"
+  notify:
+    - reload httpd
+- name: Ensure SQLALCHEMY_DATABASE_URI is configurerd in settingss.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^SQLALCHEMY_DATABASE_URI =' line="SQLALCHEMY_DATABASE_URI = 'postgresql://{{ dbuser }}:{{ dbpassword }}@{{ dbhost }}:5432/{{ dbname }}'"
   notify:
     - reload httpd
 

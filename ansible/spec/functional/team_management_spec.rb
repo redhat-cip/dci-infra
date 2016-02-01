@@ -20,7 +20,6 @@ end
 
 describe command("python wrapper.py team-update #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']} #{property['test_account']} #{property['test_account_updated']}") do
   its(:stdout) { should match("/|\s*message\s*|\s*Team updated.\s*|/") }
-  its(:stdout) { should match("/|\s*name\s*|\s*#{property['test_account_updated']}\s*|/") }
   its(:exit_status) { should eq 0 }
 end
 
