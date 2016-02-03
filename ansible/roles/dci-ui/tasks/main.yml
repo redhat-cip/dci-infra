@@ -33,8 +33,13 @@
 
 # Configure DCI-UI config.json
 #
-- name: configure DCI-UI config.json
-  template: src=config.json dest=/srv/www/dci-ui/config.json
+- name: Ensure apiURL is configurerd in config.json
+  lineinfile: dest=/etc/dci-ui/config.json regexp='"apiURL":' line='"apiURL":"http://{{ api_servername }}",'
+  notify:
+    - reload httpd
+
+- name: Ensure debug is configurerd in config.json
+  lineinfile: dest=/etc/dci-ui/config.json regexp='"debug":' line='"debug":true'
   notify:
     - reload httpd
 
