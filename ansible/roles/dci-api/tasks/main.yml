@@ -49,9 +49,6 @@
   with_items:
     - dci-common
     - dci-api
-  notify:
-    - reload httpd
-    - run dbsync
 
 # Configure DCI-API configuration file
 #
@@ -83,6 +80,13 @@
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
   when: dbexist|failed
+
+- name: Update the schema
+  command: dci-dbsync
+  environment:
+    DCI_LOGIN: admin
+    DCI_PASSWORD: '{{ adminpassword }}'
+  when: dbexist|succeeded
 
 # Configure DCI-API vhost
 #
