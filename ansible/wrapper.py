@@ -161,7 +161,7 @@ def component_management(ctx):
         command = base_command + ['--format', 'json', 'component-list']
         response = subprocess.check_output(command)
         for component in json.loads(response)['components']:
-            if component['name'] == ctx['parameters'][0]:
+            if component['canonical_project_name'] == ctx['parameters'][0] or component['name'] == ctx['parameters'][0]:
                 component_id  = component['id']
                 break
         command = base_command + [ctx['action']] + ['--id', component_id]
