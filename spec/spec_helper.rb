@@ -2,7 +2,7 @@ require 'serverspec'
 require 'net/ssh'
 require 'yaml'
 
-local_data = YAML.load_file('properties.yml')
+local_data = YAML.load_file('data/properties.yml')
 set_property local_data
 
 if ENV['ASK_SUDO_PASSWORD']
