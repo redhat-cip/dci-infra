@@ -69,7 +69,7 @@ describe command("python wrapper.py component-delete #{property['admin_account']
   its(:exit_status) { should eq 0 }
 end
 
-describe command("python wrapper.py component-list #{property['test_account']} #{property['test_password']} #{property['controlserver_url']}") do
+describe command("python wrapper.py component-list #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']}") do
   its(:stdout) { should_not match("/|\s*python-dciclient\s*|/") }
   its(:exit_status) { should eq 0 }
 end
