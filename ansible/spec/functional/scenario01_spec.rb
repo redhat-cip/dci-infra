@@ -64,6 +64,16 @@ describe command("python wrapper.py file-list #{property['test_account']} #{prop
   its(:exit_status) { should eq 0 }
 end
 
+describe command("python wrapper.py component-delete #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']} python-dciclient") do
+  its(:stdout) { should match("/|\s*message\s*|\s*Component deleted.\s*|/") }
+  its(:exit_status) { should eq 0 }
+end
+
+describe command("python wrapper.py component-list #{property['test_account']} #{property['test_password']} #{property['controlserver_url']}") do
+  its(:stdout) { should_not match("/|\s*python-dciclient\s*|/") }
+  its(:exit_status) { should eq 0 }
+end
+
 describe command("python wrapper.py user-delete #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']} #{property['test_account']}") do
   its(:stdout) { should match("/|\s*message\s*|\s*User deleted.\s*|/") }
   its(:exit_status) { should eq 0 }
