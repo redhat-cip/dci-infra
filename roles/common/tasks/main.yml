@@ -15,6 +15,33 @@
 # under the License.
 
 ---
+- name: Attach Red Hat pool
+  redhat_subscription: state=present
+                       username={{ rhn_user }}
+                       password={{ rhn_password }}
+                       pool={{ rhn_pool }}
+  when: ansible_distribution == 'RedHat'
+
+- name: Subscribe to Red Hat channels
+  command: yum-config-manager --save --setopt "{{ item }}.enabled = 1"
+  when: ansible_distribution == 'RedHat'
+  with_items:
+    - rhel-7-server-extras-htb-rpms    # python-werkzeug
+    - rhel-7-server-openstack-5.0-rpms # python-flask, python-passlib
+    - rhel-7-server-openstack-7.0-rpms # python-elasticsearch
+    - rhel-7-server-ose-3.1-rpms       # ansible, elasticsearch
+    - rhel-7-server-optional-rpms      # For EPEL use
+    - rhel-7-server-extras-rpms        # For EPEL use
+
+- name: Ensure EPEL is installed (CentOS)
+  yum: name=epel-release state=present
+  when: ansible_distribution == 'CentOS'
+
+# NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
+- name: Ensure EPEL is installed (RedHat)
+  yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
+  when: ansible_distribution == 'RedHat'
+
 # TODO(spredzy): To remove when the ntp sensu check support chrony
 - yum: name=ntp state=present
 - service: name=ntpd state=started
@@ -24,9 +51,6 @@
 
 - name: Ensure SELinux is enforced
   selinux: state=enforcing policy=targeted
-
-- name: Ensure EPEL is installed
-  yum: name=epel-release state=present
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
   yum: name=policycoreutils-python state=present
