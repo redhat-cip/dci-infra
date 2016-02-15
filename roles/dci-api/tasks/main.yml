@@ -28,8 +28,13 @@
     - httpd_can_network_connect_db
 
 # Ensure dci-release is installed
-- name: Ensure dci-release is installed
+- name: Ensure dci-release is installed (CentOS, RedHat)
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
+  when: ansible_distribution in ['CentOS', 'RedHat']
+
+- name: Ensure dci-release is installed (Fedora)
+  yum: name=http://dci.enovance.com/dci-release.fc23.noarch.rpm state=present
+  when: ansible_distribution in ['Fedora']
 
 # Ensure postgresql client tools are installed
 - name: Ensure postgresql client toos installed
