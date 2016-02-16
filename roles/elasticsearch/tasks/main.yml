@@ -19,24 +19,38 @@
   command: sensu-install -p {{item}}
   with_items:
     - elasticsearch
+  tags:
+    - monitoring
 
 - name: Ensure GPG key is correctly installed
   rpm_key: state=present key=https://packages.elastic.co/GPG-KEY-elasticsearch
+  tags:
+    - dci-core
 
 - name: Ensure elasticsearch yum repo are installed
   copy: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+  tags:
+    - dci-core
 
 - name: Ensure java is installed
   yum: name=java-1.8.0-openjdk state=present
+  tags:
+    - dci-core
 
 - name: Ensure elasticsearch is installed
   yum: name=elasticsearch state=present
+  tags:
+    - dci-core
 
 - name: Ensure Elasticsearch listen to all addresses
   lineinfile: dest=/etc/elasticsearch/elasticsearch.yml
               regexp="^network.host{{':'}} 0.0.0.0"
               insertafter="^# network.host:"
               line="network.host{{':'}} 0.0.0.0"
+  tags:
+    - dci-core
 
 - name: Ensure elasticsearch is started
   service: name=elasticsearch state=started enabled=yes
+  tags:
+    - dci-core

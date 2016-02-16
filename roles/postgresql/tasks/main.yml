@@ -22,15 +22,21 @@
     - postgresql-devel
     - postgresql-server
     - python-psycopg2
+  tags:
+    - dci-core
 
 - name: Install sensu-plugins
   command: sensu-install -p {{item}}
   with_items:
     - postgres
+  tags:
+    - monitoring
 
 - name: Initialize postgresql
   shell: postgresql-setup initdb
   ignore_errors: yes
+  tags:
+    - dci-core
 
 - name: Ensure PostgreSQL listen to all addresses
   lineinfile: dest=/var/lib/pgsql/data/postgresql.conf
@@ -46,6 +52,8 @@
   with_items:
     - password
     - md5
+  tags:
+    - dci-core
 
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
@@ -55,9 +63,13 @@
   with_items:
     - password
     - md5
+  tags:
+    - dci-core
 
 - name: Ensure PostgreSQL service is started
   service: name=postgresql state=started enabled=yes
+  tags:
+    - dci-core
 #
 # Create DCI database and user
 #
@@ -65,13 +77,19 @@
   postgresql_db: name={{dbname}}
   become: yes
   become_user: postgres
+  tags:
+    - dci-core
 
 - name: ensure user has access to database
   postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
   become: yes
   become_user: postgres
+  tags:
+    - dci-core
 
 - name: ensure user does not have unnecessary privilege
   postgresql_user: name={{dbuser}} role_attr_flags=SUPERUSER,CREATEDB
   become: yes
   become_user: postgres
+  tags:
+    - dci-core

@@ -17,21 +17,31 @@
 ---
 - name: Ensure apache is present version
   yum: name=httpd state=present
+  tags:
+    - dci-core
 
 - name: Ensure welcome.conf is absent
   file: path=/etc/httpd/conf.d/{{item}} state=absent
   with_items:
     - welcome.conf
     - userdir.conf
+  tags:
+    - dci-core
 
 - name: Ensure the dci user has proper acl on /var/www/html
   acl: name=/var/www/html entity=dci etype=user permissions="rwx" state=present
+  tags:
+    - dci-core
 
 - name: Ensure required httpd modules are installed
   yum: name={{ item }}
   with_items:
     - mod_ssl
     - mod_wsgi
+  tags:
+    - dci-core
 
 - name: Ensure apache is running (and enable it at boot)
   service: name=httpd state=started enabled=yes
+  tags:
+    - dci-core

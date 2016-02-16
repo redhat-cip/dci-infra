@@ -19,6 +19,8 @@
   command: sensu-install -p {{item}}
   with_items:
     - http
+  tags:
+    - monitoring
 
 # Ensure the needed SELinux booleans are enabled
 - name: Ensure the needed SELinux booleans are enabled
@@ -26,14 +28,20 @@
   with_items:
     - httpd_can_network_connect
     - httpd_can_network_connect_db
+  tags:
+    - dci-core
 
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
+  tags:
+    - dci-core
 
 # Ensure postgresql client tools are installed
 - name: Ensure postgresql client toos installed
   yum: name=postgresql state=present
+  tags:
+    - dci-core
 
 # Ensure a backup of the database is made before
 # any update takes place
@@ -41,6 +49,8 @@
   shell: pg_dump -U {{ dbuser }} -h {{ dbhost }} -w {{ dbname }} > {{ dbbackuppath }}/$(rpm -q --queryformat '%{VERSION}' dci-api | sed 's/[0-9].[0-9].\(.*\)/\1/g').sql
   environment:
     PGPASSWORD: '{{ dbpassword }}'
+  tags:
+    - dci-core
 
 # Install DCI-API
 #
@@ -49,6 +59,8 @@
   with_items:
     - dci-common
     - dci-api
+  tags:
+    - dci-core
 
 # Configure DCI-API configuration file
 #
@@ -56,14 +68,22 @@
   lineinfile: dest=/etc/dci-api/settings.py regexp='^HOST =' line="HOST = '{{ apihost }}'"
   notify:
     - reload httpd
+  tags:
+    - dci-core
+
 - name: Ensure ES_HOST is configurerd in settingss.py
   lineinfile: dest=/etc/dci-api/settings.py regexp='^ES_HOST =' line="ES_HOST = '{{ eshost }}'"
   notify:
     - reload httpd
+  tags:
+    - dci-core
+
 - name: Ensure SQLALCHEMY_DATABASE_URI is configurerd in settingss.py
   lineinfile: dest=/etc/dci-api/settings.py regexp='^SQLALCHEMY_DATABASE_URI =' line="SQLALCHEMY_DATABASE_URI = 'postgresql://{{ dbuser }}:{{ dbpassword }}@{{ dbhost }}:5432/{{ dbname }}'"
   notify:
     - reload httpd
+  tags:
+    - dci-core
 
 # Install DCI itself
 #
@@ -73,6 +93,8 @@
     PGPASSWORD: '{{ dbpassword }}'
   register: dbexist
   ignore_errors: yes
+  tags:
+    - dci-core
 
 - name: Initiate db schema
   command: dci-dbinit
@@ -80,6 +102,8 @@
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
   when: dbexist|failed
+  tags:
+    - dci-core
 
 - name: Update the schema
   command: dci-dbsync
@@ -87,6 +111,8 @@
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
   when: dbexist|success
+  tags:
+    - dci-core
 
 # Configure DCI-API vhost
 #
@@ -94,3 +120,5 @@
   template: src=dci_api.conf dest=/etc/httpd/conf.d/dci_api.conf
   notify:
     - reload httpd
+  tags:
+    - dci-core
