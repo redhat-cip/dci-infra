@@ -29,6 +29,8 @@
   sudo: yes
   roles:
     - sensu-client
+  tags:
+    - monitoring
 
 - name: Install-PostgreSQL
   hosts: postgresql
@@ -36,8 +38,6 @@
   sudo: yes
   roles:
     - postgresql
-  tags:
-    - dci-core
 
 - name: Install-ElasticSearch
   hosts: elasticsearch
@@ -45,8 +45,6 @@
   sudo: yes
   roles:
     - elasticsearch
-  tags:
-    - dci-core
 
 - name: Install-DCI-Control-Server
   hosts: dci-api
@@ -55,8 +53,6 @@
   roles:
     - httpd
     - dci-api
-  tags:
-    - dci-core
 
 - name: Install-WebAPP
   hosts: dci-ui
@@ -65,8 +61,6 @@
   roles:
     - httpd
     - dci-ui
-  tags:
-    - dci-core
 
 - name: Install-reposervers
   hosts: reposervers
@@ -90,6 +84,8 @@
   sudo: yes
   roles:
     - rabbitmq
+  tags:
+    - monitoring
 
 - name: Install-Redis
   hosts: redis
@@ -97,6 +93,8 @@
   sudo: yes
   roles:
     - { role: geerlingguy.redis }
+  tags:
+    - monitoring
 
 - name: Install-sensu
   hosts: sensu
@@ -105,4 +103,6 @@
   roles:
     - httpd
     - sensu
+  tags:
+    - monitoring
 
