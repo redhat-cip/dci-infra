@@ -19,15 +19,21 @@
   command: sensu-install -p {{item}}
   with_items:
     - http
+  tags:
+    - monitoring
 
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed (CentOS, RedHat)
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
   when: ansible_distribution in ['CentOS', 'RedHat']
+  tags:
+    - dci-core
 
 - name: Ensure dci-release is installed (Fedora)
   yum: name=http://dci.enovance.com/dci-release.fc23.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
+  tags:
+    - dci-core
 
 # Install DCI-UI
 #
@@ -35,6 +41,8 @@
   yum: name=dci-ui state=latest update_cache=yes
   notify:
     - reload httpd
+  tags:
+    - dci-core
 
 # Configure DCI-UI config.json
 #
@@ -42,6 +50,8 @@
   lineinfile: dest=/etc/dci-ui/config.json regexp='"apiURL":' line='"apiURL":"http://{{ apihost }}",'
   notify:
     - reload httpd
+  tags:
+    - dci-core
 
 # Configure DCI-UI vhost
 #
@@ -49,3 +59,5 @@
   template: src=dci_ui.conf dest=/etc/httpd/conf.d/dci_ui.conf
   notify:
     - reload httpd
+  tags:
+    - dci-core
