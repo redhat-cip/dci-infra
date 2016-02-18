@@ -44,35 +44,35 @@ describe command("python wrapper.py user-list #{property['admin_account']} #{pro
   its(:exit_status) { should eq 0 }
 end
 
-describe command("python wrapper.py run-feeder #{property['test_account']} #{property['test_password']} #{property['controlserver_url']} github https://github.com/redhat-cip/python-dciclient") do
-  its(:stdout) { should contain("created") }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("python wrapper.py run-feeder #{property['test_account']} #{property['test_password']} #{property['controlserver_url']} github https://github.com/redhat-cip/python-dciclient") do
+#  its(:stdout) { should contain("created") }
+#  its(:exit_status) { should eq 0 }
+#end
 
-describe command("python wrapper.py run-agent #{property['test_account']} #{property['test_password']} #{property['controlserver_url']} tox #{property['test_remoteci_name']} #{property['test_account']}") do
-  its(:stdout) { should contain("Job scheduled:") }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("python wrapper.py run-agent #{property['test_account']} #{property['test_password']} #{property['controlserver_url']} tox #{property['test_remoteci_name']} #{property['test_account']}") do
+#  its(:stdout) { should contain("Job scheduled:") }
+#  its(:exit_status) { should eq 0 }
+#end
 
-describe command("python wrapper.py jobstate-list #{property['test_account']} #{property['test_password']} #{property['controlserver_url']}") do
-  its(:stdout) { should contain("succes") }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("python wrapper.py jobstate-list #{property['test_account']} #{property['test_password']} #{property['controlserver_url']}") do
+#  its(:stdout) { should contain("succes") }
+#  its(:exit_status) { should eq 0 }
+#end
 
-describe command("python wrapper.py file-list #{property['test_account']} #{property['test_password']} #{property['controlserver_url']}") do
-  its(:stdout) { should contain("tox") }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("python wrapper.py file-list #{property['test_account']} #{property['test_password']} #{property['controlserver_url']}") do
+#  its(:stdout) { should contain("tox") }
+#  its(:exit_status) { should eq 0 }
+#end
 
-describe command("python wrapper.py component-delete #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']} python-dciclient") do
-  its(:stdout) { should match("/|\s*message\s*|\s*Component deleted.\s*|/") }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("python wrapper.py component-delete #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']} python-dciclient") do
+#  its(:stdout) { should match("/|\s*message\s*|\s*Component deleted.\s*|/") }
+#  its(:exit_status) { should eq 0 }
+#end
 
-describe command("python wrapper.py component-list #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']}") do
-  its(:stdout) { should_not match("/|\s*python-dciclient\s*|/") }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("python wrapper.py component-list #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']}") do
+#  its(:stdout) { should_not match("/|\s*python-dciclient\s*|/") }
+#  its(:exit_status) { should eq 0 }
+#end
 
 describe command("python wrapper.py user-delete #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']} #{property['test_account']}") do
   its(:stdout) { should match("/|\s*message\s*|\s*User deleted.\s*|/") }
