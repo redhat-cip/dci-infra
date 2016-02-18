@@ -62,22 +62,6 @@
     - httpd
     - dci-ui
 
-- name: Install-reposervers
-  hosts: reposervers
-  remote_user: dci
-  sudo: yes
-  roles:
-    - httpd
-    - reposerver
-
-- name: Deploy-DCI-DOC
-  hosts: dci-doc
-  remote_user: dci
-  sudo: yes
-  roles:
-    - httpd
-    - dci-doc
-
 - name: Install-RabbitMQ
   hosts: rabbitmq
   remote_user: dci
