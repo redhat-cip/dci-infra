@@ -49,7 +49,6 @@
 - name: Copy check definitions
   copy: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
   with_items:
-    - check_api
     - check_disk
     - check_dns
     - check_elasticsearch
@@ -59,10 +58,17 @@
     - check_postgresql
     - check_ssh
     - check_uchiwa
-    - check_ui
     - handler_mailer
     - handler_file
     - mailer
+  notify:
+    - restart sensu-client
+
+- name: Copy check definitions templates
+  template: src={{item}}.json dest=/etc/sensu/conf.d/{{item}}.json
+  with_items:
+    - check_api
+    - check_ui
   notify:
     - restart sensu-client
 
