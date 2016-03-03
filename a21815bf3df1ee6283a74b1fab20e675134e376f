@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a65312a_946e6495",
+        "filename": "roles/sensu/templates/check_ui.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-03-03T14:53:02Z",
+      "side": 1,
+      "message": "s/servername/ui_servername.\n\nservername is deprecated.",
+      "revId": "a21815bf3df1ee6283a74b1fab20e675134e376f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
