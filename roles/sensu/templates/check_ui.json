@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "ui": {
+      "command": "check-http.rb -u http://{{ui_servername}}",
+      "interval": 10,
+      "handlers": ["file"],
+      "subscribers": [
+        "ui"
+      ]
+    }
+  }
+}
