@@ -8,6 +8,22 @@
   ],
   "dashboard": {
     "host": "{{sensu_dashboard_listen_address}}",
-    "port": {{sensu_dashboard_port}}
+    "port": {{sensu_dashboard_port}},
+    "users": [
+      {
+        "username" : "admin",
+        "password": {{sensu_dashboard_admin_password}},
+        "role": {
+          "readonly": false
+        }
+      },
+      {
+        "username" : "guest",
+        "password": {{sensu_dashboard_guest_password}},
+        "role": {
+          "readonly": true
+        }
+      }
+    ]
   }
 }
