@@ -15,3 +15,8 @@ end
 describe file('/etc/sudoers.d/dci-user') do
   it { should contain 'dci ALL=(ALL) NOPASSWD:ALL' }
 end
+
+describe service('ntpd') do
+  it { should be_running }
+  it { should be_enabled }
+end

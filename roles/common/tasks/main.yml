@@ -44,7 +44,7 @@
 
 # TODO(spredzy): To remove when the ntp sensu check support chrony
 - yum: name=ntp state=present
-- service: name=ntpd state=started
+- service: name=ntpd state=started enabled=yes
 
 - name: Set the server hostname
   hostname: name={{ hostname }}
