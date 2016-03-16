@@ -41,7 +41,7 @@
 
 - name: Install sensu-plugins
   command: sensu-install -p {{item}}
-  sudo: yes
+  become: yes
   with_items:
     - disk-checks
     - network-checks

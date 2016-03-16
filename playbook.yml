@@ -17,7 +17,7 @@
 - name: Common-Configuration
   hosts: all
   remote_user: centos
-  sudo: yes
+  become: yes
   roles:
     - common
   tags:
@@ -26,7 +26,7 @@
 - name: Install-Sensu-client
   hosts: all
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - sensu-client
   tags:
@@ -35,21 +35,21 @@
 - name: Install-PostgreSQL
   hosts: postgresql
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - postgresql
 
 - name: Install-ElasticSearch
   hosts: elasticsearch
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - elasticsearch
 
 - name: Install-DCI-Control-Server
   hosts: dci-api
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - httpd
     - dci-api
@@ -57,7 +57,7 @@
 - name: Install-WebAPP
   hosts: dci-ui
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - httpd
     - dci-ui
@@ -65,7 +65,7 @@
 - name: Install-RabbitMQ
   hosts: rabbitmq
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - rabbitmq
   tags:
@@ -74,7 +74,7 @@
 - name: Install-Redis
   hosts: redis
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - { role: geerlingguy.redis }
   tags:
@@ -83,7 +83,7 @@
 - name: Install-sensu
   hosts: sensu
   remote_user: dci
-  sudo: yes
+  become: yes
   roles:
     - httpd
     - sensu
