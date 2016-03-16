@@ -107,3 +107,12 @@
     - influxdb
   tags:
     - metrics
+
+- name: Install-Grafana
+  hosts: grafana
+  remote_user: dci
+  sudo: yes
+  roles:
+    - grafana
+  tags:
+    - metrics
