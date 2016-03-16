@@ -99,3 +99,11 @@
   tags:
     - monitoring
 
+- name: Install-influxdb
+  hosts: influxdb
+  remote_user: dci
+  sudo: yes
+  roles:
+    - influxdb
+  tags:
+    - metrics
