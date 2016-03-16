@@ -1,5 +1,5 @@
-# UUID          Group Name
-9562193e1f1647ee1c2004b4fb7996e84ae7e717 	Non-Interactive Users
-0e24dbcbfb62b288261f2a15da9838178fb6e7aa       	dci-infra-core
-e958f6b0318960046ccae1f0bc157c5d05dd9f46        	dci-infra-ptl
-global:Registered-Users		Registered Users
+# UUID                                  	Group Name
+#
+0e24dbcbfb62b288261f2a15da9838178fb6e7aa	dci-infra-core
+e958f6b0318960046ccae1f0bc157c5d05dd9f46	dci-infra-ptl
+global:Registered-Users                 	Registered Users
