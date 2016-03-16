@@ -32,6 +32,15 @@
   tags:
     - monitoring
 
+- name: Install-Collectd
+  hosts: all
+  remote_user: dci
+  sudo: yes
+  roles:
+    - collectd
+  tags:
+    - metrics
+
 - name: Install-PostgreSQL
   hosts: postgresql
   remote_user: dci
