@@ -27,6 +27,15 @@
 - name: Install grafana
   yum: name=grafana state=present
 
+- name: Create the dashboards directory
+  file: path=/var/lib/grafana/dashboards state=directory mode=0755
+        owner=grafana group=grafana
+
+- name: Install DCI dashboards
+  copy: src={{ item }} dest=/var/lib/grafana/dashboards
+  with_items:
+    - global_overview.json
+
 - name: Configure grafana server section
   ini_file: dest=/etc/grafana/grafana.ini
             section=server
@@ -48,6 +57,36 @@
   with_items:
     - { option: 'admin_user', value: '{{ grafana_security_admin_user }}' }
     - { option: 'admin_password', value: '{{ grafana_security_admin_password }}' }
+  notify: restart grafana-server
+
+- name: Configure grafana users section
+  ini_file: dest=/etc/grafana/grafana.ini
+            section=users
+            option={{ item.option }}
+            value={{ item.value }}
+            backup=yes
+  with_items:
+    - { option: 'allow_sign_up', value: 'false' }
+    - { option: 'allow_org_create', value: 'false' }
+  notify: restart grafana-server
+
+- name: Configure grafana users section
+  ini_file: dest=/etc/grafana/grafana.ini
+            section=auth.anonymous
+            option={{ item.option }}
+            value={{ item.value }}
+            backup=yes
+  with_items:
+    - { option: 'enabled', value: 'true' }
+    - { option: 'allow_org_create', value: 'false' }
+  notify: restart grafana-server
+
+- name: Configure grafana dashboards json section
+  ini_file: dest=/etc/grafana/grafana.ini
+            section=dashboards.json
+            option=enabled
+            value=true
+            backup=yes
   notify: restart grafana-server
 
 
