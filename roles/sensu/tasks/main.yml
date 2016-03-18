@@ -84,6 +84,9 @@
 - name: Start uchiwa
   service: name=uchiwa state=started enabled=yes
 
+- name: Allow apache to connect to network for proxypass
+  seboolean: name=httpd_can_network_connect state=yes persistent=yes
+
 - name: Create vhost
   template: src=02_uchiwa.conf dest=/etc/httpd/conf.d/02_uchiwa.conf
   notify:
