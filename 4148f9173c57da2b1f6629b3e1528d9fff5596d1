@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7af0899e_b771ca79",
+        "filename": "ansible/roles/sensu/files/irc-publisher.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 29
+      },
+      "writtenOn": "2016-03-18T16:25:41Z",
+      "side": 1,
+      "message": "this is the perfect use case for using https://pypi.python.org/pypi/inotify/0.2.4",
+      "revId": "4148f9173c57da2b1f6629b3e1528d9fff5596d1",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
