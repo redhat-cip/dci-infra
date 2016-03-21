@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7af0899e_b7538a6b",
+        "filename": "roles/sensu/templates/02_uchiwa.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-03-21T08:30:49Z",
+      "side": 1,
+      "message": "Why turning it off ? \n\nIf we do that then the dashboard won\u0027t be able to answer on a query to {{monitoring_servername}} URL and user would have to specify the :3000 which is ugly.",
+      "revId": "b6d3fa21e5a86b15282058035d9bfe6c2ea2e6f5",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
