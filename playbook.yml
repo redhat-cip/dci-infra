@@ -116,3 +116,12 @@
     - grafana
   tags:
     - metrics
+
+- name: Install-fail2ban
+  hosts: all
+  remote_user: dci
+  become: yes
+  roles:
+    - fail2ban
+  tags:
+    - dci-core
