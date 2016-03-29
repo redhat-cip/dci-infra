@@ -2,7 +2,8 @@
   "checks": {
     "api": {
       "command": "check-http-json.rb -u http://{{api_servername}}/api/v1",
-      "interval": 10,
+      "interval": 60,
+      "occurrences": 5,
       "handlers": ["file"],
       "subscribers": [
         "api"

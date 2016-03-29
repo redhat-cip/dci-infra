@@ -2,7 +2,8 @@
   "checks": {
     "ui": {
       "command": "check-http.rb -u http://{{ui_servername}}",
-      "interval": 10,
+      "interval": 60,
+      "occurrences": 5,
       "handlers": ["file"],
       "subscribers": [
         "ui"

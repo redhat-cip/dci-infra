@@ -2,7 +2,8 @@
   "checks": {
     "disk": {
       "command": "check-disk-usage.rb -w 85 -c 95",
-      "interval": 10,
+      "interval": 60,
+      "occurrences": 5,
       "handlers": ["file"],
       "subscribers": [
         "base"

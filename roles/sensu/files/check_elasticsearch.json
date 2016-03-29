@@ -2,7 +2,8 @@
   "checks": {
     "elasticsearch-node-status": {
       "command": "check-es-node-status.rb",
-      "interval": 10,
+      "interval": 60,
+      "occurrences": 5,
       "handlers": ["file"],
       "subscribers": [
         "elasticsearch"
