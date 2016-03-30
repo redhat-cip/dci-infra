@@ -46,11 +46,11 @@
   tags:
     - dci-core
 
-- stat: path=/usr/bin/firewall-cmd
+- command: systemctl is-active firewalld
   register: firewalld
 
 - name: Allow http through firewalld
   firewalld: service=http permanent=true immediate=yes state=enabled
   tags:
     - dci-core
-  when: firewalld.stat.path is defined
+  when: firewalld|succeeded
