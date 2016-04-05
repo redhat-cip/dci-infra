@@ -48,6 +48,8 @@
 
 - command: systemctl is-active firewalld
   register: firewalld
+  tags:
+    - dci-core
   ignore_errors: True
 
 - name: Allow http through firewalld
