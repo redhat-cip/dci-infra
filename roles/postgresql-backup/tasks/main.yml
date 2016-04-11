@@ -1,0 +1,140 @@
+---
+# The Prepare Part
+#
+# This sections aims to install and configure the machine
+# to be able to run PostgreSQL and the all-in-one installation.
+#
+- lineinfile: dest=/etc/hosts
+              regexp='^127\.0\.0\.1'
+              line='127.0.0.1 localhost localhost.localdomain {{ api_servername }}'
+              owner=root
+              group=root
+              mode=0644
+
+- name: Ensure PostgreSQL packages are installed
+  yum: name={{item}} state=present
+  with_items:
+    - postgresql
+    - postgresql-devel
+    - postgresql-server
+    - python-psycopg2
+
+- name: Initialize postgresql
+  shell: postgresql-setup initdb
+  ignore_errors: yes
+
+- name: Ensure user can identify passwordlessly (local)
+  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
+              regexp="^local\s+all\s+all\s+peer$"
+              insertbefore="^#\sIPv4\slocal.+"
+              line="local    all             {{ item }}            trust"
+  with_items:
+    - dci
+    - postgres
+
+- name: Ensure user can identify passwordlessly (host)
+  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
+              regexp="^local\s+all\s+all\s+peer$"
+              insertafter="^#\sIPv4\slocal.+"
+              line="host    all             dci         127.0.0.1/32            trust"
+
+- name: Ensure PostgreSQL service is started
+  service: name=postgresql state=started enabled=yes
+
+- name: Ensure dci-release is installed
+  yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
+
+- name: Install dependencies
+  yum: name={{ item }} state=present
+  with_items:
+    - python-dciclient
+    - ansible
+    - jq
+    - git
+    - dci-pgbackup
+
+
+# The dci_pgbackup part
+#
+# This section of the playbook aims to actually do the
+# database backup by running remotely the pg_dump command.
+# It also pull postgres roles, and a set of statistic to ensure
+# the retrieved dump could be correctly loaded.
+#
+- name: Install dci_pgbackup scripts
+  copy: src={{ item }} dest=/home/dci_pgbackup/{{ item }} owner=dci_pgbackup group=dci_pgbackup mode=0755
+  become: yes
+  with_items:
+    - dci_pgbackup_restore.sh
+    - dci_pgbackup_integrity_check.sh
+
+- lineinfile: dest=/etc/dci_pgbackup.conf
+              regexp=^{{ item.option }}
+              line={{ item.option }}={{ item.value }}
+  with_items:
+    - { option: 'SSH_IP', value: "{{ dbhost }}" }
+    - { option: 'PG_USER', value: "{{ dbuser }}" }
+    - { option: 'PG_PASSWORD', value: "{{ dbpassword }}" }
+    - { option: 'PG_DATABASE', value: "{{ dbname }}" }
+    - { option: 'OUTPUT_DIR', value: "{{ dbbackuppath }}" }
+
+- name: Check if a dump exist
+  stat: path=/var/tmp/dci.dump.gz
+  register: dump
+
+- name: Generate dump if dump does not already exist
+  shell: /home/dci_pgbackup/dci_pgbackup.sh
+  become_user: dci_pgbackup
+  when: dump.stat.exists == False
+
+- name: Load dump in local database
+  shell: /home/dci_pgbackup/dci_pgbackup_restore.sh
+  become_user: dci_pgbackup
+
+
+# The Ansible Part
+#
+# This section of the playbook aims to download dci-infra and
+# dci-infra-data-ci files, in order to proceed with the all in
+# one installation. Since the database already exist (with the dump)
+# it won't reinitialize it and the dump data will be queriable via
+# the various API endpoints
+#
+- name: Retrieve dci-infra
+  git: repo=https://github.com/redhat-cip/dci-infra
+       dest=/home/dci_pgbackup/dci-infra update=no
+  become_user: dci_pgbackup
+
+- name: Retrieve dci-infra-data
+  git: repo=http://softwarefactory-project.io/r/dci-infra-data-ci
+       dest=/home/dci_pgbackup/dci-infra/data update=no
+  become_user: dci_pgbackup
+
+- name: Run ansible commands
+  shell: "{{ item }}"
+  args:
+    chdir: /home/dci_pgbackup/dci-infra
+  become: yes
+  with_items:
+    - ansible-galaxy install --force -r installed_roles -p roles
+    - ansible-playbook -i data/hosts playbook.yml --tags dci-core
+
+
+# The Verification Part
+#
+# When the all-in-one installation has taken place, we can verify
+# that the number returned by the API are the same numbers as the one
+# retrieved from the database during the dump operation.
+#
+# If number matches it means two things:
+#
+#   * database can be correctly imported
+#   * datas are accurate
+#
+- name: Run verification script
+  shell: /home/dci_pgbackup/dci_pgbackup_integrity_check.sh
+  become_user: dci_pgbackup
+  environment:
+    DCI_LOGIN: admin
+    DCI_PASSWORD: '{{ adminpassword }}'
+    DCI_CS_URL: http://{{ api_servername }}
