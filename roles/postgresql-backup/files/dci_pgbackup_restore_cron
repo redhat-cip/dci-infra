@@ -1,0 +1,1 @@
+30 0 * * * dci_pgbackup /home/dci_pgbackup/dci_pgbackup_restore.sh
