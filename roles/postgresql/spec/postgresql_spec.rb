@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe package('postgresql-server') do
+describe package('rh-postgresql94-postgresql-server') do
   it { should be_installed }
 end
 
-describe service('postgresql') do
+describe service('rh-postgresql94-postgresql') do
   it { should be_enabled }
   it { should be_running }
 end
