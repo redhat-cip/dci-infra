@@ -15,12 +15,18 @@
 # under the License.
 
 ---
+- name: Enable SCL
+  yum: name=centos-release-scl state=present
+  tags:
+    - dci-core
+
 - name: Ensure PostgreSQL packages are installed
   yum: name={{item}} state=present
   with_items:
     - postgresql
-    - postgresql-devel
-    - postgresql-server
+    - rh-postgresql94-postgresql
+    - rh-postgresql94-postgresql-devel
+    - rh-postgresql94-postgresql-server
     - python-psycopg2
   tags:
     - dci-core
@@ -68,8 +74,13 @@
   tags:
     - dci-core
 
-- name: Ensure PostgreSQL service is started
-  service: name=postgresql state=started enabled=yes
+- name: Ensure the regular PostgreSQL service is off
+  service: name=rh-postgresql94-postgresql state=stopped enabled=no
+  tags:
+    - dci-core
+
+- name: Ensure PostgreSQL 9.4 service is started
+  service: name=rh-postgresql94-postgresql state=started enabled=yes
   tags:
     - dci-core
 #
