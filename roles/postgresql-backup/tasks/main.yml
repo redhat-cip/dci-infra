@@ -14,17 +14,18 @@
 - name: Ensure PostgreSQL packages are installed
   yum: name={{item}} state=present
   with_items:
-    - postgresql
-    - postgresql-devel
     - postgresql-server
+    - rh-postgresql94-postgresql
+    - rh-postgresql94-postgresql-devel
+    - rh-postgresql94-postgresql-server
     - python-psycopg2
 
 - name: Initialize postgresql
-  shell: postgresql-setup initdb
+  shell: . /opt/rh/rh-postgresql94/enable && postgresql-setup initdb
   ignore_errors: yes
 
 - name: Ensure user can identify passwordlessly (local)
-  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^local\s+all\s+all\s+peer$"
               insertbefore="^#\sIPv4\slocal.+"
               line="local    all             {{ item }}            trust"
@@ -33,13 +34,16 @@
     - postgres
 
 - name: Ensure user can identify passwordlessly (host)
-  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^local\s+all\s+all\s+peer$"
               insertafter="^#\sIPv4\slocal.+"
               line="host    all             dci         127.0.0.1/32            trust"
 
-- name: Ensure PostgreSQL service is started
-  service: name=postgresql state=started enabled=yes
+- name: Ensure the regular PostgreSQL service is off. We use the one from SCL instead.
+  service: name=postgresql state=stopped enabled=no
+
+- name: Ensure PostgreSQL 9.4 service is started
+  service: name=rh-postgresql94-postgresql state=started enabled=yes
 
 - name: Ensure dci-release is installed
   yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
