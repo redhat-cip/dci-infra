@@ -45,7 +45,7 @@
     - dci-core
 
 # Ensure postgresql client tools are installed
-- name: Ensure postgresql client toos installed
+- name: Ensure postgresql client tools installed
   yum: name=postgresql state=present
   tags:
     - dci-core
@@ -53,7 +53,7 @@
 # Ensure a backup of the database is made before
 # any update takes place
 - name: Ensure backup is made
-  shell: pg_dump -U {{ dbuser }} -h {{ dbhost }} -w {{ dbname }} > {{ dbbackuppath }}/$(rpm -q --queryformat '%{VERSION}' dci-api | sed 's/[0-9].[0-9].\(.*\)/\1/g').sql
+  shell: . /opt/rh/rh-postgresql94/enable && pg_dump -U {{ dbuser }} -h {{ dbhost }} -w {{ dbname }} > {{ dbbackuppath }}/$(rpm -q --queryformat '%{VERSION}' dci-api | sed 's/[0-9].[0-9].\(.*\)/\1/g').sql
   environment:
     PGPASSWORD: '{{ dbpassword }}'
   tags:
