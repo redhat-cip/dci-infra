@@ -15,12 +15,24 @@
 # under the License.
 
 ---
+- name: Enable SCL
+  yum: name=centos-release-scl state=present
+  tags:
+    - dci-core
+
 - name: Ensure PostgreSQL packages are installed
   yum: name={{item}} state=present
   with_items:
     - postgresql
+# the sensu PostgreSQL check is linked against the postgresql client lib
     - postgresql-devel
+# we keep installing the server even if we don't use it. This to have the
+# postgresql service installed, as expected by ansible when it checks for
+# the service with systemctl.
     - postgresql-server
+    - rh-postgresql94-postgresql
+    - rh-postgresql94-postgresql-devel
+    - rh-postgresql94-postgresql-server
     - python-psycopg2
   tags:
     - dci-core
@@ -32,14 +44,31 @@
   tags:
     - monitoring
 
-- name: Initialize postgresql
-  shell: postgresql-setup initdb
-  ignore_errors: yes
+- name: Ensure the regular PostgreSQL service is off. We use the one from SCL instead.
+  service: name=postgresql state=stopped enabled=no
   tags:
     - dci-core
 
+- stat: path=/opt/rh/rh-postgresql94/data
+  register: pg_data_dir
+
+- name: Move existing DB to the new location
+  shell: mv /var/lib/pgsql/data /opt/rh/rh-postgresql94/data
+  ignore_errors: yes
+  register: move_old_db_data
+  tags:
+    - dci-core
+  when: pg_data_dir.stat.isdir is not defined or not pg_data_dir.stat.isdir
+
+- name: Initialize postgresql
+  shell: /opt/rh/rh-postgresql94/root/bin/postgresql-setup initdb
+  register: move_old_db_data
+  tags:
+     - dci-core
+  when: pg_data_dir.stat.isdir is not defined or not pg_data_dir.stat.isdir and move_old_db_data|failed
+
 - name: Ensure PostgreSQL listen to all addresses
-  lineinfile: dest=/var/lib/pgsql/data/postgresql.conf
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
               regexp="^listen_addresses = '*'"
               insertafter="^#\s+-\s+Connection Settings"
               line="listen_addresses = '*'"
@@ -47,7 +76,7 @@
     - dci-core
 
 - name: Ensure user can identify with password authentication mechanisms
-  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
               insertafter="^#\sIPv4\slocal.+"
               line="host    all             all  {{ apihost }}/32            {{item}}"
@@ -58,7 +87,7 @@
     - dci-core
 
 - name: Ensure user can identify with password authentication mechanisms
-  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
               insertafter="^#\sIPv4\slocal.+"
               line="host    all             all  127.0.0.1/32            {{item}}"
@@ -68,8 +97,8 @@
   tags:
     - dci-core
 
-- name: Ensure PostgreSQL service is started
-  service: name=postgresql state=started enabled=yes
+- name: Ensure PostgreSQL 9.4 service is started
+  service: name=rh-postgresql94-postgresql state=started enabled=yes
   tags:
     - dci-core
 #
