@@ -32,6 +32,7 @@
     - rhel-7-server-ose-3.1-rpms       # ansible, elasticsearch
     - rhel-7-server-optional-rpms      # For EPEL use
     - rhel-7-server-extras-rpms        # For EPEL use
+    - rhel-server-rhscl-7-rpms         # RHSCL for PostgreSQL 9.4
 
 - name: Ensure EPEL is installed (CentOS)
   yum: name=epel-release state=present
