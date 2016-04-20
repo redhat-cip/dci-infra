@@ -1,5 +1,6 @@
 #!/bin/sh
 
+source /opt/rh/rh-postgresql94/enable
 source /etc/dci_pgbackup.conf
 
 function send_mail() {
