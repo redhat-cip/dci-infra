@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a1969be_037e96ae",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-05-09T12:07:04Z",
+      "side": 1,
+      "message": "This path is incorrect. The correct path is \u0027/var/opt/rh/rh-postgresql94/lib/pgsql/data\u0027.\n\nThis is what appears in the log file:\n\n\u003e fixing permissions on existing directory /var/opt/rh/rh-postgresql94/lib/pgsql/data ... ok\n\u003e creating subdirectories ... ok\n\u003e selecting default max_connections ... 100\n\u003e selecting default shared_buffers ... 128MB\n\u003e selecting dynamic shared memory implementation ... posix\n\u003e creating configuration files ... ok\n\u003e creating template1 database in /var/opt/rh/rh-postgresql94/lib/pgsql/data/base/1 ... ok\n\nIf you run ansible twice with the current path it works the first time but fails the second time in the [Initialize postgresql] task",
+      "revId": "b8c1d39b102a6898451c4bc36f396eb13e70751c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a1969be_a344e274",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-05-09T12:07:04Z",
+      "side": 1,
+      "message": "If my understanding is correct, this task is here to handle migration from pre-SCL postgresql to current postgresql. IMO this shouldn\u0027t be in this repo. Purpose of dci-infra is to declare the final desired state of the machine. This can be done with ansible but outside this repo. As it is to make an upgrade task.",
+      "revId": "b8c1d39b102a6898451c4bc36f396eb13e70751c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a1969be_8349e68d",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-05-09T12:07:04Z",
+      "side": 1,
+      "message": "nit: Why not using the same command and parameter as the task in postgresql-backup role ?",
+      "revId": "b8c1d39b102a6898451c4bc36f396eb13e70751c",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
