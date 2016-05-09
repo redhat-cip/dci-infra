@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a1969be_0355f61c",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-05-09T12:13:45Z",
+      "side": 1,
+      "message": "Needs to remove the leading dash",
+      "revId": "aef218e28eae3e0f6fba6c566c715169bc5ceaee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
