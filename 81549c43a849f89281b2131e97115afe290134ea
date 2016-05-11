@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a1969be_bef878e6",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 18
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-05-11T12:50:56Z",
+      "side": 1,
+      "message": "This path is incorrect. The correct path is \u0027/var/opt/rh/rh-postgresql94/lib/pgsql/data\u0027",
+      "revId": "81549c43a849f89281b2131e97115afe290134ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
