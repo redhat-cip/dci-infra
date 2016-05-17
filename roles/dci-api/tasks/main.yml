@@ -44,9 +44,14 @@
   tags:
     - dci-core
 
+- name: Enable SCL
+  yum: name=centos-release-scl state=present
+  tags:
+    - dci-core
+
 # Ensure postgresql client tools are installed
 - name: Ensure postgresql client tools installed
-  yum: name=postgresql state=present
+  yum: name=rh-postgresql94-postgresql state=present
   tags:
     - dci-core
 

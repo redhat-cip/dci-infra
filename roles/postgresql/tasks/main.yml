@@ -52,25 +52,36 @@
 
 - stat: path=/var/lib/pgsql/data/postgresql.conf
   register: old_pg_conf_file
+  tags:
+     - dci-core
 
 - stat: path=/var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
   register: new_pg_conf_file
+  tags:
+     - dci-core
 
 - name: Upgrade from pg 9.2 to 9.4
   shell: . /opt/rh/rh-postgresql94/enable && postgresql-setup --upgrade --debug
   tags:
      - dci-core
-  when: old_pg_conf_file.stat.exists
+  when: old_pg_conf_file.stat.exists and not new_pg_conf_file.stat.exists
+
+- stat: path=/var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+  register: new_pg_conf_file
+  tags:
+     - dci-core
 
 - name: Drop the old DB
-  shell: rm -rf /var/lib/pgsql/data
-  when: old_pg_conf_file.stat.exists
+  shell: mv /var/lib/pgsql/data /root/old_data
+  tags:
+     - dci-core
+  when: old_pg_conf_file.stat.exists and new_pg_conf_file.stat.exists
 
 - name: Initialize postgresql
   shell: . /opt/rh/rh-postgresql94/enable && postgresql-setup --initdb --debug
   tags:
      - dci-core
-  when: not (old_pg_conf_file.stat.exists or new_pg_conf_file.stat.exists)
+  when: not new_pg_conf_file.stat.exists
 
 - name: Ensure PostgreSQL listen to all addresses
   lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
