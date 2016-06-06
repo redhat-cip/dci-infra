@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a106d94_3bfc9d3e",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 107
+      },
+      "writtenOn": "2016-06-06T18:30:18Z",
+      "side": 1,
+      "message": "Can you create an external script to do the backup and call this script, it will avoid the big unreadable one-liner and it will be helpful to run it manually if needed.",
+      "revId": "2b31e6bcabc6856d572a84f7e73b3193652ec690",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
