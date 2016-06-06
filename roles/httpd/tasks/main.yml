@@ -41,6 +41,9 @@
   tags:
     - dci-core
 
+- name: Ensure apache can write files for DCI
+  file: path=/var/lib/dci-control-server/files state=directory owner=apache group=apache recurse=true
+
 - name: Ensure apache is running (and enable it at boot)
   service: name=httpd state=started enabled=yes
   tags:
