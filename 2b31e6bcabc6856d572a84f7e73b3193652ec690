@@ -16,6 +16,24 @@
       "revId": "2b31e6bcabc6856d572a84f7e73b3193652ec690",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a106d94_be6ebbc7",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-06-07T09:39:36Z",
+      "side": 1,
+      "message": "I disagree here. This will just be hiding the command and adding new tasks.\n\n\u003e - name: Copy the script to call to backup the db\n\u003e   copy:...\n\n\u003e - name: Call the script to backup the db\n\u003e   shell: ...\n\nThe ideal solution would be to create a `postgresql_backup` module (that we can rely on) and have it merge upstream if we want to make this module public.",
+      "parentUuid": "1a106d94_3bfc9d3e",
+      "revId": "2b31e6bcabc6856d572a84f7e73b3193652ec690",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
