@@ -16,6 +16,24 @@
       "revId": "b2f7a75720f7ccc46139c9a1ecdea55c616713ea",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a106d94_7e79e3fb",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2016-06-07T15:21:13Z",
+      "side": 1,
+      "message": "I\u0027m not sure we really need to be able to adjust dci_file_path to land this patch. /var/lib/dci-control-server is the default path.",
+      "parentUuid": "1a106d94_1eef0fb2",
+      "revId": "b2f7a75720f7ccc46139c9a1ecdea55c616713ea",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
