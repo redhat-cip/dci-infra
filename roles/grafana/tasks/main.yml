@@ -92,3 +92,8 @@
 
 - name: Start grafana-server service
   service: name=grafana-server state=started enabled=yes
+
+- name: Create vhost
+  template: src=02_metrics.conf dest=/etc/httpd/conf.d/02_metrics.conf
+  notify:
+    - reload httpd
