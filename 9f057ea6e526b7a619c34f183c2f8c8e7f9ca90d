@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a106d94_296c579c",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-06-08T07:08:06Z",
+      "side": 1,
+      "message": "It it our default path, but user might have different needs and hence should be able to specify it here. One shouldn\u0027t have to go and create/change permission file manually once dci-infra has passed.",
+      "revId": "9f057ea6e526b7a619c34f183c2f8c8e7f9ca90d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
