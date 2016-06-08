@@ -15,5 +15,8 @@
 # under the License.
 
 ---
+- name: reload httpd
+  service: name=httpd state=reloaded
+
 - name: restart grafana-server
   service: name=grafana-server state=restarted

@@ -56,7 +56,8 @@
 # Configure DCI-UI vhost
 #
 - name: Create vhost file
-  template: src=dci_ui.conf dest=/etc/httpd/conf.d/dci_ui.conf
+  template: src=dci_ui.conf
+            dest=/etc/httpd/conf.d/dci_ui.conf
   notify:
     - reload httpd
   tags:
