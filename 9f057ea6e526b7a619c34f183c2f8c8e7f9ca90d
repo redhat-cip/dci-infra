@@ -16,6 +16,24 @@
       "revId": "9f057ea6e526b7a619c34f183c2f8c8e7f9ca90d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a106d94_a4098e2e",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2016-06-08T14:43:52Z",
+      "side": 1,
+      "message": "\u003cgoneri\u003e spredzy_, http://softwarefactory-project.io/r/#/c/3962/ I don\u0027t with we need to make the data path adjustable to land this fix. This kind of parameter increases the global complexity and so I likely to create bugs in the future. Since nobody has a real need for it, I would prefer we don\u0027t do that for the moment. I\u0027m not against the idea, but I just prefer we wait for a real user request first.",
+      "parentUuid": "1a106d94_296c579c",
+      "revId": "9f057ea6e526b7a619c34f183c2f8c8e7f9ca90d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
