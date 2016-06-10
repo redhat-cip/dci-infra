@@ -46,7 +46,7 @@
   service: name=rh-postgresql94-postgresql state=started enabled=yes
 
 - name: Ensure dci-release is installed
-  yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-release.el7.noarch.rpm state=present
 
 - name: Install dependencies
   yum: name={{ item }} state=present
