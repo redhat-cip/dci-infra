@@ -24,13 +24,13 @@
 
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed (CentOS, RedHat)
-  yum: name=http://dci.enovance.com/dci-release.el7.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-release.el7.noarch.rpm state=present
   when: ansible_distribution in ['CentOS', 'RedHat']
   tags:
     - dci-core
 
 - name: Ensure dci-release is installed (Fedora)
-  yum: name=http://dci.enovance.com/dci-release.fc23.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-release.fc23.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
   tags:
     - dci-core

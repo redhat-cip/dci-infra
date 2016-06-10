@@ -57,11 +57,11 @@
   selinux: state=enforcing policy=targeted
 
 - name: Ensure dci-sshpubkeys is installed (CentOS, RHEL)
-  yum: name=http://dci.enovance.com/dci-sshpubkeys.el7.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.el7.noarch.rpm state=present
   when: ansible_distribution in ['CentOS', 'RedHat']
 
 - name: Ensure dci-sshpubkeys is installed (Fedora)
-  yum: name=http://dci.enovance.com/dci-sshpubkeys.fc23.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc23.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
 
 - name: Ensure packages are up to their latest release
