@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "facab960_42d51242",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 247
+      },
+      "writtenOn": "2016-06-13T18:25:05Z",
+      "side": 1,
+      "message": "should this actually get restarted once NTP is started though?",
+      "revId": "7c8200bfa7d377060f07f729cbd8875f39cf4da2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "facab960_c2c0427f",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 247
+      },
+      "writtenOn": "2016-06-13T18:25:05Z",
+      "side": 1,
+      "message": "should this then perform a notify: start chrony ?",
+      "revId": "7c8200bfa7d377060f07f729cbd8875f39cf4da2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
