@@ -43,6 +43,12 @@
   yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
   when: ansible_distribution == 'RedHat'
 
+# stop chrony before starting ntpd
+- name: Stop chrony service if it exists
+  service: name=chronyd state=stopped enabled=no
+  register: command_result
+  failed_when: "command_result|failed and 'cannot find' not in commmand_result.msg"
+
 # TODO(spredzy): To remove when the ntp sensu check support chrony
 - yum: name=ntp state=present
 - service: name=ntpd state=started enabled=yes
