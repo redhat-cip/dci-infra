@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a106d94_81527f11",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2016-06-13T15:56:57Z",
+      "side": 1,
+      "message": "This extra condition make me sad :( I hope Ansible one day will be able do deal with that by itself.",
+      "revId": "2fac32b29b1e020396b54f0378040ab65458a2be",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
