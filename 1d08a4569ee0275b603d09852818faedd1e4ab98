@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "facab960_e8c7e762",
+        "filename": "roles/httpd/spec/httpd_spec.rb",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 107
+      },
+      "writtenOn": "2016-06-14T18:53:39Z",
+      "side": 1,
+      "message": "this should use something like #{property[\u0027file_path\u0027]}",
+      "revId": "1d08a4569ee0275b603d09852818faedd1e4ab98",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "facab960_08c5eb5a",
+        "filename": "roles/httpd/spec/httpd_spec.rb",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 107
+      },
+      "writtenOn": "2016-06-14T18:53:39Z",
+      "side": 1,
+      "message": "here too you should use the #{property}",
+      "revId": "1d08a4569ee0275b603d09852818faedd1e4ab98",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
