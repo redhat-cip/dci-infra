@@ -12,3 +12,13 @@ end
 describe port(80) do
   it { should be_listening }
 end
+
+describe file('/var/lib/dci-control-server/files') do
+  it { should be_directory }
+end
+
+describe file('/var/lib/dci-control-server/files') do
+  it { should be_owned_by 'apache' }
+  it { should be_grouped_into 'apache' }
+  it { should be_writable.by('owner') }
+end
