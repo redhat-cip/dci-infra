@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "facab960_421d1273",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 380
+      },
+      "writtenOn": "2016-06-14T06:28:26Z",
+      "side": 1,
+      "message": "Sorry, i don\u0027t follow the comment. The problems is that ntp service cannot be enabled if chrony is already enabled. So as a prior step, i wanted to stop and disable the chrony if it was present.",
+      "parentUuid": "facab960_42d51242",
+      "revId": "7c8200bfa7d377060f07f729cbd8875f39cf4da2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "facab960_c2c0427f",
         "filename": "roles/common/tasks/main.yml",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2016-06-13T18:25:05Z",
       "side": 1,
       "message": "should this then perform a notify: start chrony ?",
+      "revId": "7c8200bfa7d377060f07f729cbd8875f39cf4da2",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "facab960_62121664",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 380
+      },
+      "writtenOn": "2016-06-14T06:28:26Z",
+      "side": 1,
+      "message": "At this point, chrony will be stopped and disabled, as ansible play runs sequentially. We don\u0027t want to start chrony at any point after that.",
+      "parentUuid": "facab960_c2c0427f",
       "revId": "7c8200bfa7d377060f07f729cbd8875f39cf4da2",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
