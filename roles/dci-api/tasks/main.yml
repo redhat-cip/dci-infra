@@ -120,12 +120,16 @@
 
 - name: Update the schema
   command: dci-dbsync
+  become_user: apache
   environment:
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
   when: dbexist|success
   tags:
     - dci-core
+
+- name: Ensure apache can write files for DCI
+  file: path="/var/lib/dci-control-server/files" state=directory owner=apache group=apache recurse=true
 
 # Configure DCI-API vhost
 #

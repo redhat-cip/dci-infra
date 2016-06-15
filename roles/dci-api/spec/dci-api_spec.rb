@@ -7,3 +7,13 @@ end
 describe file('/etc/httpd/conf.d/dci_api.conf') do
   it { should exist }
 end
+
+describe file('/var/lib/dci-control-server/files') do
+  it { should be_directory }
+end
+
+describe file('/var/lib/dci-control-server/files') do
+  it { should be_owned_by 'apache' }
+  it { should be_grouped_into 'apache' }
+  it { should be_writable.by('owner') }
+end
