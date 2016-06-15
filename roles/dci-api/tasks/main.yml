@@ -119,6 +119,7 @@
 
 - name: Update the schema
   command: dci-dbsync
+  become_user: apache
   environment:
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
