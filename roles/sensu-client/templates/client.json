@@ -1,6 +1,6 @@
 {
   "client": {
-    "name": "{{ ansible_fqdn }}",
+    "name": "{{ ansible_ssh_host }}",
     "address": "{{ public_ip | default(ansible_default_ipv4.address) }}",
     "subscriptions": [
       "base"{% for sub in subscriptions|default([]) %},"{{sub}}"{% endfor %}
