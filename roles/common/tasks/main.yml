@@ -54,7 +54,7 @@
 - service: name=ntpd state=started enabled=yes
 
 - name: Set the server hostname
-  hostname: name={{ hostname }}
+  hostname: name={{ ansible_ssh_host }}
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
   yum: name=policycoreutils-python state=present
