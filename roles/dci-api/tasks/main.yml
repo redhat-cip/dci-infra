@@ -66,9 +66,8 @@
 
 # Install DCI-API
 #
-# TODO(Prophidys) temporary fix for GPG
 - name: Ensure DCI is installed
-  yum: name={{item}} state=latest update_cache=yes disable_gpg_check=yes
+  yum: name={{item}} state=latest update_cache=yes
   with_items:
     - dci-common
     - dci-api
