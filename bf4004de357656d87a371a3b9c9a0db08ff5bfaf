@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "facab960_f78fc273",
+        "filename": "roles/sensu/templates/check_api.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-06-17T07:39:12Z",
+      "side": 1,
+      "message": "Can you make this http/https selection dynamic ?\n\nLike this https://github.com/redhat-cip/dci-infra/blob/master/roles/dci-ui/tasks/main.yml#L52",
+      "revId": "bf4004de357656d87a371a3b9c9a0db08ff5bfaf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "facab960_178d067c",
+        "filename": "roles/sensu/templates/check_ui.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2016-06-17T07:39:12Z",
+      "side": 1,
+      "message": "Can you make this http/https selection dynamic ?\n\nLike this https://github.com/redhat-cip/dci-infra/blob/master/roles/dci-ui/tasks/main.yml#L52",
+      "revId": "bf4004de357656d87a371a3b9c9a0db08ff5bfaf",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
