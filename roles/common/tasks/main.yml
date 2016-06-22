@@ -70,5 +70,8 @@
   yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc23.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
 
+- name: Cleanup the RPM DB
+  shell: cd /var/lib/rpm && rm -rf __db* && yum clean all && rpm --rebuilddb
+
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes
