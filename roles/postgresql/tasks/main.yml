@@ -95,7 +95,7 @@
   lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
               insertafter="^#\sIPv4\slocal.+"
-              line="host    all             all  {{ apihost }}/32            {{item}}"
+              line="host    all             all  {{ apihost }}            {{item}}"
   with_items:
     - password
     - md5
