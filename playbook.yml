@@ -20,6 +20,7 @@
   become: yes
   roles:
     - common
+    - { role: Spredzy.swiftbackmeup }
   tags:
     - dci-core
 
