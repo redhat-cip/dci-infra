@@ -1,1 +1,0 @@
-0 1 * * * dci_pgbackup /home/dci_pgbackup/dci_pgbackup_integrity_check.sh
