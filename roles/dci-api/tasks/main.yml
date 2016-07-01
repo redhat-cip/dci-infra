@@ -58,9 +58,7 @@
 # Ensure a backup of the database is made before
 # any update takes place
 - name: Ensure backup is made
-  shell: . /opt/rh/rh-postgresql94/enable && pg_dump -Z9 -Fc -U {{ dbuser }} -h {{ dbhost }} -w {{ dbname }} > {{ dbbackuppath }}/$(rpm -q --queryformat '%{VERSION}' dci-api | sed 's/[0-9].[0-9].\(.*\)/\1/g').sql
-  environment:
-    PGPASSWORD: '{{ dbpassword }}'
+  shell: . /opt/rh/rh-postgresql94/enable && swiftbackmeup backup --mode now
   tags:
     - dci-core
 
