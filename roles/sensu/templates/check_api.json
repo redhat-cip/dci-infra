@@ -1,7 +1,7 @@
 {
   "checks": {
     "api": {
-      "command": "check-http-json.rb -u {% if api_ssl is defined %}https{% else %}http{% endif %}://{{api_servername}}/api/v1",
+      "command": "check-http-json.rb -s -k -u {% if api_ssl is defined %}https{% else %}http{% endif %}://{{api_servername}}/api/v1",
       "interval": 60,
       "occurrences": 5,
       "handlers": ["file"],
