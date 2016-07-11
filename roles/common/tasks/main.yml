@@ -73,4 +73,3 @@
 
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes
-  ignore_errors: true
