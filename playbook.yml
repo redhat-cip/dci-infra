@@ -21,6 +21,7 @@
   roles:
     - common
     - { role: Spredzy.swiftbackmeup }
+    - { role: Spredzy.lecm }
   tags:
     - dci-core
 
