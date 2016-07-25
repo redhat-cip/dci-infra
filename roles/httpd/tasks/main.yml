@@ -41,6 +41,11 @@
   tags:
     - dci-core
 
+- name: Copy needed configuration
+  copy: src=ssl.conf
+        dest=/etc/httpd/conf.d/ssl.conf
+  notify: reload httpd
+
 - name: Ensure apache is running (and enable it at boot)
   service: name=httpd state=started enabled=yes
   tags:
