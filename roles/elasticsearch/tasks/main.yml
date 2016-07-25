@@ -50,6 +50,13 @@
   tags:
     - dci-core
 
+- name: Ensure the http post max is correctly setup
+  lineinfile: dest=/etc/elasticsearch/elasticsearch.yml
+              regexp="^http.max_content_length: 1gb"
+              line="http.max_content_length: 1gb"
+  tags:
+    - dci-core
+
 - name: Ensure elasticsearch is started
   service: name=elasticsearch state=started enabled=yes
   tags:
