@@ -1,1 +1,4 @@
 ansible/hosts
+data/
+playbook.retry
+geerlingguy.redis/
