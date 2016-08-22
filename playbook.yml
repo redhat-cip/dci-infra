@@ -43,6 +43,14 @@
   tags:
     - metrics
 
+- name: Install-Certification-Server
+  hosts: certification
+  remote_user: dci
+  become: yes
+  roles:
+    - httpd
+    - rhcert
+
 - name: Install-PostgreSQL
   hosts: postgresql
   remote_user: dci

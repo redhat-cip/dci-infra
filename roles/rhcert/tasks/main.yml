@@ -1,0 +1,12 @@
+---
+- name: Subscribe to rhel-7-server-cert-rpms
+  shell: subscription-manager repos --enable=rhel-7-server-cert-rpms
+
+- name: Install the redhat-certification package
+  package: name=redhat-certification
+
+# TODO(spredzy): Ask to gnichols if they could provide a systemd .service
+# unit. Meanwhile we just need to have this run once in order to generate
+# the proper /etc/rhcert.xml
+- name: Start rhcertd
+  shell: rhcertd start
