@@ -43,6 +43,14 @@
   yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
   when: ansible_distribution == 'RedHat'
 
+- name: Ensure RDO is installed (CentOS)
+  yum: name=centos-release-openstack-kilo state=present
+  when: ansible_distribution == 'CentOS'
+
+- name: Ensure RDO is installed (RedHat)
+  yum: name=centos-release-openstack-kilo state=present
+  when: ansible_distribution == 'RedHat'
+
 # stop chrony before starting ntpd
 - name: Stop chrony service if it exists
   service: name=chronyd state=stopped enabled=no
