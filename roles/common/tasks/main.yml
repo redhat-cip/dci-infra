@@ -43,6 +43,37 @@
   yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
   when: ansible_distribution == 'RedHat'
 
+- name: Add RDO Repository
+  yum_repository:
+    name: RDO OpenStack
+    description: RDO YUM repo
+    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-kilo/
+    gpgcheck: no
+    includepkgs:
+      - python-swiftclient
+      - python-simplejson
+      - python-keystoneclient
+      - python-futures
+      - python-oslo-utils
+      - python-pbr
+      - python-oslo-i18n
+      - python-stevedore
+      - python-oslo-config
+      - python-oslo-serialization
+      - python-keyring
+      - python-iso8601
+      - python-netifaces
+      - python-msgpack
+      - python-fixtures
+      - python-netaddr
+      - python-testtools
+      - python-mimeparse
+      - python-extras
+      - python-unittest2
+      - python-traceback2
+      - python-linecache2
+  when: ansible_distribution in ['CentOS', 'RedHat']
+
 # stop chrony before starting ntpd
 - name: Stop chrony service if it exists
   service: name=chronyd state=stopped enabled=no
