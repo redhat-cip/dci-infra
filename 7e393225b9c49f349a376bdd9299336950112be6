@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dab895d6_ee80c38d",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2016-08-26T17:54:35Z",
+      "side": 1,
+      "message": "Could you please use something like:\n\nansible_distribution in [\u0027CentOS\u0027, \u0027RedHat\u0027]\n\nOR\n\nwhen: ansible_os_family \u003d\u003d \"RedHat\" and ansible_lsb.major_release|int \u003e\u003d 7",
+      "revId": "7e393225b9c49f349a376bdd9299336950112be6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
