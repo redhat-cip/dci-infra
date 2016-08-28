@@ -45,7 +45,7 @@
 
 - name: Add RDO Repository
   yum_repository:
-    name: RDO OpenStack
+    name: RDO-OpenStack
     description: RDO YUM repo
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-kilo/
     gpgcheck: no
