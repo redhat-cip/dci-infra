@@ -49,29 +49,29 @@
     description: RDO YUM repo
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-kilo/
     gpgcheck: no
-    includepkgs:
-      - python-swiftclient
-      - python-simplejson
-      - python-keystoneclient
-      - python-futures
-      - python-oslo-utils
-      - python-pbr
-      - python-oslo-i18n
-      - python-stevedore
-      - python-oslo-config
-      - python-oslo-serialization
-      - python-keyring
-      - python-iso8601
-      - python-netifaces
-      - python-msgpack
-      - python-fixtures
-      - python-netaddr
-      - python-testtools
-      - python-mimeparse
-      - python-extras
-      - python-unittest2
-      - python-traceback2
-      - python-linecache2
+    includepkgs: "
+        python-swiftclient,
+        python-simplejson,
+        python-keystoneclient,
+        python-futures,
+        python-oslo-utils,
+        python-pbr,
+        python-oslo-i18n,
+        python-stevedore,
+        python-oslo-config,
+        python-oslo-serialization,
+        python-keyring,
+        python-iso8601,
+        python-netifaces,
+        python-msgpack,
+        python-fixtures,
+        python-netaddr,
+        python-testtools,
+        python-mimeparse,
+        python-extras,
+        python-unittest2,
+        python-traceback2,
+        python-linecache2"
   when: ansible_distribution in ['CentOS', 'RedHat']
 
 # stop chrony before starting ntpd
