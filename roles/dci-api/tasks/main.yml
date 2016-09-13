@@ -99,42 +99,42 @@
 # Configure Swift
 #
 - name: Ensure STORE_ENGINE is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_ENGINE=' line="STORE_ENGINE = '{{ store_engine }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_ENGINE =' line="STORE_ENGINE = '{{ store_engine }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_USERNAME is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_USERNAME=' line="STORE_USERNAME = '{{ store_username }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_USERNAME =' line="STORE_USERNAME = '{{ store_username }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_PASSWORD is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_PASSWORD=' line="STORE_PASSWORD = '{{ store_password }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_PASSWORD =' line="STORE_PASSWORD = '{{ store_password }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_TENANT_NAME is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_TENANT_NAME=' line="STORE_TENANT_NAME = '{{ store_tenant_name }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_TENANT_NAME =' line="STORE_TENANT_NAME = '{{ store_tenant_name }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_AUTH_URL is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_AUTH_URL=' line="STORE_AUTH_URL = '{{ store_auth_url }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_AUTH_URL =' line="STORE_AUTH_URL = '{{ store_auth_url }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_CONTAINER is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_CONTAINER=' line="STORE_CONTAINER = '{{ store_container }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_CONTAINER =' line="STORE_CONTAINER = '{{ store_container }}'"
   notify:
     - reload httpd
   tags:
