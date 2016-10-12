@@ -8,7 +8,7 @@ describe command("python wrapper.py team-create #{property['admin_account']} #{p
 end
 
 describe command("python wrapper.py remoteci-list #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']}") do
-  its(:stdout) { should_not match("/|\s*#{property['test_remoteci_name']}\s*|/") }
+  its(:stdout) { should_not match("/#{property['test_remoteci_name']}/") }
   its(:exit_status) { should eq 0 }
 end
 
