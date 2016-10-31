@@ -16,7 +16,7 @@
 
 ---
 - name: Install sensu repositories
-  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo raw=true
 
 - name: Create rabbitmq sensu vhost
   command: rabbitmqctl add_vhost /sensu
