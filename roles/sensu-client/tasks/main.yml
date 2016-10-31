@@ -26,7 +26,7 @@
     - bc
 
 - name: Install sensu repositories
-  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo mode=0644
 
 - name: Install sensu client
   yum: name=sensu state=present
