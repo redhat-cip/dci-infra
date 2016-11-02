@@ -66,12 +66,19 @@
 # Install DCI-API
 #
 - name: Ensure DCI is installed
-  yum: name={{item}} state=latest update_cache=yes
-  with_items:
-    - dci-common
-    - dci-api
+  yum: name=dci-api state=latest update_cache=yes
   tags:
     - dci-core
+
+# This is a temporary fix to remove once
+# I9db68725d6c8cd05fa50a9052abed206fd7811dc is
+# merged.
+- name: ensure dci-dbsync exists
+  stat: path=/usr/bin/dci-dbsync
+  register: dci_dbsync_state
+- name: Pull dci-common for pre-I9db68725d6c8cd05fa50a9052abed206fd7811dc rpm
+  yum: name=dci-common state=latest
+  when: dci_dbsync_state.stat.exists == False
 
 # Configure DCI-API configuration file
 #
