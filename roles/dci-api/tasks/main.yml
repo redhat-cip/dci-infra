@@ -147,6 +147,13 @@
   tags:
     - dci-core
 
+- name: Ensure ZMQ_CONN is configurerd in settings.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^ZMQ_CONN =' line="ZMQ_CONN = '{{ zmq_conn }}'"
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
 # Install DCI itself
 #
 - name: Check if db is already in place
@@ -193,4 +200,3 @@
 #
 - name: Create cron to feed ES
   cron: name="AsyncES" minute="*/5" hour="*" job="/bin/dci-esindex > /dev/null"
-
