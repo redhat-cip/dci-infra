@@ -43,35 +43,16 @@
   yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
   when: ansible_distribution == 'RedHat'
 
+- name: Ensure Priority is installed
+  yum: name=yum-plugin-priorities state=present
+
 - name: Add RDO Repository
   yum_repository:
     name: RDO-OpenStack
     description: RDO YUM repo
-    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-kilo/
+    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
+    priority: 1
     gpgcheck: no
-    includepkgs: "
-        python-swiftclient,
-        python-simplejson,
-        python-keystoneclient,
-        python-futures,
-        python-oslo-utils,
-        python-pbr,
-        python-oslo-i18n,
-        python-stevedore,
-        python-oslo-config,
-        python-oslo-serialization,
-        python-keyring,
-        python-iso8601,
-        python-netifaces,
-        python-msgpack,
-        python-fixtures,
-        python-netaddr,
-        python-testtools,
-        python-mimeparse,
-        python-extras,
-        python-unittest2,
-        python-traceback2,
-        python-linecache2"
   when: ansible_distribution in ['CentOS', 'RedHat']
 
 # stop chrony before starting ntpd
@@ -100,7 +81,6 @@
 - name: Ensure dci-sshpubkeys is installed (Fedora)
   yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc23.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
-
 
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes
