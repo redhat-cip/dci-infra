@@ -53,7 +53,7 @@ def user_management(ctx):
                 user_id = user['id']
                 user_etag = user['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', user_id, '--etag', user_etag, '--name', ctx['parameters'][1]]
+        command = base_command + [ctx['action']] + [user_id, '--etag', user_etag, '--name', ctx['parameters'][1]]
     elif 'delete' in ctx['action']:
         command = base_command + ['--format', 'json', 'user-list']
         response = subprocess.check_output(command)
@@ -62,7 +62,7 @@ def user_management(ctx):
                 user_id = user['id']
                 user_etag = user['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', user_id, '--etag', user_etag]
+        command = base_command + [ctx['action']] + [user_id, '--etag', user_etag]
 
     return command
 
@@ -82,7 +82,7 @@ def team_management(ctx):
                 team_id = team['id']
                 team_etag = team['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', team_id, '--etag', team_etag, '--name', ctx['parameters'][1]]
+        command = base_command + [ctx['action']] + [team_id, '--etag', team_etag, '--name', ctx['parameters'][1]]
     elif 'delete' in ctx['action']:
         command = base_command + ['--format', 'json', 'team-list']
         response = subprocess.check_output(command)
@@ -91,7 +91,7 @@ def team_management(ctx):
                 team_id  = team['id']
                 team_etag  = team['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', team_id, '--etag', team_etag]
+        command = base_command + [ctx['action']] + [team_id, '--etag', team_etag]
 
     return command
 
@@ -110,7 +110,7 @@ def test_management(ctx):
             if test['name'] == ctx['parameters'][0]:
                 test_id  = test['id']
                 break
-        command = base_command + [ctx['action']] + ['--id', test_id]
+        command = base_command + [ctx['action']] + [test_id]
 
     return command
 
@@ -136,7 +136,7 @@ def remoteci_management(ctx):
                 remoteci_id = remoteci['id']
                 remoteci_etag = remoteci['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', remoteci_id, '--etag', remoteci_etag, '--name', ctx['parameters'][1]]
+        command = base_command + [ctx['action']] + [remoteci_id, '--etag', remoteci_etag, '--name', ctx['parameters'][1]]
     elif 'delete' in ctx['action']:
         command = base_command + ['--format', 'json', 'remoteci-list']
         response = subprocess.check_output(command)
@@ -145,7 +145,7 @@ def remoteci_management(ctx):
                 remoteci_id = remoteci['id']
                 remoteci_etag = remoteci['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', remoteci_id, '--etag', remoteci_etag]
+        command = base_command + [ctx['action']] + [remoteci_id, '--etag', remoteci_etag]
 
     return command
 
@@ -164,7 +164,7 @@ def component_management(ctx):
             if component['canonical_project_name'] == ctx['parameters'][0] or component['name'] == ctx['parameters'][0]:
                 component_id  = component['id']
                 break
-        command = base_command + [ctx['action']] + ['--id', component_id]
+        command = base_command + [ctx['action']] + [component_id]
 
     return command
 
@@ -189,7 +189,7 @@ def jobdefinition_management(ctx):
                 jobdefinition_id  = jobdefinition['id']
                 jobdefinition_etag  = jobdefinition['etag']
                 break
-        command = base_command + [ctx['action']] + ['--id', jobdefinition_id, '--etag', jobdefinition_etag]
+        command = base_command + [ctx['action']] + [jobdefinition_id, '--etag', jobdefinition_etag]
 
     return command
 
