@@ -122,6 +122,7 @@
   remote_user: dci
   sudo: yes
   roles:
+    - httpd
     - grafana
   tags:
     - metrics
