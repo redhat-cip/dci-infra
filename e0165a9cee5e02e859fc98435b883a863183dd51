@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_c7d762be",
+        "filename": "roles/dci-worker/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2016-11-25T18:24:16Z",
+      "side": 1,
+      "message": "Minor typo s/Ensuire/Ensure/",
+      "revId": "e0165a9cee5e02e859fc98435b883a863183dd51",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
