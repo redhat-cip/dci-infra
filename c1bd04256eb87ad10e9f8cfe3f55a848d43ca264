@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_07aa4a70",
+        "filename": "roles/dci-worker/handlers/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2016-11-25T16:06:31Z",
+      "side": 1,
+      "message": "restart all could impact other processes using supervisord. You should use restart dci-worker",
+      "revId": "c1bd04256eb87ad10e9f8cfe3f55a848d43ca264",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a890539_27b666dd",
+        "filename": "roles/dci-worker/spec/dci-worker_spec.rb",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2016-11-25T16:06:31Z",
+      "side": 1,
+      "message": "Do the same for supervisord because you can use it with systemd",
+      "revId": "c1bd04256eb87ad10e9f8cfe3f55a848d43ca264",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a890539_a7a25698",
+        "filename": "roles/dci-worker/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2016-11-25T16:06:31Z",
+      "side": 1,
+      "message": "supervisor has a systemd script\n\n/usr/lib/systemd/system/supervisord.service",
+      "revId": "c1bd04256eb87ad10e9f8cfe3f55a848d43ca264",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
