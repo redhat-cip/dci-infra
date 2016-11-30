@@ -53,21 +53,22 @@
   tags:
     - dci-core
 
-# Install supervisord
+# Install systemd file for dci-worker
 #
-- name: Ensure Supervisord is installed
-  yum: name=supervisor state=latest update_cache=yes
-  tags:
-    - dci-core
 
 - name: Create supervisor file
-  copy: src=dci-worker.ini dest=/etc/supervisord.d/dci-worker.ini
+  copy: src=dci-worker.service dest=/etc/systemd/system/dci-worker.service mode=0644s
   notify:
     - reload supervisor
   tags:
     - dci-core
 
-- name: Ensure Supervisord is launched
-  service: name=supervisord state=started enabled=yes
+- name: Ensure Systemcl take care of the new file
+  command: systemctl daemon-reload
+  tags:
+    - dci-core
+
+- name: Enable and start the worker
+  service: name=dci-worker state=started enabled=yes
   tags:
     - dci-core
