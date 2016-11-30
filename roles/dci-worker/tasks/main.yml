@@ -15,17 +15,12 @@
 # under the License.
 
 ---
-# Install DCI-UI
+# Install DCI-API
 #
 - name: Ensure DCI-api is installed
   yum: name=dci-api state=latest update_cache=yes
-  notify:
-    - reload supervisor
   tags:
     - dci-core
-
-- name: Ensuire Worker is executable
-  file: path=/usr/lib/python2.7/site-packages/dci/worker/worker.py mode=0755
 
 # Install postfix
 #
@@ -39,21 +34,9 @@
   tags:
     - dci-core
 
-# Install supervisord
+# configure systemd for dci-worker
 #
-- name: Ensure Supervisord is installed
-  yum: name=supervisor state=latest update_cache=yes
-  tags:
-    - dci-core
-
-- name: Create supervisor file
-  copy: src=dci-worker.ini dest=/etc/supervisord.d/dci-worker.ini
-  notify:
-    - reload supervisor
-  tags:
-    - dci-core
-
-- name: Ensure Supervisord is launched
-  service: name=supervisord state=started enabled=yes
+- name: Enable and start the worker
+  service: name=dci-worker state=started enabled=yes
   tags:
     - dci-core
