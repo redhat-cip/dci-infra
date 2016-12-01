@@ -36,6 +36,7 @@
 
 - name: Ensure EPEL is installed (CentOS)
   yum: name=epel-release state=present
+  priority: 1
   when: ansible_distribution == 'CentOS'
 
 # NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
@@ -51,7 +52,6 @@
     name: RDO-OpenStack
     description: RDO YUM repo
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
-    priority: 1
     gpgcheck: no
   when: ansible_distribution in ['CentOS', 'RedHat']
 
