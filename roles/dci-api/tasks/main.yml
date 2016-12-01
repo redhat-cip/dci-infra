@@ -70,6 +70,11 @@
   tags:
     - dci-core
 
+- name: Ensure DCI Client is installed
+  yum: name=python2-dciclient state=latest update_cache=yes
+  tags:
+    - dci-core
+
 # This is a temporary fix to remove once
 # I9db68725d6c8cd05fa50a9052abed206fd7811dc is
 # merged.
