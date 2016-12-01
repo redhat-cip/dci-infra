@@ -20,7 +20,9 @@
   become: yes
   roles:
     - common
-    - { role: Spredzy.swiftbackmeup }
+    # Comment this to avoid conflict between packages and pip
+    # until we found a solution
+    #- { role: Spredzy.swiftbackmeup }
     - { role: Spredzy.lecm }
   tags:
     - dci-core
