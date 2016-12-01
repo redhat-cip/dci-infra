@@ -34,9 +34,17 @@
     - rhel-7-server-extras-rpms        # For EPEL use
     - rhel-server-rhscl-7-rpms         # RHSCL for PostgreSQL 9.4
 
-- name: Ensure EPEL is installed (CentOS)
-  yum: name=epel-release state=present
-  when: ansible_distribution == 'CentOS'
+#- name: Ensure EPEL is installed (CentOS)
+#  yum: name=epel-release state=present
+#  priority: 1
+#  when: ansible_distribution == 'CentOS'
+
+- name: Add repository
+  yum_repository:
+    name: epel
+    description: EPEL YUM repo
+    baseurl: http://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    priority: 1
 
 # NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
 - name: Ensure EPEL is installed (RedHat)
@@ -51,7 +59,6 @@
     name: RDO-OpenStack
     description: RDO YUM repo
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
-    priority: 1
     gpgcheck: no
   when: ansible_distribution in ['CentOS', 'RedHat']
 
