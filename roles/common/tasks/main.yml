@@ -51,7 +51,7 @@
     name: RDO-OpenStack
     description: RDO YUM repo
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
-    priority: 1
+    exclude: python-zmq, zeromq
     gpgcheck: no
   when: ansible_distribution in ['CentOS', 'RedHat']
 
