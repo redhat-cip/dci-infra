@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_fb9f914e",
+        "filename": "playbook.yml",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2016-12-02T15:43:57Z",
+      "side": 1,
+      "message": "Is this necessary? If so, could you add a comment.",
+      "revId": "1f8718e85aa870e6f270d0a1bb193075026a3bd8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
