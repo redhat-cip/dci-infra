@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_8f6d6307",
+        "filename": "roles/dci-worker/tasks/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2016-12-06T20:13:03Z",
+      "side": 1,
+      "message": "Supervisor is no longer available ;)",
+      "revId": "4638b0a73b2cae69671c872d460f2584dcc01866",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
