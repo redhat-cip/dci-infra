@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_efac2738",
+        "filename": "roles/dci-worker/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2016-12-06T20:00:15Z",
+      "side": 1,
+      "message": "We don\u0027t need to ensure that worker.py is 755",
+      "revId": "502f59368c5dc45b0a58540f97c2f622c43fc69f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
