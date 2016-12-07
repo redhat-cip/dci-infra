@@ -38,6 +38,15 @@
   yum: name=epel-release state=present
   when: ansible_distribution == 'CentOS'
 
+# Ensure dci-release is installed
+- name: Ensure dci-release is installed (CentOS, RedHat)
+  yum: name=http://packages.distributed-ci.io/dci-release.el7.noarch.rpm state=present
+  when: ansible_distribution in ['CentOS', 'RedHat']
+
+- name: Ensure dci-release is installed (Fedora)
+  yum: name=http://packages.distributed-ci.io/dci-release.fc23.noarch.rpm state=present
+  when: ansible_distribution in ['Fedora']
+
 # NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
 - name: Ensure EPEL is installed (RedHat)
   yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm state=present
