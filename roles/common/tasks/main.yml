@@ -97,3 +97,9 @@
 
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes
+
+- command: systemctl is-active firewalld
+  register: firewalld
+  tags:
+    - dci-core
+  ignore_errors: True

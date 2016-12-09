@@ -40,3 +40,9 @@
   service: name=dci-worker state=started enabled=yes
   tags:
     - dci-core
+
+- name: Allow ZMQ through firewalld
+  firewalld: port=5557/tcp permanent=true immediate=yes state=enabled
+  tags:
+    - dci-core
+  when: firewalld.stdout == 'active'

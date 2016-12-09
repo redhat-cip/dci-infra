@@ -54,12 +54,6 @@
   tags:
     - dci-core
 
-- command: systemctl is-active firewalld
-  register: firewalld
-  tags:
-    - dci-core
-  ignore_errors: True
-
 - name: Allow http through firewalld
   firewalld: service=http permanent=true immediate=yes state=enabled
   tags:
