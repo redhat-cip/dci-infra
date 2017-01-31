@@ -41,3 +41,7 @@ describe command("python wrapper.py team-delete #{property['admin_account']} #{p
   its(:stdout) { should match("/|\s*message\s*|\s*Team deleted.\s*|/") }
   its(:exit_status) { should eq 0 }
 end
+
+describe command("python wrapper.py purge #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']}") do
+  its(:exit_status) { should eq 0 }
+end

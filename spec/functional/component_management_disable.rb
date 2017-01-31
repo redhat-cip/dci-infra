@@ -28,3 +28,7 @@ describe command("python wrapper.py component-list #{property['admin_account']} 
   its(:stdout) { should_not match("/\s*#{property['test_component_name']}\s*/") }
   its(:exit_status) { should eq 0 }
 end
+
+describe command("python wrapper.py purge #{property['admin_account']} #{property['admin_password']} #{property['controlserver_url']}") do
+  its(:exit_status) { should eq 0 }
+end
