@@ -91,6 +91,22 @@
   tags:
     - dci-core
 
+- name: Set shared_buffers to 25% of RAM
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+              regexp="^shared_buffers =.*"
+              insertafter="^#shared_buffers"
+              line="shared_buffers = {{ (ansible_memtotal_mb // 1024 * 0.25)|int }}G"
+  tags:
+    - dci-core
+
+- name: Set effective_cache_size to 50% of RAM
+  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+              regexp="^effective_cache_size =.*"
+              insertafter="^#effective_cache_size"
+              line="effective_cache_size = {{ (ansible_memtotal_mb // 1024 * 0.50)|int }}G"
+  tags:
+    - dci-core
+
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
