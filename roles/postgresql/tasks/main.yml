@@ -91,6 +91,24 @@
   tags:
     - dci-core
 
+- name: Include PostgreSQL memory configuration
+  lineinfile:
+    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+    line: "include = 'memory.conf'"
+  tags:
+    - dci-core
+
+- name: Write specific memory settings in memory.conf
+  blockinfile:
+    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/memory.conf
+    create: yes
+    block: |
+      shared_buffers = {{ (ansible_memtotal_mb * 0.25)|int }}MB
+      effective_cache_size = {{ (ansible_memtotal_mb * 0.50)|int }}MB
+  notify: restart postgresql
+  tags:
+    - dci-core
+
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
               regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
