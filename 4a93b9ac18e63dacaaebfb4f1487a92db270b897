@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "ba7be1f8_e369a926",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2017-02-02T20:05:03Z",
+      "side": 1,
+      "message": "I think it\u0027s a ini file without section. Quoting ini_file doc:\n\nSection name in INI file. This is added if state\u003dpresent automatically when a single value is being set.\nIf left empty or set to `null`, the option will be placed before the first section. Using `null` is also required if the config format does not support sections.",
+      "parentUuid": "ba7be1f8_637e99e6",
+      "revId": "4a93b9ac18e63dacaaebfb4f1487a92db270b897",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba7be1f8_231d81be",
         "filename": "roles/postgresql/tasks/main.yml",
         "patchSetId": 2
