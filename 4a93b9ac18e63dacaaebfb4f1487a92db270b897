@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ba7be1f8_637e99e6",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2017-02-02T18:56:18Z",
+      "side": 1,
+      "message": "the postgresql.conf file isn\u0027t an inifile so you can\u0027t use it.\nThe lineinfile is better is this case and we already use it in the other tasks.",
+      "parentUuid": "ba7be1f8_03207df6",
+      "revId": "4a93b9ac18e63dacaaebfb4f1487a92db270b897",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba7be1f8_231d81be",
         "filename": "roles/postgresql/tasks/main.yml",
         "patchSetId": 2
