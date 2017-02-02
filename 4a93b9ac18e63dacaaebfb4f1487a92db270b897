@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba7be1f8_03207df6",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2017-02-02T18:34:25Z",
+      "side": 1,
+      "message": "Can you use the ini_file here instead?",
+      "revId": "4a93b9ac18e63dacaaebfb4f1487a92db270b897",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba7be1f8_231d81be",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2017-02-02T18:34:25Z",
+      "side": 1,
+      "message": "the same",
+      "revId": "4a93b9ac18e63dacaaebfb4f1487a92db270b897",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
