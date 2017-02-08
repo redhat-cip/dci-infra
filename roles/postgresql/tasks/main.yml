@@ -113,10 +113,9 @@
     - dci-core
 
 - name: Ensure user can identify with password authentication mechanisms
-  lineinfile: dest=/var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
-              regexp="^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$"
-              insertafter="^#\sIPv4\slocal.+"
-              line="host    all             all  {{ apiip }}/32            {{item}}"
+  lineinfile:
+    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
+    line: "host    all             all  {{ apiip }}/32            {{item}}"
   with_items:
     - password
     - md5
