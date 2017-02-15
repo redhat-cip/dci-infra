@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a75e904_2dff2e03",
+        "filename": "wrapper.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2017-02-15T21:03:27Z",
+      "side": 1,
+      "message": "command \u003d base_command + [ctx[\u0027action\u0027]] + [\u0027--resource\u0027, ctx[\u0027parameters\u0027][0]] ?",
+      "revId": "44d849af71787c8da6267597f052c3c3e0d6a17d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
