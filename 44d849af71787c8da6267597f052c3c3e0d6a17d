@@ -16,6 +16,24 @@
       "revId": "44d849af71787c8da6267597f052c3c3e0d6a17d",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a75e904_0d69928b",
+        "filename": "wrapper.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2017-02-16T09:22:10Z",
+      "side": 1,
+      "message": "purge by default will purge all the resources, which in the case of the test suite if what we want after each scenario.",
+      "parentUuid": "7a75e904_2dff2e03",
+      "revId": "44d849af71787c8da6267597f052c3c3e0d6a17d",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
