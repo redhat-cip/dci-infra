@@ -96,6 +96,15 @@ def team_management(ctx):
     return command
 
 
+def purge_management(ctx):
+    base_command = ['dcictl', '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
+
+    if 'purge' in ctx['action']:
+        command = base_command + [ctx['action']]
+
+    return command
+
+
 def test_management(ctx):
     base_command = ['dcictl', '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
 
@@ -256,6 +265,8 @@ def route(ctx):
         command = feeder_management(ctx)
     elif 'agent' in ctx['action']:
         command = agent_management(ctx)
+    elif 'purge' in ctx['action']:
+        command = purge_management(ctx)
 
     print subprocess.check_output(command)
 
