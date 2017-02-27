@@ -27,13 +27,5 @@
   when: "{{ 'dci-api' in group_names }} or {{ 'dci-ui' in group_names }} or {{ 'sensu' in group_names }}"
   notify: restart fail2ban
 
-- name: Fix fail2ban directory
-  file:
-    path: /var/run/fail2ban
-    state: directory
-    seuser: system_u
-    serole: object_r
-    setype: fail2ban_var_run_t
-
 - name: Start fail2ban service
   service: name=fail2ban state=started enabled=yes
