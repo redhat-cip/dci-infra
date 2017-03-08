@@ -54,6 +54,8 @@
 #
 - name: Ensure DCI is installed
   yum: name=dci-api state=latest update_cache=yes
+  notify:
+    - restart httpd
   tags:
     - dci-core
 

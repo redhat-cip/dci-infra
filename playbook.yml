@@ -57,13 +57,6 @@
   roles:
     - elasticsearch
 
-- name: Install-DCI-Worker
-  hosts: dci-worker
-  remote_user: dci
-  become: yes
-  roles:
-    - dci-worker
-
 - name: Install-DCI-Control-Server
   hosts: dci-api
   remote_user: dci
@@ -71,6 +64,13 @@
   roles:
     - httpd
     - dci-api
+
+- name: Install-DCI-Worker
+  hosts: dci-worker
+  remote_user: dci
+  become: yes
+  roles:
+    - dci-worker
 
 - name: Install-WebAPP
   hosts: dci-ui
