@@ -26,13 +26,12 @@
   command: yum-config-manager --save --setopt "{{ item }}.enabled = 1"
   when: ansible_distribution == 'RedHat'
   with_items:
-    - rhel-7-server-extras-htb-rpms    # python-werkzeug
-    - rhel-7-server-openstack-5.0-rpms # python-flask, python-passlib
-    - rhel-7-server-openstack-7.0-rpms # python-elasticsearch
-    - rhel-7-server-ose-3.1-rpms       # ansible, elasticsearch
-    - rhel-7-server-optional-rpms      # For EPEL use
-    - rhel-7-server-extras-rpms        # For EPEL use
-    - rhel-server-rhscl-7-rpms         # RHSCL for PostgreSQL 9.4
+    - rhel-7-server-rpms                     # RHEL 7
+    - rhel-7-server-optional-rpms            # For EPEL use
+    - rhel-7-server-extras-rpms              # For EPEL use, python-werkzeug, python-flask
+    - rhel-7-server-openstack-9-rpms         # python-elasticsearch, python-passlib
+    - rhel-7-server-openstack-9-optools-rpms # elasticsearch
+    - rhel-server-rhscl-7-rpms               # RHSCL for PostgreSQL 9.4
 
 - name: Ensure EPEL is installed (CentOS)
   yum: name=epel-release state=present
@@ -66,7 +65,7 @@
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
     exclude: python-zmq, zeromq
     gpgcheck: no
-  when: ansible_distribution in ['CentOS', 'RedHat']
+  when: ansible_distribution in ['CentOS']
 
 # stop chrony before starting ntpd
 - name: Stop chrony service if it exists
