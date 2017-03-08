@@ -53,7 +53,7 @@
     - dci-core
 
 - name: Ensure dci-release is installed (Fedora)
-  yum: name=http://packages.distributed-ci.io/dci-release.fc23.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-release.fc25.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
   tags:
     - dci-core
@@ -65,7 +65,7 @@
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
     exclude: python-zmq, zeromq
     gpgcheck: no
-  when: ansible_distribution in ['CentOS']
+  when: ansible_distribution in ['CentOS', 'Fedora']
 
 # stop chrony before starting ntpd
 - name: Stop chrony service if it exists
@@ -91,7 +91,7 @@
   when: ansible_distribution in ['CentOS', 'RedHat']
 
 - name: Ensure dci-sshpubkeys is installed (Fedora)
-  yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc23.noarch.rpm state=present
+  yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc25.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
 
 - name: Ensure packages are up to their latest release
