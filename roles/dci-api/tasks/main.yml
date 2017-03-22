@@ -134,8 +134,15 @@
   tags:
     - dci-core
 
-- name: Ensure STORE_CONTAINER is configurerd in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_CONTAINER =' line="STORE_CONTAINER = '{{ store_container }}'"
+- name: Ensure STORE_FILES_CONTAINER is configurerd in settings.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_FILES_CONTAINER =' line="STORE_FILES_CONTAINER = '{{ store_files_container }}'"
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+- name: Ensure STORE_COMPONENTS_CONTAINER is configurerd in settings.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_COMPONENTS_CONTAINER =' line="STORE_COMPONENTS_CONTAINER = '{{ store_components_container }}'"
   notify:
     - reload httpd
   tags:
