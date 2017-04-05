@@ -1,7 +1,7 @@
 {
   "checks": {
     "ui": {
-      "command": "check-http.rb -k -u {% if api_ssl is defined %}https{% else %}http{% endif %}://{{ui_servername}} --response-code 301 -r",
+      "command": "check-http.rb -u {% if api_ssl is defined %}https{% else %}http{% endif %}://{{ui_servername}}",
       "interval": 60,
       "occurrences": 5,
       "handlers": ["file"],
