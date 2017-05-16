@@ -24,6 +24,7 @@
     - { role: Spredzy.lecm }
   tags:
     - dci-core
+    - feeder
 
 - name: Install-Sensu-client
   hosts: all
@@ -135,3 +136,13 @@
     - fail2ban
   tags:
     - dci-core
+
+- name: Install-DCI-feeders
+  hosts: feeder
+  remote_user: dci
+  become: yes
+  roles:
+    - dci-feeder-extras
+    - xinetd
+  tags:
+    - feeder
