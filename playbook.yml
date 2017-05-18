@@ -20,8 +20,8 @@
   become: yes
   roles:
     - common
-    - { role: Spredzy.swiftbackmeup }
-    - { role: Spredzy.lecm }
+    - Spredzy.swiftbackmeup
+    - Spredzy.lecm
   tags:
     - dci-core
 
@@ -94,7 +94,7 @@
   remote_user: dci
   become: yes
   roles:
-    - { role: geerlingguy.redis }
+    - geerlingguy.redis
   tags:
     - monitoring
 
