@@ -71,7 +71,7 @@
 - name: Stop chrony service if it exists
   service: name=chronyd state=stopped enabled=no
   register: command_result
-  failed_when: "command_result|failed and 'not find' not in commmand_result.msg"
+  failed_when: "command_result|failed and 'not find' not in command_result.msg"
 
 # TODO(spredzy): To remove when the ntp sensu check support chrony
 - yum: name=ntp state=present
