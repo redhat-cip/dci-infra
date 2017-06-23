@@ -31,12 +31,23 @@
   tags:
     - dci-core
 
-# Configure DCI-UI config.json
+# Configure DCI-UI config.json (backward compatibility)
+# todo remove me
+- name: Configure dci-ui config.json
+  template:
+    src: config.json.j2
+    dest: /etc/dci-ui/config.json
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+# Configure DCI-UI config.js
 #
-- name: Ensure apiURL is configurerd in config.json
-  lineinfile: dest=/etc/dci-ui/config.json
-              regexp='"apiURL":'
-              line='"apiURL":"{% if api_ssl is defined %}https{% else %}http{% endif %}://{{ apihost }}",'
+- name: Configure dci-ui config.js
+  template:
+    src: config.js.j2
+    dest: /etc/dci-ui/config.js
   notify:
     - reload httpd
   tags:
