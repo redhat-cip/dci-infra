@@ -165,7 +165,7 @@
 # Install DCI itself
 #
 - name: Check if db is already in place
-  shell: psql -U {{ dbuser }} -h {{ dbhost }} -d {{ dbname }} -w -c 'SELECT * FROM users'
+  shell: . /opt/rh/rh-postgresql94/enable && psql -U {{ dbuser }} -h {{ dbhost }} -d {{ dbname }} -w -c 'SELECT * FROM users'
   environment:
     PGPASSWORD: '{{ dbpassword }}'
   register: dbexist
