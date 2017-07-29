@@ -94,8 +94,10 @@
   yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc25.noarch.rpm state=present
   when: ansible_distribution in ['Fedora']
 
+# Do not update python2-rpkg until https://bugzilla.redhat.com/show_bug.cgi?id=1468836
+# is fixed
 - name: Ensure packages are up to their latest release
-  yum: name=* state=latest update_cache=yes exclude=dci-api
+  yum: name=* state=latest update_cache=yes exclude=dci-api,python2-rpkg
 
 - command: systemctl is-active firewalld
   register: firewalld
