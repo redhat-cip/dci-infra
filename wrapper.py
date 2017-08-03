@@ -44,7 +44,7 @@ def user_management(ctx):
             if team['name'] == ctx['parameters'][0]:
                 team_id = team['id']
                 break
-        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--password', ctx['parameters'][1], '--team_id', team_id ]
+        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--password', ctx['parameters'][1], '--team-id', team_id ]
     elif 'update' in ctx['action']:
         command = base_command + ['--format', 'json', 'user-list']
         response = subprocess.check_output(command)
@@ -136,7 +136,7 @@ def remoteci_management(ctx):
             if team['name'] == ctx['parameters'][1]:
                 team_id = team['id']
                 break
-        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--team_id', team_id ]
+        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--team-id', team_id ]
     elif 'update' in ctx['action']:
         command = base_command + ['--format', 'json', 'remoteci-list']
         response = subprocess.check_output(command)
@@ -189,7 +189,7 @@ def jobdefinition_management(ctx):
             if test['name'] == ctx['parameters'][1]:
                 test_id = test['id']
                 break
-        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--test_id', test_id]
+        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--test-id', test_id]
     elif 'delete' in ctx['action']:
         command = base_command + ['--format', 'json', 'jobdefinition-list']
         response = subprocess.check_output(command)
