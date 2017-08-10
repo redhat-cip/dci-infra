@@ -29,7 +29,7 @@
     - dci-core
 
 - name: Ensure the dci user has proper acl on /var/www/html
-  acl: name=/var/www/html entity=dci etype=user permissions="rwx" state=present
+  acl: name=/var/www/html entity=dci etype=user permissions="rwX" state=present
   tags:
     - dci-core
 

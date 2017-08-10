@@ -25,6 +25,7 @@
   tags:
     - dci-core
     - feeder
+    - packages
 
 - name: Install-Sensu-client
   hosts: all
@@ -146,3 +147,13 @@
     - xinetd
   tags:
     - feeder
+
+- name: Install the package and docs node
+  hosts: packages
+  remote_user: dci
+  become: yes
+  roles:
+    - httpd
+    - packages
+  tags:
+    - packages
