@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ab451fb_e2992221",
+        "filename": "roles/doc/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2017-08-10T13:25:52Z",
+      "side": 1,
+      "message": "same as package, no need owner/group and rights ?",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 20
+      },
+      "revId": "52248a95fbc7a001167297bcb84c95e77f882f41",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
