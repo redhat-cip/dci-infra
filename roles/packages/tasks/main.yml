@@ -1,0 +1,46 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2017 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: The necessary packages are installed
+  package:
+    name: '{{ item }}'
+  with_items:
+    - createrepo
+
+- name: The proper arborescence is created
+  file:
+    path: '/var/www/html/repos/{{ item[0] }}/{{ item[1] }}/x86_64'
+    state: directory
+  with_nested:
+    - ['current', 'development', 'extras']
+    - '{{ supported_versions }}'
+
+- name: The proper link for Red Hat distribution is created
+  file:
+    path: '/var/www/html/repos/{{ item }}/el/7Server'
+    src: '/var/www/html/repos/{{ item }}/el/7'
+    state: link
+  with_items:
+    - 'current'
+    - 'development'
+    - 'extras'
+
+- name: The vhost file is configured
+  template:
+    dest: /etc/httpd/conf.d/02_packages.distributed-ci.io.conf
+    src: 02_packages.distributed-ci.io.conf
+  notify: reload httpd
