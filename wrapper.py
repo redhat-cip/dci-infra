@@ -177,31 +177,6 @@ def component_management(ctx):
 
     return command
 
-def jobdefinition_management(ctx):
-    base_command = ['dcictl',  '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
-
-    if 'list' in ctx['action']:
-        command = base_command + [ctx['action']]
-    elif 'create' in ctx['action']:
-        command = base_command + ['--format', 'json', 'test-list']
-        response = subprocess.check_output(command)
-        for test in json.loads(response)['tests']:
-            if test['name'] == ctx['parameters'][1]:
-                test_id = test['id']
-                break
-        command = base_command + [ctx['action']] + ['--name', ctx['parameters'][0], '--test-id', test_id]
-    elif 'delete' in ctx['action']:
-        command = base_command + ['--format', 'json', 'jobdefinition-list']
-        response = subprocess.check_output(command)
-        for jobdefinition in json.loads(response)['jobdefinitions']:
-            if jobdefinition['name'] == ctx['parameters'][0]:
-                jobdefinition_id  = jobdefinition['id']
-                jobdefinition_etag  = jobdefinition['etag']
-                break
-        command = base_command + [ctx['action']] + [jobdefinition_id, '--etag', jobdefinition_etag]
-
-    return command
-
 def jobstate_management(ctx):
     base_command = ['dcictl',  '--dci-login', ctx['login'], '--dci-password', ctx['password'], '--dci-cs-url', ctx['url']]
 
@@ -255,8 +230,6 @@ def route(ctx):
         command = remoteci_management(ctx)
     elif 'component' in ctx['action']:
         command = component_management(ctx)
-    elif 'jobdefinition' in ctx['action']:
-        command = jobdefinition_management(ctx)
     elif 'jobstate' in ctx['action']:
         command = jobstate_management(ctx)
     elif 'file' in ctx['action']:
