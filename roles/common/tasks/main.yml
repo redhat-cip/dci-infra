@@ -62,7 +62,7 @@
   yum_repository:
     name: RDO-OpenStack
     description: RDO YUM repo
-    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-mitaka/
+    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-pike/
     exclude: python-zmq, zeromq
     gpgcheck: no
   when: ansible_distribution in ['CentOS', 'Fedora']
