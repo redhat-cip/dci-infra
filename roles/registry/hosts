@@ -1,0 +1,17 @@
+[OSEv3:children]
+masters
+nodes
+
+[OSEv3:vars]
+ansible_ssh_user=cloud-user
+ansible_become=true
+deployment_type=openshift-enterprise
+deployment_subtype=registry
+openshift_disable_check=memory_availability
+openshift_master_default_subdomain=registry.distributed-ci.io
+
+[masters]
+registry.distributed-ci.io
+
+[nodes]
+registry.distributed-ci.io openshift_node_labels="{'region': 'infra', 'zone': 'default'}" openshift_schedulable=true

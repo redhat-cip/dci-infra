@@ -1,0 +1,3 @@
+[submodule "roles/registry/openshift-ansible"]
+	path = roles/registry/openshift-ansible
+	url = git@github.com:openshift/openshift-ansible.git
