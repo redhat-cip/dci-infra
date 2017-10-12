@@ -1,4 +1,9 @@
 (function(window) {
   window.__DCI_CONFIG = window.__DCI_CONFIG || {};
   window.__DCI_CONFIG.apiURL = "{% if api_ssl is defined %}https{% else %}http{% endif %}://{{ apihost }}";
+  window.__DCI_CONFIG.sso = {
+    url: "{{ sso_url }}",
+    realm: "{{ sso_realm }}",
+    clientId: "{{ sso_client_id }}"
+  };
 })(window);
