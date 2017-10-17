@@ -98,7 +98,7 @@
     - dci-core
 
 - name: Ensure SSO_PUBLIC_KEY is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^SSO_PUBLIC_KEY =' line="SSO_PUBLIC_KEY = '{{ sso_public_key }}'"
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^SSO_PUBLIC_KEY =' line="SSO_PUBLIC_KEY = \"\"\"{{ sso_public_key }}\"\"\""
   notify:
     - reload httpd
   tags:
