@@ -104,6 +104,13 @@
   tags:
     - dci-core
 
+- name: Ensure SSO_CLIENT_ID is configured in settings.py
+  lineinfile: dest=/etc/dci-api/settings.py regexp='^SSO_CLIENT_ID =' line="SSO_CLIENT_ID = '{{ sso_client_id }}'"
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
 # Configure Swift
 #
 - name: Ensure STORE_ENGINE is configured in settings.py
