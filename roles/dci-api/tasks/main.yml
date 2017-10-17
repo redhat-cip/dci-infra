@@ -98,7 +98,10 @@
     - dci-core
 
 - name: Ensure SSO_PUBLIC_KEY is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^SSO_PUBLIC_KEY =' line="SSO_PUBLIC_KEY = \"\"\"{{ sso_public_key }}\"\"\""
+  # The dot regex match every characters except the newline
+  # (?s) modify this behaviour to include newline matching
+  # see https://docs.python.org/2/library/re.html#re.DOTALL
+  replace: path=/etc/dci-api/settings.py regexp='(?s)^SSO_PUBLIC_KEY = .*""".*"""$' replace="SSO_PUBLIC_KEY = \"\"\"{{ sso_public_key }}\"\"\""
   notify:
     - reload httpd
   tags:
