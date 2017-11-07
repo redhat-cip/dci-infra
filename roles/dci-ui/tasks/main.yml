@@ -31,12 +31,12 @@
   tags:
     - dci-core
 
-# Configure DCI-UI config.js
+# Configure DCI-UI config.json
 #
-- name: Configure dci-ui config.js
+- name: Configure dci-ui config.json
   template:
-    src: config.js.j2
-    dest: /etc/dci-ui/config.js
+    src: config.json.j2
+    dest: /etc/dci-ui/config.json
   notify:
     - reload httpd
   tags:
