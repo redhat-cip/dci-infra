@@ -168,3 +168,10 @@
     - doc
   tags:
     - doc
+
+- name: Install the swift-aio node
+  hosts: swift
+  remote_user: dci
+  become: yes
+  roles:
+    - swift-aio
