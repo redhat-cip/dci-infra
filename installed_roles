@@ -1,3 +1,7 @@
-geerlingguy.redis
-Spredzy.swiftbackmeup
-Spredzy.lecm
+- src: geerlingguy.redis
+- src: Spredzy.swiftbackmeup
+- src: Spredzy.lecm
+
+- src: https://github.com/Spredzy/ansible-role-swift-aio
+  version: master
+  name: swift-aio
