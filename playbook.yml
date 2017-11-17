@@ -175,3 +175,5 @@
   become: yes
   roles:
     - swift-aio
+  tags:
+    - dci-core
