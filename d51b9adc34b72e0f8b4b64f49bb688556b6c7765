@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3acd31a7_9da3e74f",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2017-11-20T14:06:09Z",
+      "side": 1,
+      "message": "Before merging, can you verify that dci-essync cannot be executed more than once at at time ?",
+      "revId": "d51b9adc34b72e0f8b4b64f49bb688556b6c7765",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
