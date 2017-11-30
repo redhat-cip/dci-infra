@@ -1,3 +1,0 @@
----
-- name: reload sensu-client
-  service: name=sensu-client state=restarted

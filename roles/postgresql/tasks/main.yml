@@ -38,13 +38,6 @@
   tags:
     - dci-core
 
-- name: Install sensu-plugins
-  command: sensu-install -p {{item}}
-  with_items:
-    - postgres
-  tags:
-    - monitoring
-
 - name: Ensure the regular PostgreSQL service is off. We use the one from SCL instead.
   service: name=postgresql state=stopped enabled=no
   tags:
