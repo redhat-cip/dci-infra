@@ -15,13 +15,6 @@
 # under the License.
 
 ---
-- name: Install sensu-plugins
-  command: sensu-install -p {{item}}
-  with_items:
-    - elasticsearch
-  tags:
-    - monitoring
-
 - name: Ensure GPG key is correctly installed
   rpm_key: state=present key=https://packages.elastic.co/GPG-KEY-elasticsearch
   tags:

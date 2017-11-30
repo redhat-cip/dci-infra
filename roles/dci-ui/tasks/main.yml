@@ -15,13 +15,6 @@
 # under the License.
 
 ---
-- name: Install sensu-plugins
-  command: sensu-install -p {{item}}
-  with_items:
-    - http
-  tags:
-    - monitoring
-
 # Install DCI-UI
 #
 - name: Ensure DCI-UI is installed

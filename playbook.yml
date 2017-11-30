@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2015 Red Hat, Inc.
+# Copyright 2015-2017 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -27,24 +27,6 @@
     - feeder
     - packages
     - doc
-
-- name: Install-Sensu-client
-  hosts: all
-  remote_user: dci
-  become: yes
-  roles:
-    - sensu-client
-  tags:
-    - monitoring
-
-- name: Install-Collectd
-  hosts: all
-  remote_user: dci
-  sudo: yes
-  roles:
-    - collectd
-  tags:
-    - metrics
 
 - name: Install-PostgreSQL
   hosts: postgresql
@@ -82,53 +64,6 @@
   roles:
     - httpd
     - dci-ui
-
-- name: Install-RabbitMQ
-  hosts: rabbitmq
-  remote_user: dci
-  become: yes
-  roles:
-    - rabbitmq
-  tags:
-    - monitoring
-
-- name: Install-Redis
-  hosts: redis
-  remote_user: dci
-  become: yes
-  roles:
-    - { role: geerlingguy.redis }
-  tags:
-    - monitoring
-
-- name: Install-sensu
-  hosts: sensu
-  remote_user: dci
-  become: yes
-  roles:
-    - httpd
-    - sensu
-  tags:
-    - monitoring
-
-- name: Install-influxdb
-  hosts: influxdb
-  remote_user: dci
-  sudo: yes
-  roles:
-    - influxdb
-  tags:
-    - metrics
-
-- name: Install-Grafana
-  hosts: grafana
-  remote_user: dci
-  sudo: yes
-  roles:
-    - httpd
-    - grafana
-  tags:
-    - metrics
 
 - name: Install-fail2ban
   hosts: all
