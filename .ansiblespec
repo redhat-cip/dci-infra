@@ -1,4 +1,0 @@
----
--
-  playbook: playbook.yml
-  inventory: data/hosts
