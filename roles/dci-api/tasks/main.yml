@@ -90,6 +90,15 @@
   tags:
     - dci-core
 
+- name: Turn off debug mode in settings.py
+  lineinfile: dest=/etc/dci-api/settings.py
+              regexp='^DEBUG ='
+              line="DEBUG = False"
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
 - name: Ensure SSO_PUBLIC_KEY is configured in settings.py
   # The dot regex match every characters except the newline
   # (?s) modify this behaviour to include newline matching
