@@ -50,6 +50,11 @@
   tags:
     - dci-core
 
+- name: Set heap size to 4G of the jvm when running Elasticsearch
+  lineinfile: dest=/etc/sysconfig/elasticsearch
+              regexp="^#ES_HEAP_SIZE="
+              line="ES_HEAP_SIZE=4g"
+
 - name: Ensure elasticsearch is started
   service: name=elasticsearch state=started enabled=yes
   tags:
