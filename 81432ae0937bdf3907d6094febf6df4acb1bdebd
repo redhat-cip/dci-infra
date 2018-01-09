@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba076199_6e02ab40",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-01-09T21:34:59Z",
+      "side": 1,
+      "message": "We already do the update_cache just the step above. Can we remove it to reduce the execution duration.",
+      "revId": "81432ae0937bdf3907d6094febf6df4acb1bdebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_4effe734",
+        "filename": "roles/dci-worker/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-01-09T21:34:59Z",
+      "side": 1,
+      "message": "the same here",
+      "revId": "81432ae0937bdf3907d6094febf6df4acb1bdebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba076199_2efcb33d",
+        "filename": "roles/elasticsearch/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-01-09T21:34:59Z",
+      "side": 1,
+      "message": "update_cache: true to be consistent?",
+      "revId": "81432ae0937bdf3907d6094febf6df4acb1bdebd",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
