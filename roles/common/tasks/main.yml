@@ -53,7 +53,9 @@
     - dci-core
 
 - name: Ensure dci-release is installed (Fedora)
-  yum: name=http://packages.distributed-ci.io/dci-release.fc25.noarch.rpm state=present
+  yum:
+    name: "http://packages.distributed-ci.io/dci-release.fc{{ ansible_distribution_version }}.noarch.rpm"
+    state: present
   when: ansible_distribution in ['Fedora']
   tags:
     - dci-core
@@ -86,13 +88,8 @@
 - name: Ensure SELinux is enforced
   selinux: state=enforcing policy=targeted
 
-- name: Ensure dci-sshpubkeys is installed (CentOS, RHEL)
-  yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.el7.noarch.rpm state=present
-  when: ansible_distribution in ['CentOS', 'RedHat']
-
-- name: Ensure dci-sshpubkeys is installed (Fedora)
-  yum: name=http://packages.distributed-ci.io/dci-sshpubkeys.fc25.noarch.rpm state=present
-  when: ansible_distribution in ['Fedora']
+- name: Ensure dci-sshpubkeys is installed
+  yum: name=dci-sshpubkeys state=present
 
 - name: Ensure packages are up to their latest release
   yum: name=* state=latest update_cache=yes exclude=dci-api
