@@ -17,7 +17,10 @@
 ---
 # Ensure the needed SELinux booleans are enabled
 - name: Ensure the needed SELinux booleans are enabled
-  seboolean: name={{item}} state=yes persistent=yes
+  seboolean:
+    name: '{{item}}'
+    state: yes
+    persistent: yes
   with_items:
     - httpd_can_network_connect
     - httpd_can_network_connect_db
@@ -25,13 +28,17 @@
     - dci-core
 
 - name: Enable SCL
-  yum: name=centos-release-scl state=present
+  yum:
+    name: centos-release-scl
+    state: present
   tags:
     - dci-core
 
 # Ensure postgresql client tools are installed
 - name: Ensure postgresql client tools installed
-  yum: name=rh-postgresql94-postgresql state=present
+  yum:
+    name: rh-postgresql94-postgresql
+    state: present
   tags:
     - dci-core
 
@@ -46,14 +53,20 @@
 # Install DCI-API
 #
 - name: Ensure DCI is installed
-  yum: name=dci-api state=latest update_cache=yes
+  yum:
+    name: dci-api
+    state: latest
+    update_cache: yes
   notify:
     - restart httpd
   tags:
     - dci-core
 
 - name: Ensure DCI Client is installed
-  yum: name=python2-dciclient state=latest update_cache=yes
+  yum:
+    name: python2-dciclient
+    state: latest
+    update_cache: yes
   tags:
     - dci-core
 
@@ -61,39 +74,53 @@
 # I9db68725d6c8cd05fa50a9052abed206fd7811dc is
 # merged.
 - name: ensure dci-dbsync exists
-  stat: path=/usr/bin/dci-dbsync
+  stat:
+    path: /usr/bin/dci-dbsync
   register: dci_dbsync_state
+
 - name: Pull dci-common for pre-I9db68725d6c8cd05fa50a9052abed206fd7811dc rpm
-  yum: name=dci-common state=latest
+  yum:
+    name: dci-common
+    state: latest
   when: dci_dbsync_state.stat.exists == False
 
 # Configure DCI-API configuration file
 #
 - name: Ensure HOST is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^HOST =' line="HOST = '{{ apihost }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^HOST ='
+    line: "HOST = '{{ apihost }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure ES_HOST is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^ES_HOST =' line="ES_HOST = '{{ eshost }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^ES_HOST ='
+    line: "ES_HOST = '{{ eshost }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure SQLALCHEMY_DATABASE_URI is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^SQLALCHEMY_DATABASE_URI =' line="SQLALCHEMY_DATABASE_URI = 'postgresql://{{ dbuser }}:{{ dbpassword }}@{{ dbhost }}:5432/{{ dbname }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^SQLALCHEMY_DATABASE_URI ='
+    line: "SQLALCHEMY_DATABASE_URI = 'postgresql://{{ dbuser }}:{{ dbpassword }}@{{ dbhost }}:5432/{{ dbname }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Turn off debug mode in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py
-              regexp='^DEBUG ='
-              line="DEBUG = False"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^DEBUG ='
+    line: "DEBUG = False"
   notify:
     - reload httpd
   tags:
@@ -103,14 +130,20 @@
   # The dot regex match every characters except the newline
   # (?s) modify this behaviour to include newline matching
   # see https://docs.python.org/2/library/re.html#re.DOTALL
-  replace: path=/etc/dci-api/settings.py regexp='(?s)^SSO_PUBLIC_KEY = .*""".*"""$' replace="SSO_PUBLIC_KEY = \"\"\"{{ sso_public_key }}\"\"\""
+  replace:
+    path: /etc/dci-api/settings.py
+    regexp: '(?s)^SSO_PUBLIC_KEY = .*""".*"""$'
+    replace: "SSO_PUBLIC_KEY = \"\"\"{{ sso_public_key }}\"\"\""
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure SSO_CLIENT_ID is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^SSO_CLIENT_ID =' line="SSO_CLIENT_ID = '{{ sso_client_id }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^SSO_CLIENT_ID ='
+    line: "SSO_CLIENT_ID = '{{ sso_client_id }}'"
   notify:
     - reload httpd
   tags:
@@ -119,63 +152,90 @@
 # Configure Swift
 #
 - name: Ensure STORE_ENGINE is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_ENGINE =' line="STORE_ENGINE = '{{ store_engine }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_ENGINE ='
+    line: "STORE_ENGINE = '{{ store_engine }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_USERNAME is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_USERNAME =' line="STORE_USERNAME = '{{ store_username }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_USERNAME ='
+    line: "STORE_USERNAME = '{{ store_username }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_PASSWORD is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_PASSWORD =' line="STORE_PASSWORD = '{{ store_password }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_PASSWORD ='
+    line: "STORE_PASSWORD = '{{ store_password }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_TENANT_NAME is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_TENANT_NAME =' line="STORE_TENANT_NAME = '{{ store_tenant_name }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_TENANT_NAME ='
+    line: "STORE_TENANT_NAME = '{{ store_tenant_name }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_AUTH_URL is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_AUTH_URL =' line="STORE_AUTH_URL = '{{ store_auth_url }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_AUTH_URL ='
+    line: "STORE_AUTH_URL = '{{ store_auth_url }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_CONTAINER is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_CONTAINER =' line="STORE_CONTAINER = '{{ store_container }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_CONTAINER ='
+    line: "STORE_CONTAINER = '{{ store_container }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_FILES_CONTAINER is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_FILES_CONTAINER =' line="STORE_FILES_CONTAINER = '{{ store_files_container }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_FILES_CONTAINER ='
+    line: "STORE_FILES_CONTAINER = '{{ store_files_container }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure STORE_COMPONENTS_CONTAINER is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^STORE_COMPONENTS_CONTAINER =' line="STORE_COMPONENTS_CONTAINER = '{{ store_components_container }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^STORE_COMPONENTS_CONTAINER ='
+    line: "STORE_COMPONENTS_CONTAINER = '{{ store_components_container }}'"
   notify:
     - reload httpd
   tags:
     - dci-core
 
 - name: Ensure ZMQ_CONN is configured in settings.py
-  lineinfile: dest=/etc/dci-api/settings.py regexp='^ZMQ_CONN =' line="ZMQ_CONN = '{{ zmq_conn }}'"
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^ZMQ_CONN ='
+    line: "ZMQ_CONN = '{{ zmq_conn }}'"
   notify:
     - reload httpd
   tags:
@@ -212,7 +272,12 @@
     - dci-core
 
 - name: Ensure apache can write files for DCI
-  file: path='{{ api_filestore_path | default("/var/lib/dci-control-server/files") }}' state=directory owner=apache group=apache recurse=true
+  file:
+    path: '{{ api_filestore_path | default("/var/lib/dci-control-server/files") }}'
+    state: directory
+    owner: apache
+    group: apache
+    recurse: true
 
 # Configure DCI-API vhost
 #
@@ -226,4 +291,8 @@
 # Create a crontab to update ES in Async way
 #
 - name: Create cron to feed ES
-  cron: name="AsyncES" minute="*/5" hour="*" job="/bin/dci-essync https://{{ apihost }} admin {{ adminpassword }}> /dev/null"
+  cron:
+    name: "AsyncES"
+    minute: "*/5"
+    hour: "*"
+    job: "/bin/dci-essync https://{{ apihost }} admin {{ adminpassword }}> /dev/null"

@@ -18,7 +18,10 @@
 # Install DCI-UI
 #
 - name: Ensure DCI-UI is installed
-  yum: name=dci-ui state=latest update_cache=yes
+  yum:
+    name: dci-ui
+    state: latest
+    update_cache: yes
   notify:
     - reload httpd
   tags:
@@ -38,7 +41,9 @@
 # Configure DCI-UI vhost
 #
 - name: Create vhost file
-  template: src=dci_ui.conf dest=/etc/httpd/conf.d/dci_ui.conf
+  template:
+    src: dci_ui.conf
+    dest: /etc/httpd/conf.d/dci_ui.conf
   notify:
     - reload httpd
   tags:

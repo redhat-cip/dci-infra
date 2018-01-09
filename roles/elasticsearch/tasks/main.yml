@@ -16,46 +16,60 @@
 
 ---
 - name: Ensure GPG key is correctly installed
-  rpm_key: state=present key=https://packages.elastic.co/GPG-KEY-elasticsearch
+  rpm_key:
+    state: present
+    key: https://packages.elastic.co/GPG-KEY-elasticsearch
   tags:
     - dci-core
 
 - name: Ensure elasticsearch yum repo are installed
-  copy: src=elasticsearch.repo dest=/etc/yum.repos.d/elasticsearch.repo
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
   tags:
     - dci-core
 
 - name: Ensure java is installed
-  yum: name=java-1.8.0-openjdk state=present
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
   tags:
     - dci-core
 
 - name: Ensure elasticsearch is installed
-  yum: name=elasticsearch state=present
+  yum:
+    name: elasticsearch
+    state: present
   tags:
     - dci-core
 
 - name: Ensure Elasticsearch listen to all addresses
-  lineinfile: dest=/etc/elasticsearch/elasticsearch.yml
-              regexp="^network.host{{':'}} 0.0.0.0"
-              insertafter="^# network.host:"
-              line="network.host{{':'}} 0.0.0.0"
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: "^network.host{{':'}} 0.0.0.0"
+    insertafter: "^# network.host:"
+    line: "network.host{{':'}} 0.0.0.0"
   tags:
     - dci-core
 
 - name: Ensure the http post max is correctly setup to 4gb
-  lineinfile: dest=/etc/elasticsearch/elasticsearch.yml
-              regexp="^http.max_content_length{{':'}}"
-              line="http.max_content_length{{':'}} 4gb"
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: "^http.max_content_length{{':'}}"
+    line: "http.max_content_length{{':'}} 4gb"
   tags:
     - dci-core
 
 - name: Set heap size to 4G of the jvm when running Elasticsearch
-  lineinfile: dest=/etc/sysconfig/elasticsearch
-              regexp="^#ES_HEAP_SIZE="
-              line="ES_HEAP_SIZE=4g"
+  lineinfile:
+    dest: /etc/sysconfig/elasticsearch
+    regexp: "^#ES_HEAP_SIZE="
+    line: "ES_HEAP_SIZE=4g"
 
 - name: Ensure elasticsearch is started
-  service: name=elasticsearch state=started enabled=yes
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
   tags:
     - dci-core

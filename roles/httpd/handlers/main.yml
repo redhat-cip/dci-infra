@@ -1,4 +1,5 @@
 ---
 - name: reload httpd
-  service: name=httpd
-           state=reloaded
+  service:
+    name: httpd
+    state: reloaded

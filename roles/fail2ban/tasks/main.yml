@@ -16,16 +16,25 @@
 
 ---
 - name: Install fail2ban
-  yum: name=fail2ban state=present
+  yum:
+    name: fail2ban
+    state: present
 
 - name: Install 01-sshd.conf
-  copy: src=01-sshd.conf dest=/etc/fail2ban/jail.d/01-sshd.conf
+  copy:
+    src: 01-sshd.conf
+    dest: /etc/fail2ban/jail.d/01-sshd.conf
   notify: restart fail2ban
 
 - name: Install 02-httpd.conf
-  copy: src=02-httpd.conf dest=/etc/fail2ban/jail.d/02-httpd.conf
+  copy:
+    src: 02-httpd.conf
+    dest: /etc/fail2ban/jail.d/02-httpd.conf
   when: "{{ 'dci-api' in group_names }} or {{ 'dci-ui' in group_names }} or {{ 'sensu' in group_names }}"
   notify: restart fail2ban
 
 - name: Start fail2ban service
-  service: name=fail2ban state=started enabled=yes
+  service:
+    name: fail2ban
+    state: started
+    enabled: yes
