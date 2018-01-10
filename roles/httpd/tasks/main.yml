@@ -16,12 +16,16 @@
 
 ---
 - name: Ensure apache is present version
-  yum: name=httpd state=present
+  yum:
+    name: httpd
+    state: present
   tags:
     - dci-core
 
 - name: Ensure welcome.conf is absent
-  file: path=/etc/httpd/conf.d/{{item}} state=absent
+  file:
+    path: '/etc/httpd/conf.d/{{item}}'
+    state: absent
   with_items:
     - welcome.conf
     - userdir.conf
@@ -29,12 +33,18 @@
     - dci-core
 
 - name: Ensure the dci user has proper acl on /var/www/html
-  acl: name=/var/www/html entity=dci etype=user permissions="rwX" state=present
+  acl:
+    name: /var/www/html
+    entity: dci
+    etype: user
+    permissions: 'rwX'
+    state: present
   tags:
     - dci-core
 
 - name: Ensure required httpd modules are installed
-  yum: name={{ item }}
+  yum:
+    name: '{{ item }}'
   with_items:
     - mod_ssl
     - mod_wsgi
@@ -42,20 +52,28 @@
     - dci-core
 
 - name: Copy needed configuration
-  copy: src={{item}}
-        dest=/etc/httpd/conf.d/{{item}}
+  copy:
+    src: '{{item}}'
+    dest: '/etc/httpd/conf.d/{{item}}'
   with_items:
     - security.conf
     - ssl-sec.conf
   notify: reload httpd
 
 - name: Ensure apache is running (and enable it at boot)
-  service: name=httpd state=started enabled=yes
+  service:
+    name: httpd
+    state: started
+    enabled: yes
   tags:
     - dci-core
 
 - name: Allow http through firewalld
-  firewalld: service=http permanent=true immediate=yes state=enabled
+  firewalld:
+    service: http
+    permanent: true
+    immediate: yes
+    state: enabled
   tags:
     - dci-core
   when: firewalld.stdout == 'active'
