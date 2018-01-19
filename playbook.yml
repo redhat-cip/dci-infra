@@ -74,15 +74,15 @@
   tags:
     - dci-core
 
-# - name: Install-DCI-feeders
-#   hosts: feeder
-#   remote_user: dci
-#   become: yes
-#   roles:
-#     - dci-feeder-extras
-#     - xinetd
-#   tags:
-#     - feeder
+- name: Install-DCI-feeders
+  hosts: feeder
+  remote_user: dci
+  become: yes
+  roles:
+    - dci-feeder-extras
+    - xinetd
+  tags:
+    - feeder
 
 - name: Install the packages node
   hosts: packages
