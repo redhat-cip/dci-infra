@@ -15,8 +15,6 @@
 # under the License.
 
 ---
-# Install DCI-API
-#
 - name: Ensure DCI-api is installed
   yum:
     name: dci-api
@@ -25,26 +23,12 @@
   tags:
     - dci-core
 
-# Install postfix
-#
-- name: Ensure Postfix is installed
-  yum:
-    name: postfix
-    state: latest
-    update_cache: yes
-  tags:
-    - dci-core
+- name: Configure /etc/dci_worker.sh
+  template:
+    src: dci_worker.sh
+    dest: /etc/dci_worker.sh
+  notify: restart dci-worker
 
-- name: Ensure postfix is running (and enable it at boot)
-  service:
-    name: postfix
-    state: started
-    enabled: yes
-  tags:
-    - dci-core
-
-# configure systemd for dci-worker
-#
 - name: Enable and start the worker
   service:
     name: dci-worker
