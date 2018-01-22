@@ -1,0 +1,5 @@
+---
+- name: restart dci-worker
+  service:
+    name: dci-worker
+    state: restarted
