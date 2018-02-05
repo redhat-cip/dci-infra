@@ -25,6 +25,8 @@
 
 - name: To be remove
   shell: systemctl daemon-reload
+  tags:
+    - dci-core
 
 - name: Configure /etc/dci_worker.sh
   template:
@@ -32,6 +34,8 @@
     dest: /etc/dci_worker.sh
     mode: 0755
   notify: restart dci-worker
+  tags:
+    - dci-core
 
 - name: Enable and start the worker
   service:
