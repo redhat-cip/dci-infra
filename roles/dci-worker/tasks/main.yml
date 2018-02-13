@@ -20,6 +20,8 @@
     name: dci-api
     state: latest
     update_cache: yes
+  notify:
+    - restart dci-worker
   tags:
     - dci-core
 
