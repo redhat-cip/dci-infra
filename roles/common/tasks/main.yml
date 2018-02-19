@@ -15,44 +15,21 @@
 # under the License.
 
 ---
-- name: Attach Red Hat pool
-  redhat_subscription: state=present
-                       username={{ rhn_user }}
-                       password={{ rhn_password }}
-                       pool={{ rhn_pool }}
-  when: ansible_distribution == 'RedHat'
-
-- name: Subscribe to Red Hat channels
-  command: yum-config-manager --save --setopt "{{ item }}.enabled = 1"
-  when: ansible_distribution == 'RedHat'
+- name: Ensure dependencies are installed
+  package:
+    name: '{{ item }}'
   with_items:
-    - rhel-7-server-rpms                     # RHEL 7
-    - rhel-7-server-optional-rpms            # For EPEL use
-    - rhel-7-server-extras-rpms              # For EPEL use, python-werkzeug, python-flask
-    - rhel-7-server-openstack-9-rpms         # python-elasticsearch, python-passlib
-    - rhel-7-server-openstack-9-optools-rpms # elasticsearch
-    - rhel-server-rhscl-7-rpms               # RHSCL for PostgreSQL 9.4
+    - epel-release
+    - yum-plugin-priorities
+    - policycoreutils-python
+    - "http://packages.distributed-ci.io/dci-release.el{{ ansible_distribution_major_version }}.noarch.rpm"
+  tags:
+    - dci-core
 
-- name: Ensure EPEL is installed (CentOS)
-  yum: name=epel-release state=present
-  when: ansible_distribution == 'CentOS'
-
-# NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
-- name: Ensure EPEL is installed (RedHat)
+- name: Ensure dci-sshpubkeys is installed
   yum:
-    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    name: dci-sshpubkeys
     state: present
-  when: ansible_distribution == 'RedHat'
-
-- name: Ensure Priority is installed
-  yum: name=yum-plugin-priorities state=present
-
-# Ensure dci-release is installed
-- name: Ensure dci-release is installed (CentOS, RedHat)
-  yum:
-    name: "http://packages.distributed-ci.io/dci-release.el{{ ansible_distribution_major_version }}.noarch.rpm"
-    state: present
-  when: ansible_distribution in ['CentOS', 'RedHat']
   tags:
     - dci-core
 
@@ -63,34 +40,38 @@
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-pike/
     exclude: python-zmq, zeromq
     gpgcheck: no
-  when: ansible_distribution == 'CentOS'
+  tags:
+    - dci-core
 
-# stop chrony before starting ntpd
-- name: Stop chrony service if it exists
-  service: name=chronyd state=stopped enabled=no
+- name: Start chrony service if it exists
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
   register: command_result
   failed_when: "command_result|failed and 'not find' not in command_result.msg"
-
-# TODO(spredzy): To remove when the ntp sensu check support chrony
-- yum: name=ntp state=present
-- service: name=ntpd state=started enabled=yes
+  tags:
+    - dci-core
 
 - name: Set the server hostname
-  hostname: name={{ ansible_ssh_host }}
-
-- name: Ensure semanage is installed for SELinux boolean manipulation
-  yum: name=policycoreutils-python state=present
+  hostname:
+    name: '{{ ansible_ssh_host }}'
+  tags:
+    - dci-core
 
 - name: Ensure SELinux is enforced
-  selinux: state=enforcing policy=targeted
-
-- name: Ensure dci-sshpubkeys is installed
-  yum:
-    name: dci-sshpubkeys
-    state: present
+  selinux:
+    state: enforcing
+    policy: targeted
+  tags:
+    - dci-core
 
 - name: Ensure packages are up to their latest release
-  yum: name=* state=latest update_cache=yes exclude=dci-api
+  package:
+    name: *
+    state: latest
+    update_cache: yes
+    exclude: dci-api
 
 - command: systemctl is-active firewalld
   register: firewalld

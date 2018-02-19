@@ -23,7 +23,6 @@
     - { role: Spredzy.swiftbackmeup }
     - { role: Spredzy.lecm }
   tags:
-    - dci-core
     - feeder
     - packages
     - doc
@@ -71,8 +70,6 @@
   become: yes
   roles:
     - fail2ban
-  tags:
-    - dci-core
 
 - name: Install-DCI-feeders
   hosts: feeder
