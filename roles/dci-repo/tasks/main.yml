@@ -1,0 +1,18 @@
+---
+- name: Install Certificates
+  copy:
+    content: {{ repo_servercert }}
+    dest: {{ repo_sslcertificatefile }}
+
+- copy:
+    content: {{ repo_serverkey }}
+    dest: {{ repo_sslkeyfile }}
+
+- copy:
+    content: {{ repo_cacert }}
+    dest: {{ repo_sslcacertfile }}
+
+- name: Install nginx Vhost
+  template:
+    src: templates/nginx.conf
+    dest: /etc/nginx.conf
