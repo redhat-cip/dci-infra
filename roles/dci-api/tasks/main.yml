@@ -84,6 +84,18 @@
     state: latest
   when: dci_dbsync_state.stat.exists == False
 
+# Install Repo certs to be able to generate client certificates
+#
+- name: Install Repo CA certs
+  copy:
+    content: {{ repo_cacert }}
+    dest: {{ repo_sslcacertfile }}
+
+- name: Install Repo CA key
+  copy:
+    content: {{ repo_cakey }}
+    dest: {{ repo_sslkeyfile }}
+
 # Configure DCI-API configuration file
 #
 - name: Ensure HOST is configured in settings.py
@@ -236,6 +248,26 @@
     dest: /etc/dci-api/settings.py
     regexp: '^ZMQ_CONN ='
     line: "ZMQ_CONN = '{{ zmq_conn }}'"
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+- name: Ensure CA_CERT is configured in settings.py
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^CA_CERT ='
+    line: "CA_CERT = '{{ repo_sslcacertfile }}'"
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+- name: Ensure CA_KEY is configured in settings.py
+  lineinfile:
+    dest: /etc/dci-api/settings.py
+    regexp: '^CA_KEY ='
+    line: "CA_KEY = '{{ repo_sslcakeyfile }}'"
   notify:
     - reload httpd
   tags:
