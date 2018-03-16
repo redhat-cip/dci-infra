@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba3cc151_234934d1",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-03-16T07:20:21Z",
+      "side": 1,
+      "message": "nit: can we move to the new format\n\ntemplate:\n  src: settings.py.j2\n  dest: /etc/dci-api/settings.py",
+      "revId": "134ed5444dd3fe29af60486a5255126fd2023279",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
