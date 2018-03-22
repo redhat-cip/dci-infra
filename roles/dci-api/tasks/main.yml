@@ -155,12 +155,3 @@
     - reload httpd
   tags:
     - dci-core
-
-# Create a crontab to update ES in Async way
-#
-- name: Create cron to feed ES
-  cron:
-    name: "AsyncES"
-    minute: "*/5"
-    hour: "*"
-    job: "/bin/dci-essync https://{{ apihost }} admin {{ adminpassword }}> /dev/null"
