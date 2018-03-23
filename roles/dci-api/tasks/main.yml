@@ -94,7 +94,7 @@
 - name: Install Repo CA key
   copy:
     content: "{{ repo_cakey }}"
-    dest: "{{ repo_sslkeyfile }}"
+    dest: "{{ repo_sslcakeyfile }}"
 
 # Configure DCI-API configuration file
 #
