@@ -29,8 +29,7 @@
     - rhel-7-server-rpms                     # RHEL 7
     - rhel-7-server-optional-rpms            # For EPEL use
     - rhel-7-server-extras-rpms              # For EPEL use, python-werkzeug, python-flask
-    - rhel-7-server-openstack-9-rpms         # python-elasticsearch, python-passlib
-    - rhel-7-server-openstack-9-optools-rpms # elasticsearch
+    - rhel-7-server-openstack-9-rpms         # python-passlib
     - rhel-server-rhscl-7-rpms               # RHSCL for PostgreSQL 9.4
 
 - name: Ensure EPEL is installed (CentOS)

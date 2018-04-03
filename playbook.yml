@@ -35,13 +35,6 @@
   roles:
     - postgresql
 
-- name: Install-ElasticSearch
-  hosts: elasticsearch
-  remote_user: dci
-  become: yes
-  roles:
-    - elasticsearch
-
 - name: Install-DCI-Control-Server
   hosts: dci-api
   remote_user: dci
