@@ -89,11 +89,7 @@
     state: present
 
 - name: Ensure packages are up to their latest release
-  yum:
-    name: *
-    state: latest
-    update_cache: yes
-    exclude: dci-api,ansible
+  yum: name=* state=latest update_cache=yes exclude=dci-api
 
 - command: systemctl is-active firewalld
   register: firewalld
