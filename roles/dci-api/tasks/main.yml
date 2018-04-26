@@ -90,11 +90,15 @@
   copy:
     content: "{{ repo_cacert }}"
     dest: "{{ repo_sslcacertfile }}"
+  tags:
+    - dci-core
 
 - name: Install Repo CA key
   copy:
     content: "{{ repo_cakey }}"
     dest: "{{ repo_sslcakeyfile }}"
+  tags:
+    - dci-core
 
 # Configure DCI-API configuration file
 #
