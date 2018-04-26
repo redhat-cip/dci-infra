@@ -86,6 +86,14 @@
 
 # Install Repo certs to be able to generate client certificates
 #
+- name: Create SSL Directory
+  file:
+    path: '/etc/ssl/repo'
+    state: directory
+    recurse: yes
+  tags:
+    - dci-core
+
 - name: Install Repo CA certs
   copy:
     content: "{{ repo_cacert }}"
