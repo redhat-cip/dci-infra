@@ -16,10 +16,11 @@
 
 ---
 - name: Attach Red Hat pool
-  redhat_subscription: state=present
-                       username={{ rhn_user }}
-                       password={{ rhn_password }}
-                       pool={{ rhn_pool }}
+  redhat_subscription:
+    state: present
+    username: '{{ rhn_user }}'
+    password: '{{ rhn_password }}'
+    pool: '{{ rhn_pool }}'
   when: ansible_distribution == 'RedHat'
 
 - name: Subscribe to Red Hat channels
@@ -33,7 +34,9 @@
     - rhel-server-rhscl-7-rpms               # RHSCL for PostgreSQL 9.4
 
 - name: Ensure EPEL is installed (CentOS)
-  yum: name=epel-release state=present
+  yum:
+    name: epel-release
+    state: present
   when: ansible_distribution == 'CentOS'
 
 # NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
@@ -44,7 +47,9 @@
   when: ansible_distribution == 'RedHat'
 
 - name: Ensure Priority is installed
-  yum: name=yum-plugin-priorities state=present
+  yum:
+    name: yum-plugin-priorities
+    state: present
 
 # Ensure dci-release is installed
 - name: Ensure dci-release is installed (CentOS, RedHat)
@@ -66,22 +71,35 @@
 
 # stop chrony before starting ntpd
 - name: Stop chrony service if it exists
-  service: name=chronyd state=stopped enabled=no
+  service:
+    name: chronyd
+    state: stopped
+    enabled: no
   register: command_result
   failed_when: "command_result|failed and 'not find' not in command_result.msg"
 
 # TODO(spredzy): To remove when the ntp sensu check support chrony
-- yum: name=ntp state=present
-- service: name=ntpd state=started enabled=yes
+- yum:
+    name: ntp
+    state: present
+- service:
+    name: ntpd
+    state: started
+    enabled: yes
 
 - name: Set the server hostname
-  hostname: name={{ ansible_ssh_host }}
+  hostname:
+    name: '{{ ansible_ssh_host }}'
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
-  yum: name=policycoreutils-python state=present
+  yum:
+    name: policycoreutils-python
+    state: present
 
 - name: Ensure SELinux is enforced
-  selinux: state=enforcing policy=targeted
+  selinux:
+    state: enforcing
+    policy: targeted
 
 - name: Ensure dci-sshpubkeys is installed
   yum:
@@ -89,7 +107,11 @@
     state: present
 
 - name: Ensure packages are up to their latest release
-  yum: name=* state=latest update_cache=yes exclude=dci-api
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+    exclude: dci-api
 
 - command: systemctl is-active firewalld
   register: firewalld

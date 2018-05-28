@@ -16,4 +16,6 @@
 
 ---
 - name: restart postgresql
-  service: name=rh-postgresql94-postgresql state=restarted
+  service:
+    name: rh-postgresql94-postgresql
+    state: restarted
