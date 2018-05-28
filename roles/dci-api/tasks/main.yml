@@ -18,7 +18,7 @@
 # Ensure the needed SELinux booleans are enabled
 - name: Ensure the needed SELinux booleans are enabled
   seboolean:
-    name: '{{item}}'
+    name: '{{ item }}'
     state: yes
     persistent: yes
   with_items:

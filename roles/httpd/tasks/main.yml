@@ -24,7 +24,7 @@
 
 - name: Ensure welcome.conf is absent
   file:
-    path: '/etc/httpd/conf.d/{{item}}'
+    path: '/etc/httpd/conf.d/{{ item }}'
     state: absent
   with_items:
     - welcome.conf
@@ -53,8 +53,8 @@
 
 - name: Copy needed configuration
   copy:
-    src: '{{item}}'
-    dest: '/etc/httpd/conf.d/{{item}}'
+    src: '{{ item }}'
+    dest: '/etc/httpd/conf.d/{{ item }}'
   with_items:
     - security.conf
     - ssl-sec.conf

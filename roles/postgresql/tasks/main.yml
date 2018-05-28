@@ -24,7 +24,7 @@
 
 - name: Ensure PostgreSQL packages are installed
   yum:
-    name: '{{item}}'
+    name: '{{ item }}'
     state: present
   with_items:
     - postgresql
@@ -119,7 +119,7 @@
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
     dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
-    line: 'host    all             all  {{ apiip }}/32            {{item}}'
+    line: 'host    all             all  {{ apiip }}/32            {{ item }}'
     insertafter: '^#\sIPv4\slocal.+'
   with_items:
     - password
@@ -130,9 +130,9 @@
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
     dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
-    regexp: '^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{item}}$'
+    regexp: '^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{ item }}$'
     insertafter: '^#\sIPv4\slocal.+'
-    line: "host    all             all  127.0.0.1/32            {{item}}"
+    line: "host    all             all  127.0.0.1/32            {{ item }}"
   with_items:
     - password
     - md5
@@ -151,7 +151,7 @@
 #
 - name: ensure database is created
   postgresql_db:
-    name: '{{dbname}}'
+    name: '{{ dbname }}'
   become: yes
   become_user: postgres
   tags:
@@ -159,9 +159,9 @@
 
 - name: ensure user has access to database
   postgresql_user:
-    db: '{{dbname}}'
-    name: '{{dbuser}}'
-    password: '{{dbpassword}}'
+    db: '{{ dbname }}'
+    name: '{{ dbuser }}'
+    password: '{{ dbpassword }}'
     priv: ALL
   become: yes
   become_user: postgres
@@ -170,7 +170,7 @@
 
 - name: ensure user does not have unnecessary privilege
   postgresql_user:
-    name: '{{dbuser}}'
+    name: '{{ dbuser }}'
     role_attr_flags: SUPERUSER,CREATEDB
   become: yes
   become_user: postgres
