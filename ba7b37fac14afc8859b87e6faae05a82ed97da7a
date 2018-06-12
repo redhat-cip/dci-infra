@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a2ca52d_c4164855",
+        "filename": "roles/dci-repo/templates/nginx.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 405
+      },
+      "writtenOn": "2018-06-12T15:29:06Z",
+      "side": 1,
+      "message": "1.1.1.1 ?",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "ba7b37fac14afc8859b87e6faae05a82ed97da7a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
