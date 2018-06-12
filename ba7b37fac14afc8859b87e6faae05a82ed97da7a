@@ -22,6 +22,30 @@
       "revId": "ba7b37fac14afc8859b87e6faae05a82ed97da7a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a2ca52d_2f1d9566",
+        "filename": "roles/dci-repo/templates/nginx.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2018-06-12T16:08:27Z",
+      "side": 1,
+      "message": "8.8.8.8 / 8.8.4.4 or 1.1.1.1 / 1.0.0.1\nbut at least two of them.\nthat said, I don\u0027t think we need to specify the dns resolver there and just use the one configured on the system.",
+      "parentUuid": "5a2ca52d_c4164855",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "ba7b37fac14afc8859b87e6faae05a82ed97da7a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
