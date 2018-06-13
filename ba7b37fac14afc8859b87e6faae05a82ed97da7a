@@ -46,6 +46,30 @@
       "revId": "ba7b37fac14afc8859b87e6faae05a82ed97da7a",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a2ca52d_af9e8505",
+        "filename": "roles/dci-repo/templates/nginx.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-06-13T07:52:13Z",
+      "side": 1,
+      "message": "It was already present, but removed it as not required.",
+      "parentUuid": "5a2ca52d_2f1d9566",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "ba7b37fac14afc8859b87e6faae05a82ed97da7a",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
