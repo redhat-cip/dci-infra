@@ -50,6 +50,12 @@
   tags:
     - dci-core
 
+- name: Ensure DCI user is part of apache group
+  user:
+    name: dci
+    append: yes
+    groups: apache
+
 # Install DCI-API
 #
 - name: Ensure DCI is installed
