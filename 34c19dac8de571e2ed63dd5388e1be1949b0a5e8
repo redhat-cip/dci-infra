@@ -1,0 +1,8 @@
+Code-Review+2: Yanis Guenane
+Workflow+1: Yanis Guenane
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Mon, 18 Jun 2018 09:02:35 +0000
+Reviewed-on: https://softwarefactory-project.io/r/12603
+Project: dci-infra
+Branch: refs/heads/master
