@@ -173,3 +173,13 @@
     - reload httpd
   tags:
     - dci-core
+
+- name: Add the swift purge components script
+  cron:
+    minute: '0'
+    hour: '0'
+    day: '1'
+    month: '*'
+    job: '/usr/bin/dci-purge-swift-components'
+  tags:
+    - dci-core
