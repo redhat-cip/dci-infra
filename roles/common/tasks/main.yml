@@ -39,6 +39,20 @@
     state: present
   when: ansible_distribution == 'CentOS'
 
+# TODO(spredzy): To Remove when python2-voluptuous 0.11.2 is present in EPEL
+- shell: rpm -q --queryformat "%{VERSION}" python2-voluptuous
+  register: voluptuous_version
+  ignore_errors: True
+
+- yum:
+    name: python2-voluptuous
+    state: absent
+  when: voluptuous_version.rc == 0 and voluputous_version.stdout != '0.10.5'
+
+- shell: grep 'exclude=python2-voluptuous' /etc/yum.repos.d/epel.repo || sed -i '9iexclude=python2-voluptuous' /etc/yum.repos.d/epel.repo
+  when: voluptuous_version.rc == 0 and voluputous_version.stdout != '0.10.5'
+# END
+
 # NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
 - name: Ensure EPEL is installed (RedHat)
   yum:
@@ -111,7 +125,7 @@
     name: '*'
     state: latest
     update_cache: yes
-    exclude: dci-api
+    exclude: dci-api,python2-voluptuous
 
 - command: systemctl is-active firewalld
   register: firewalld
