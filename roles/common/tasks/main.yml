@@ -111,7 +111,7 @@
     name: '*'
     state: latest
     update_cache: yes
-    exclude: dci-api
+    exclude: dci-api,python2-voluptuous
 
 - command: systemctl is-active firewalld
   register: firewalld
