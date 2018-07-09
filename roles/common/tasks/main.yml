@@ -15,29 +15,10 @@
 # under the License.
 
 ---
-- name: Attach Red Hat pool
-  redhat_subscription:
-    state: present
-    username: '{{ rhn_user }}'
-    password: '{{ rhn_password }}'
-    pool: '{{ rhn_pool }}'
-  when: ansible_distribution == 'RedHat'
-
-- name: Subscribe to Red Hat channels
-  command: yum-config-manager --save --setopt "{{ item }}.enabled = 1"
-  when: ansible_distribution == 'RedHat'
-  with_items:
-    - rhel-7-server-rpms                     # RHEL 7
-    - rhel-7-server-optional-rpms            # For EPEL use
-    - rhel-7-server-extras-rpms              # For EPEL use, python-werkzeug, python-flask
-    - rhel-7-server-openstack-9-rpms         # python-passlib
-    - rhel-server-rhscl-7-rpms               # RHSCL for PostgreSQL 9.4
-
-- name: Ensure EPEL is installed (CentOS)
+- name: Ensure EPEL is installed
   yum:
     name: epel-release
     state: present
-  when: ansible_distribution == 'CentOS'
 
 # TODO(spredzy): To Remove when python2-voluptuous 0.11.2 is present in EPEL
 - shell: rpm -q --queryformat "%{VERSION}" python2-voluptuous
@@ -53,24 +34,15 @@
   when: voluptuous_version.rc == 0 and voluptuous_version.stdout != '0.10.5'
 # END
 
-# NOTE(spredzy): python-flask-sqlalchemy is not packaged in Red Hat
-- name: Ensure EPEL is installed (RedHat)
-  yum:
-    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
-    state: present
-  when: ansible_distribution == 'RedHat'
-
 - name: Ensure Priority is installed
   yum:
     name: yum-plugin-priorities
     state: present
 
-# Ensure dci-release is installed
-- name: Ensure dci-release is installed (CentOS, RedHat)
+- name: Ensure dci-release is installed
   yum:
     name: "http://packages.distributed-ci.io/dci-release.el{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
-  when: ansible_distribution in ['CentOS', 'RedHat']
   tags:
     - dci-core
 
@@ -81,7 +53,6 @@
     baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-pike/
     exclude: python-zmq, zeromq
     gpgcheck: no
-  when: ansible_distribution == 'CentOS'
 
 # stop chrony before starting ntpd
 - name: Stop chrony service if it exists
