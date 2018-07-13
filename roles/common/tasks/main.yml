@@ -21,16 +21,19 @@
     state: present
 
 # TODO(spredzy): To Remove when python2-voluptuous 0.11.2 is present in EPEL
-- shell: rpm -q --queryformat "%{VERSION}" python2-voluptuous
+- name: Check if python2-voluptuous is installed
+  shell: rpm -q --queryformat "%{VERSION}" python2-voluptuous
   register: voluptuous_version
   ignore_errors: True
 
-- yum:
+- name: Remove python2-voluptuous package
+  yum:
     name: python2-voluptuous
     state: absent
   when: voluptuous_version.rc == 0 and voluptuous_version.stdout != '0.10.5'
 
-- shell: grep 'exclude=python2-voluptuous' /etc/yum.repos.d/epel.repo || sed -i '9iexclude=python2-voluptuous' /etc/yum.repos.d/epel.repo
+- name: Exclude python2-voluptuous from EPEL repo
+  shell: grep 'exclude=python2-voluptuous' /etc/yum.repos.d/epel.repo || sed -i '9iexclude=python2-voluptuous' /etc/yum.repos.d/epel.repo
   when: voluptuous_version.rc == 0 and voluptuous_version.stdout != '0.10.5'
 # END
 
@@ -64,10 +67,13 @@
   failed_when: "command_result|failed and 'not find' not in command_result.msg"
 
 # TODO(spredzy): To remove when the ntp sensu check support chrony
-- yum:
+- name: Install ntp
+  yum:
     name: ntp
     state: present
-- service:
+
+- name: Start ntpd service
+  service:
     name: ntpd
     state: started
     enabled: yes
@@ -98,7 +104,8 @@
     update_cache: yes
     exclude: dci-api
 
-- command: systemctl is-active firewalld
+- name: Check if firewalld is installed
+  command: systemctl is-active firewalld
   register: firewalld
   tags:
     - dci-core

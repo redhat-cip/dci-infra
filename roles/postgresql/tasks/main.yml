@@ -50,13 +50,15 @@
   tags:
     - dci-core
 
-- stat:
+- name: Check if pg 9.2 config is present
+  stat:
     path: /var/lib/pgsql/data/postgresql.conf
   register: old_pg_conf_file
   tags:
      - dci-core
 
-- stat:
+- name: Check if pg 9.4 config is present
+  stat:
     path: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
   register: new_pg_conf_file
   tags:
@@ -68,7 +70,8 @@
      - dci-core
   when: old_pg_conf_file.stat.exists and not new_pg_conf_file.stat.exists
 
-- stat:
+- name: Check if pg 9.4 config is present
+  stat:
     path: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
   register: new_pg_conf_file
   tags:

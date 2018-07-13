@@ -1,14 +1,16 @@
 ---
-- name: Install Certificates
+- name: Install SSL Certificate file
   copy:
     content: "{{ repo_servercert }}"
     dest: "{{ repo_sslcertificatefile }}"
 
-- copy:
+- name: Install SSL Certificate key file
+  copy:
     content: "{{ repo_serverkey }}"
     dest: "{{ repo_sslcertificatekeyfile }}"
 
-- copy:
+- name: Install SSL CA Certificate file
+  copy:
     content: "{{ repo_cacert }}"
     dest: "{{ repo_sslcacertfile }}"
 
