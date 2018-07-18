@@ -30,7 +30,7 @@
   copy:
     src: 02-httpd.conf
     dest: /etc/fail2ban/jail.d/02-httpd.conf
-  when: "{{ 'dci-api' in group_names }} or {{ 'dci-ui' in group_names }} or {{ 'sensu' in group_names }}"
+  when: "{{ 'dci-api' in group_names }} or {{ 'dci-ui' in group_names }}"
   notify: restart fail2ban
 
 - name: Start fail2ban service
