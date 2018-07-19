@@ -27,61 +27,18 @@
     name: '{{ item }}'
     state: present
   with_items:
-    - postgresql
-# the sensu PostgreSQL check is linked against the postgresql client lib
-    - postgresql-devel
-# we keep installing the server even if we don't use it. This to have the
-# postgresql service installed, as expected by ansible when it checks for
-# the service with systemctl.
-    - postgresql-server
     - rh-postgresql94-postgresql
-    - rh-postgresql94-postgresql-devel
     - rh-postgresql94-postgresql-server
-    - rh-postgresql94-postgresql-upgrade
     - python-psycopg2
   tags:
     - dci-core
 
-- name: Ensure the regular PostgreSQL service is off. We use the one from SCL instead.
-  service:
-    name: postgresql
-    state: stopped
-    enabled: no
-  tags:
-    - dci-core
-
-- name: Check if pg 9.2 config is present
-  stat:
-    path: /var/lib/pgsql/data/postgresql.conf
-  register: old_pg_conf_file
-  tags:
-     - dci-core
-
 - name: Check if pg 9.4 config is present
   stat:
     path: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
   register: new_pg_conf_file
   tags:
      - dci-core
-
-- name: Upgrade from pg 9.2 to 9.4
-  shell: . /opt/rh/rh-postgresql94/enable && postgresql-setup --upgrade --debug
-  tags:
-     - dci-core
-  when: old_pg_conf_file.stat.exists and not new_pg_conf_file.stat.exists
-
-- name: Check if pg 9.4 config is present
-  stat:
-    path: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
-  register: new_pg_conf_file
-  tags:
-     - dci-core
-
-- name: Drop the old DB
-  shell: mv /var/lib/pgsql/data /root/old_data
-  tags:
-     - dci-core
-  when: old_pg_conf_file.stat.exists and new_pg_conf_file.stat.exists
 
 - name: Initialize postgresql
   shell: . /opt/rh/rh-postgresql94/enable && postgresql-setup --initdb --debug
