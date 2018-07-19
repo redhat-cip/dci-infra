@@ -141,7 +141,7 @@
   environment:
     DCI_LOGIN: admin
     DCI_PASSWORD: '{{ adminpassword }}'
-  when: dbexist|failed
+  when: dbexist is failed
   tags:
     - dci-core
 

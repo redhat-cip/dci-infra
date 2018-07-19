@@ -64,7 +64,7 @@
     state: stopped
     enabled: no
   register: command_result
-  failed_when: "command_result|failed and 'not find' not in command_result.msg"
+  failed_when: "command_result is failed and 'not find' not in command_result.msg"
 
 # TODO(spredzy): To remove when the ntp sensu check support chrony
 - name: Install ntp
