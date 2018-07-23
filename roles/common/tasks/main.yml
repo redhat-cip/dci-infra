@@ -62,7 +62,7 @@
     name: chrony
     state: present
 
-- name: Stop chrony service if it exists
+- name: Start chronyd service
   service:
     name: chronyd
     state: started
