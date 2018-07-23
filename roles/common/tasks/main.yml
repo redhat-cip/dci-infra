@@ -57,24 +57,14 @@
     exclude: python-zmq, zeromq
     gpgcheck: no
 
-# stop chrony before starting ntpd
+- name: Install chrony
+  package:
+    name: chrony
+    state: present
+
 - name: Stop chrony service if it exists
   service:
     name: chronyd
-    state: stopped
-    enabled: no
-  register: command_result
-  failed_when: "command_result is failed and 'not find' not in command_result.msg"
-
-# TODO(spredzy): To remove when the ntp sensu check support chrony
-- name: Install ntp
-  yum:
-    name: ntp
-    state: present
-
-- name: Start ntpd service
-  service:
-    name: ntpd
     state: started
     enabled: yes
 
