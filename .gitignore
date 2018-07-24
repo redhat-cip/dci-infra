@@ -1,4 +1,4 @@
 ansible/hosts
 data/
 playbook.retry
-geerlingguy.redis/
+roles/Spredzy.*

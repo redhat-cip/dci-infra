@@ -1,0 +1,264 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright (C) 2017 Red Hat, Inc.
+#
+# Author: Dimitri Savineau <dsavinea@redhat.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Disable EPEL repository
+  ini_file:
+    path: '/etc/yum.repos.d/epel.repo'
+    section: 'epel'
+    option: 'enabled'
+    value: 0
+    no_extra_spaces: true
+
+- name: Install Openstack packages
+  package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - mariadb-server
+    - memcached
+    - openstack-keystone
+    - openstack-selinux
+    - openstack-swift
+    - openstack-swift-proxy
+    - openstack-swift-account
+    - openstack-swift-container
+    - openstack-swift-object
+    - openstack-swift-plugin-swift3
+    - python-keystoneclient
+    - python-memcached
+    - python-openstackclient
+    - python-swiftclient
+
+- name: Copy MariaDB configuration
+  template:
+    src: swift.cnf
+    dest: /etc/my.cnf.d/swift.cnf
+
+- name: Ensure MariaDB is started
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Ensure Keystone DB are present
+  mysql_db:
+    name: keystone
+
+- name: Ensure Keystone User is present
+  mysql_user:
+    name: keystone
+    password: '{{ swift_aio_ks_mysql_password }}'
+    host: '{{ ansible_eth0.ipv4.address }}'
+    priv: 'keystone.*:ALL'
+
+- name: Create keystone wsgi directory
+  file:
+    path: /var/www/cgi-bin/keystone
+    state: directory
+    owner: keystone
+    group: keystone
+    mode: '0755'
+
+- name: Copy wsgi script
+  copy:
+    src: '/usr/bin/{{ item }}'
+    dest: '/var/www/cgi-bin/keystone/{{ item.replace("wsgi-","") }}'
+    owner: keystone
+    group: keystone
+    mode: '0644'
+    remote_src: true
+  with_items:
+    - keystone-wsgi-admin
+    - keystone-wsgi-public
+
+- name: Copy Keystone configuration
+  template:
+    src: '{{ item }}'
+    dest: '/etc/httpd/conf.d/{{ item }}'
+  with_items:
+    - keystone_wsgi_admin.conf
+    - keystone_wsgi_main.conf
+
+- name: Copy Keystone configuration
+  template:
+    src: keystone.conf
+    dest: /etc/keystone/keystone.conf
+    owner: root
+    group: keystone
+    mode: '0640'
+
+- name: Ensure credential/fernet directory
+  file:
+    path: '/etc/keystone/{{ item }}-keys'
+    state: directory
+    owner: keystone
+    group: keystone
+    mode: '0700'
+  with_items:
+    - credential
+    - fernet
+
+- name: Ensure httpd is started
+  service:
+    name: httpd
+    state: restarted
+    enabled: true
+
+- block:
+  - name: Run Keystone dbsync
+    shell: 'keystone-manage db_sync'
+    become_user: keystone
+
+  - name: Bootstrap Keystone fernet
+    shell: 'keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone'
+
+  - name: Bootstrap Keystone credential
+    shell: 'keystone-manage credential_setup --keystone-user keystone --keystone-group keystone'
+
+  - name: Boostrap Keystone
+    shell: |
+      keystone-manage bootstrap --bootstrap-password {{ swift_aio_ks_admin_token }} \
+      --bootstrap-admin-url http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ \
+      --bootstrap-internal-url http://{{ ansible_eth0.ipv4.address }}:5000/v2.0/ \
+      --bootstrap-public-url http://{{ ansible_host }}:5000/v2.0/ \
+      --bootstrap-region-id regionOne
+
+  - name: Create Swift auth
+    shell: |
+      openstack role create swiftoperator --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_aio_ks_admin_token }}
+      openstack project create service --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_aio_ks_admin_token }}
+      openstack user create swift --project service --password {{ swift_aio_service_password }} --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_aio_ks_admin_token }}
+      openstack role add --project service --user swift admin --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_aio_ks_admin_token }}
+      openstack service create --name swift --description "OpenStack Object Storage" object-store --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_aio_ks_admin_token }}
+      openstack endpoint create --region regionOne object-store \
+      --adminurl http://{{ ansible_eth0.ipv4.address }}:8080/v1 \
+      --publicurl http://{{ ansible_host }}:8080/v1/AUTH_%\(tenant_id\)s \
+      --internalurl http://{{ ansible_eth0.ipv4.address }}:8080/v1/AUTH_%\(tenant_id\)s \
+      --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_aio_ks_admin_token }}
+
+  - name: Test volume device type
+    stat:
+      path: '/dev/{{ swift_aio_volume_device }}'
+    register: volume_type
+
+  - name: Create Swift storage directory
+    file:
+      path: '/srv/node/{{ swift_aio_volume_device }}'
+      state: directory
+
+  - block:
+      - name: Create xfs filesystem
+        filesystem:
+          fstype: xfs
+          dev: '/dev/{{ swift_aio_volume_device }}'
+          force: true
+
+      - name: Mount the swift volume
+        mount:
+          name: '/srv/node/{{ swift_aio_volume_device }}'
+          src: '/dev/{{ swift_aio_volume_device }}'
+          fstype: xfs
+          opts: noatime,nodiratime,nobarrier,logbufs=8
+          state: mounted
+    when: volume_type.stat.isblk is defined and volume_type.stat.isblk
+
+  - name: Set right Swift storage directory
+    file:
+      path: /srv/node
+      state: directory
+      owner: swift
+      group: swift
+      seuser: system_u
+      serole: object_r
+      setype: swift_data_t
+      recurse: true
+
+  when: swift_aio_bootstrap|bool
+
+- name: Copy Memcached configuration
+  template:
+    src: memcached
+    dest: /etc/sysconfig/memcached
+
+- name: Ensure Memcached is started
+  service:
+    name: memcached
+    state: started
+    enabled: true
+
+- name: Copy Swift configuration
+  template:
+    src: '{{ item }}.conf'
+    dest: '/etc/swift/{{ item }}.conf'
+    owner: root
+    group: swift
+  with_items:
+    - account-server
+    - container-server
+    - object-server
+    - proxy-server
+    - swift
+
+- name: Set mode to Swift signing directory
+  file:
+    path: /var/cache/swift
+    state: directory
+    owner: swift
+    group: swift
+    mode: '0700'
+
+- name: Create Swift ring
+  shell: |
+    swift-ring-builder /etc/swift/object.builder create 10 1 1
+    swift-ring-builder /etc/swift/container.builder create 10 1 1
+    swift-ring-builder /etc/swift/account.builder create 10 1 1
+    swift-ring-builder /etc/swift/object.builder add r1z1-{{ ansible_eth0.ipv4.address }}:6000/{{ swift_aio_volume_device }} 1
+    swift-ring-builder /etc/swift/container.builder add r1z1-{{ ansible_eth0.ipv4.address }}:6001/{{ swift_aio_volume_device }} 1
+    swift-ring-builder /etc/swift/account.builder add r1z1-{{ ansible_eth0.ipv4.address }}:6002/{{ swift_aio_volume_device }} 1
+    swift-ring-builder /etc/swift/object.builder rebalance
+    swift-ring-builder /etc/swift/container.builder rebalance
+    swift-ring-builder /etc/swift/account.builder rebalance
+  when: swift_aio_bootstrap|bool
+
+- name: Ensure Swift services are started
+  service:
+    name: '{{ item }}'
+    state: started
+    enabled: true
+  with_items:
+    - openstack-swift-proxy
+    - openstack-swift-account
+    - openstack-swift-account-auditor
+    - openstack-swift-account-reaper
+    - openstack-swift-account-replicator
+    - openstack-swift-container
+    - openstack-swift-container-auditor
+    - openstack-swift-container-replicator
+    - openstack-swift-container-updater
+    - openstack-swift-object
+    - openstack-swift-object-auditor
+    - openstack-swift-object-replicator
+    - openstack-swift-object-updater
+
+- name: Create the openrc
+  template:
+    src: openrc
+    dest: '/home/{{ ansible_user }}/openrc'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
