@@ -51,6 +51,19 @@
   tags:
     - dci-core
 
+- name: Remove useless httpd config
+  file:
+    name: '/etc/httpd/{{ item }}.conf'
+    state: absent
+  with_items:
+    - 'conf.modules.d/00-dav'
+    - 'conf.modules.d/00-lua'
+    - 'conf.modules.d/00-proxy'
+    - 'conf.modules.d/01-cgi'
+  notify: reload httpd
+  tags:
+    - dci-core
+
 - name: Copy needed configuration
   copy:
     src: '{{ item }}'
@@ -59,6 +72,8 @@
     - security.conf
     - ssl-sec.conf
   notify: reload httpd
+  tags:
+    - dci-core
 
 - name: Ensure apache is running (and enable it at boot)
   service:

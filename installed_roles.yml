@@ -1,5 +1,2 @@
 - src: Spredzy.swiftbackmeup
 - src: Spredzy.lecm
-
-- src: https://github.com/Spredzy/ansible-role-swift-aio
-  name: swift-aio
