@@ -97,12 +97,13 @@
   tags:
     - doc
 
-- name: Install the swift-aio node
+- name: Install the swift node
   hosts: swift
   remote_user: dci
   become: yes
   roles:
-    - swift-aio
+    - httpd
+    - swift
   tags:
     - dci-core
 
