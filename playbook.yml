@@ -102,6 +102,7 @@
   remote_user: dci
   become: yes
   roles:
+    - httpd
     - swift-aio
   tags:
     - dci-core
