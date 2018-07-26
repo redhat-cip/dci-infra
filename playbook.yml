@@ -48,7 +48,10 @@
   remote_user: dci
   become: yes
   roles:
+    - nginx
     - dci-repo
+  tags:
+    - dci-core
 
 - name: Install-DCI-Worker
   hosts: dci-worker
