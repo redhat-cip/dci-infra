@@ -48,6 +48,7 @@
   remote_user: dci
   become: yes
   roles:
+    - nginx
     - dci-repo
 
 - name: Install-DCI-Worker

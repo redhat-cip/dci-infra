@@ -1,20 +1,36 @@
 ---
+- name: Create SSL Directory
+  file:
+   path: '{{ repo_sslcacertfile | dirname }}'
+   state: directory
+   recurse: yes
+
 - name: Install SSL Certificate file
   copy:
     content: "{{ repo_servercert }}"
     dest: "{{ repo_sslcertificatefile }}"
+  when: ssl_enabled|bool
 
 - name: Install SSL Certificate key file
   copy:
     content: "{{ repo_serverkey }}"
     dest: "{{ repo_sslcertificatekeyfile }}"
+  when: ssl_enabled|bool
 
 - name: Install SSL CA Certificate file
   copy:
     content: "{{ repo_cacert }}"
     dest: "{{ repo_sslcacertfile }}"
 
+- name: Create the nginx root dir
+  file:
+    path: '{{ repo_rootdir }}'
+    state: directory
+    recurse: yes
+
 - name: Install nginx Vhost
   template:
     src: templates/nginx.conf
-    dest: /etc/nginx/nginx.conf
+    dest: /etc/opt/rh/rh-nginx112/nginx/nginx.conf
+  notify:
+    - reload nginx
