@@ -17,4 +17,6 @@
 - name: Install nginx Vhost
   template:
     src: templates/nginx.conf
-    dest: /etc/nginx/nginx.conf
+    dest: /etc/opt/rh/rh-nginx112/nginx/nginx.conf
+  notify:
+    - reload nginx

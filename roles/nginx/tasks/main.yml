@@ -1,0 +1,25 @@
+---
+- name: Enable SCL
+  package:
+    name: centos-release-scl
+
+- name: Ensure Nginx package is installed
+  package:
+    name: rh-nginx112
+
+- name: Ensure Nginx is running (and enabled at boot)
+  service:
+    name: rh-nginx112-nginx
+    state: started
+    enabled: true
+
+- name: Allow http through firewalld
+  firewalld:
+    service: '{{ item }}'
+    permanent: true
+    immediate: yes
+    state: enabled
+  with_items:
+    - http
+    - https
+  when: firewalld.stdout == 'active'
