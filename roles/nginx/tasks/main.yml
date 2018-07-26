@@ -1,0 +1,32 @@
+---
+- name: Enable SCL
+  package:
+    name: centos-release-scl
+
+- name: Ensure Nginx package is installed
+  package:
+    name: rh-nginx112
+
+- name: Replace default port if needed
+  replace:
+    path: /etc/opt/rh/rh-nginx112/nginx/nginx.conf
+    regexp: '^(.*)80(\sdefault_server;)$'
+    replace: '\g<1>{{ repo_port|default(80) }}\g<2>'
+    validate: '/opt/rh/rh-nginx112/root/usr/sbin/nginx -c %s -t'
+
+- name: Ensure Nginx is running (and enabled at boot)
+  service:
+    name: rh-nginx112-nginx
+    state: started
+    enabled: true
+
+- name: Allow http through firewalld
+  firewalld:
+    service: '{{ item }}'
+    permanent: true
+    immediate: yes
+    state: enabled
+  with_items:
+    - http
+    - https
+  when: firewalld.stdout == 'active'

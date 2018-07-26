@@ -1,0 +1,5 @@
+---
+- name: reload nginx
+  service:
+    name: rh-nginx112-nginx
+    state: reloaded
