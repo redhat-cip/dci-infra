@@ -1,0 +1,19 @@
+---
+- name: Enable SCL
+  package:
+    name: centos-release-scl
+
+- name: Ensure Nginx package is installed
+  package:
+    name: rh-nginx112
+
+- name: Copy the default nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/opt/rh/rh-nginx112/nginx/nginx.conf
+
+- name: Ensure Nginx is running (and enabled at boot)
+  service:
+    name: rh-nginx112-nginx
+    state: started
+    enabled: true
