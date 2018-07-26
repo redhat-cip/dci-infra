@@ -43,13 +43,6 @@
     - httpd
     - dci-api
 
-- name: Install-Repo-Server
-  hosts: dci-repo
-  remote_user: dci
-  become: yes
-  roles:
-    - dci-repo
-
 - name: Install-DCI-Worker
   hosts: dci-worker
   remote_user: dci
@@ -110,5 +103,15 @@
   become: yes
   roles:
     - swift-aio
+  tags:
+    - dci-core
+
+- name: Install-Repo-Server
+  hosts: dci-repo
+  remote_user: dci
+  become: yes
+  roles:
+    - nginx
+    - dci-repo
   tags:
     - dci-core
