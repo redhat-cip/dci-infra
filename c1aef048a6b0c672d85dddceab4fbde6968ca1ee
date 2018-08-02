@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61d9d517_16928e41",
+        "filename": "roles/dci-repo/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-02T07:17:45Z",
+      "side": 1,
+      "message": "I\u0027d to it differently here, just to be sure we are accurante all the time.\n\n\u003e file:\n\u003e  path: \u0027{{ item | dirname }}\u0027\n\u003e  state: directory\n\u003e  recurse: yes\n\u003e with_items:\n\u003e  - \u0027{{ repo_sslcertificatefile }}\u0027\n\u003e  - \u0027{{ repo_sslcertificatekeyfile }}\u0027\n\u003e  - \u0027{{ repo_sslcacertfile }}\u0027\n\nAgree it might be overkill, but this way any change would be taken into consideration.",
+      "revId": "c1aef048a6b0c672d85dddceab4fbde6968ca1ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1c9e3116_de0a5c12",
+        "filename": "roles/nginx/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-02T07:17:45Z",
+      "side": 1,
+      "message": "Based on our discussion yesterday, do we want to keep that in or should it be removed ? (ie. its not present  in the tree yet so why putting it in.)",
+      "revId": "c1aef048a6b0c672d85dddceab4fbde6968ca1ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
