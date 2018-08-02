@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "6a58ba22_ef3b2b59",
+        "filename": "roles/dci-repo/tasks/main.yml",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-02T07:32:55Z",
+      "side": 1,
+      "message": "This variable is not part of dci-infra-data-{prod,ci} so the playbook ends up failing with an undefined error.",
+      "revId": "c1aef048a6b0c672d85dddceab4fbde6968ca1ee",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1c9e3116_de0a5c12",
         "filename": "roles/nginx/tasks/main.yml",
         "patchSetId": 3
