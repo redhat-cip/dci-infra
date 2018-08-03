@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d1199cb_5207b5e2",
+        "filename": "roles/dci-repo/tasks/main.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-03T08:00:01Z",
+      "side": 1,
+      "message": "Actually I am wondering if line 8 to 18 are necessary at all. This is not something we do with the other web accessible services. Keys and cert management are delegated to lecm.\n\nSo:\n\n  * Do we want to do that for every service ?\n  * Should we remove it to be consistent with the other services?",
+      "revId": "d2873863886372ceb6b9fc4d6bfabdf28f9df173",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
