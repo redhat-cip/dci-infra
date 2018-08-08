@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05f61c06_6cdfd081",
+        "filename": "roles/dci-repo/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-08T14:10:51Z",
+      "side": 1,
+      "message": "when: repo_servercert\n\nIn the restoration process, or the prod process (lets encrypt providing the cert) this won\u0027t work",
+      "revId": "54fd7192bba5cb1dab3f0672aad1e96c815bbd55",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b33b74f3_d11609b2",
+        "filename": "roles/dci-repo/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-08T14:10:51Z",
+      "side": 1,
+      "message": "when: repo_serverkey\n\nIn the restoration process, or the prod process (llecm generating the key) this won\u0027t work",
+      "revId": "54fd7192bba5cb1dab3f0672aad1e96c815bbd55",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "391b3644_11fe8da1",
+        "filename": "roles/dci-repo/templates/dci_repo.conf.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-08T14:10:51Z",
+      "side": 1,
+      "message": "Do you know if that would work with the production inventory ?\n\n\n\u003e [dci-api-prod]\n\u003e api.distributed-ci.io\n\u003e\n\u003e [dci-api:children]\n\u003e dci-api-prod\n\nI suppose it ends-up doing a dci-api group with all their children, but want to make sure it has been verified.",
+      "revId": "54fd7192bba5cb1dab3f0672aad1e96c815bbd55",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "009a6bed_fe1058d5",
+        "filename": "roles/nginx/tasks/main.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-08T14:10:51Z",
+      "side": 1,
+      "message": "maybe add a notify: reload nginx also here",
+      "revId": "54fd7192bba5cb1dab3f0672aad1e96c815bbd55",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4049afdd_282b0617",
+        "filename": "roles/nginx/templates/nginx.conf.j2",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 115
+      },
+      "writtenOn": "2018-08-08T14:10:51Z",
+      "side": 1,
+      "message": "Small note: on my setup I had to specify dci_repo.conf else the configuration was not taken in account. Might be an issue from my side",
+      "revId": "54fd7192bba5cb1dab3f0672aad1e96c815bbd55",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
