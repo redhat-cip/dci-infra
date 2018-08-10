@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84752d0d_95e77c9c",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-08-10T21:01:04Z",
+      "side": 1,
+      "message": "notify: reload httpd",
+      "revId": "739649b38f5861976f8667118a102836eb2523c9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eb0d6632_b12406fd",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-08-10T21:01:04Z",
+      "side": 1,
+      "message": "notify: reload httpd",
+      "revId": "739649b38f5861976f8667118a102836eb2523c9",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
