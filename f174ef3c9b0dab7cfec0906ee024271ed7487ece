@@ -1,0 +1,8 @@
+Code-Review+2: Dimitri Savineau <dsavinea@redhat.com>
+Workflow+1: Dimitri Savineau <dsavinea@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Tue, 21 Aug 2018 13:20:22 +0000
+Reviewed-on: https://softwarefactory-project.io/r/13452
+Project: dci-infra
+Branch: refs/heads/master
