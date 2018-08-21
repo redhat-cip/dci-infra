@@ -4,7 +4,7 @@ server {
 
     location '/.well-known/acme-challenge' {
         default_type "text/plain";
-        root /etc/ssl/letsencrypt/challenges/{{ repo_servername }};
+        alias /etc/ssl/letsencrypt/challenges/{{ repo_servername }};
     }
 
     location / {
