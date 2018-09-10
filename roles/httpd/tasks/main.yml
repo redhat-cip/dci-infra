@@ -46,8 +46,14 @@
   yum:
     name: '{{ item }}'
   with_items:
-    - mod_ssl
     - mod_wsgi
+  tags:
+    - dci-core
+
+- name: Ensure mod_ssl module is installed
+  yum:
+    name: mod_ssl
+  when: ssl_enabled|bool
   tags:
     - dci-core
 
