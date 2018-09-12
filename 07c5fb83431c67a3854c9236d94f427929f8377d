@@ -1,0 +1,9 @@
+Code-Review+2: Yassine Lamgarchal <yassine.lamgarchal@redhat.com>
+Code-Review+2: Gonéri Le Bouder <goneri@lebouder.net>
+Workflow+1: Gonéri Le Bouder <goneri@lebouder.net>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Wed, 12 Sep 2018 15:42:24 +0000
+Reviewed-on: https://softwarefactory-project.io/r/13611
+Project: dci-infra
+Branch: refs/heads/master
