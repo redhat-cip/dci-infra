@@ -19,10 +19,7 @@
   package:
     name: '{{ item }}'
   with_items:
-    - git
-    - python-sphinx
-    - python-sphinx_rtd_theme
-    - python2-sphinxcontrib-httpdomain
+    - dci-doc
 
 - name: The proper arborescence is created
   file:
