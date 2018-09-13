@@ -46,8 +46,14 @@
   yum:
     name: '{{ item }}'
   with_items:
-    - mod_ssl
     - mod_wsgi
+  tags:
+    - dci-core
+
+- name: Ensure mod_ssl module is installed
+  yum:
+    name: mod_ssl
+  when: ssl_enabled|bool
   tags:
     - dci-core
 
@@ -87,8 +93,16 @@
     dest: '/etc/httpd/conf.d/{{ item }}'
   with_items:
     - security.conf
-    - ssl-sec.conf
   notify: reload httpd
+  tags:
+    - dci-core
+
+- name: Copy SSL configuration
+  copy:
+    src: ssl-sec.conf
+    dest: /etc/httpd/conf.d/ssl-sec.conf
+  notify: reload httpd
+  when: ssl_enabled|bool
   tags:
     - dci-core
 
