@@ -176,6 +176,7 @@
 
 - name: Add the swift purge components script
   cron:
+    name: 'purge-swift'
     minute: '0'
     hour: '0'
     day: '1'
