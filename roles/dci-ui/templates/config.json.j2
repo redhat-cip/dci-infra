@@ -1,5 +1,5 @@
 {
-  "apiURL": "{% if api_ssl is defined %}https{% else %}http{% endif %}://{{ apihost }}",
+  "apiURL": "{% if ssl_enabled|bool %}https{% else %}http{% endif %}://{{ apihost }}",
   "sso": {
     "url": "{{ sso_url }}",
     "realm": "{{ sso_realm }}",
