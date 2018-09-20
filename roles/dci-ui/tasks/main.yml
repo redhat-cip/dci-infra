@@ -27,6 +27,13 @@
   tags:
     - dci-core
 
+- name: Ensure the DCI-UI config directory exist
+  file:
+    name: /etc/dci-ui
+    state: directory
+  tags:
+    - dci-core
+
 # Configure DCI-UI config.json
 #
 - name: Configure dci-ui config.json
