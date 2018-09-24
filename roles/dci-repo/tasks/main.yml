@@ -38,3 +38,23 @@
     dest: /etc/opt/rh/rh-nginx112/nginx/conf.d/dci_repo.conf
   notify:
     - reload nginx
+
+- name: Create the apache group
+  group:
+    name: apache
+    gid: 48
+
+- name: Create the apache user
+  user:
+    name: apache
+    comment: Apache
+    home: /usr/share/httpd
+    shell: /sbin/nologin
+    uid: 48
+    group: apache
+
+- name: Add dci feeder pub key
+  authorized_key:
+    user: root
+    key: '{{ dci_feeder_pubkey }}'
+  when: dci_feeder_pubkey is defined
