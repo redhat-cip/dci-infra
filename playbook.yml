@@ -20,7 +20,7 @@
   become: yes
   roles:
     - common
-    - { role: Spredzy.swiftbackmeup }
+    - { role: redhat-cip.swiftbackmeup }
     - { role: Spredzy.lecm }
   tags:
     - dci-core
