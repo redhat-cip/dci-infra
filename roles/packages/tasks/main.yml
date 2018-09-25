@@ -20,6 +20,7 @@
     name: '{{ item }}'
   with_items:
     - createrepo
+    - mock
 
 - name: The proper arborescence is created
   file:
@@ -44,3 +45,18 @@
     dest: /etc/httpd/conf.d/02_packages.distributed-ci.io.conf
     src: 02_packages.distributed-ci.io.conf
   notify: reload httpd
+
+- name: Create the zuul user
+  user:
+    name: zuul
+    comment: Zuul slave
+    groups: mock
+    home: /var/lib/zuul
+    shell: /bin/bash
+    uid: 1001
+
+- name: Add SF zuul pub key
+  authorized_key:
+    user: zuul
+    key: '{{ sf_zuul_pubkey }}'
+  when: sf_zuul_pubkey is defined
