@@ -137,6 +137,7 @@
     - dci-core
 
 - name: Initiate db schema
+  no_log: True
   command: dci-dbinit
   environment:
     DCI_LOGIN: admin
@@ -146,6 +147,7 @@
     - dci-core
 
 - name: Update the schema
+  no_log: True
   command: dci-dbsync
   environment:
     DCI_LOGIN: admin
