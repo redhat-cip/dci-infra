@@ -101,6 +101,9 @@
     state: latest
     update_cache: yes
     exclude: dci-api
+  tags:
+    - dci-yum-update
+
 
 - name: Check if firewalld is installed
   command: systemctl is-active firewalld
