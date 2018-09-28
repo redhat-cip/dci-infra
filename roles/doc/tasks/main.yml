@@ -17,14 +17,8 @@
 ---
 - name: The necessary packages are installed
   package:
-    name: '{{ item }}'
-  with_items:
-    - dci-doc
-
-- name: The proper arborescence is created
-  file:
-    path: '/var/www/html/docs'
-    state: directory
+    name: dci-doc
+    state: latest
 
 - name: The vhost file is configured
   template:
