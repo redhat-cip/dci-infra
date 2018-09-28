@@ -97,7 +97,9 @@
 
 - name: Ensure packages are up to their latest release
   yum:
-    name: '*'
+    name: '{{ dci_common_yum_update_filter }}'
     state: latest
     update_cache: yes
     exclude: dci-api
+  tags:
+    - dci-yum-update
