@@ -16,6 +16,24 @@
       "revId": "f3747d3c71c20e12e928a83551d884affd0216f8",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "77013761_c968f449",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2018-10-02T19:53:19Z",
+      "side": 1,
+      "message": "no it\u0027s still used for lecm role",
+      "parentUuid": "e46fddba_a6225442",
+      "revId": "f3747d3c71c20e12e928a83551d884affd0216f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
