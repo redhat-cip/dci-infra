@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e46fddba_a6225442",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-10-02T19:19:12Z",
+      "side": 1,
+      "message": "You can also remove this line ^",
+      "revId": "f3747d3c71c20e12e928a83551d884affd0216f8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
