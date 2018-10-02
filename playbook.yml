@@ -116,3 +116,13 @@
     - dci-repo
   tags:
     - dci-core
+
+- name: Install DCI registry
+  hosts: registry
+  remote_user: dci
+  become: yes
+  roles:
+    - httpd
+    - registry
+  tags:
+    - registry

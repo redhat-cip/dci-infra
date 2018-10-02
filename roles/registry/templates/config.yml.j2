@@ -1,0 +1,23 @@
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  cache:
+    layerinfo: inmemory
+  swift:
+    username: {{ store_username }}
+    password: {{ store_password }}
+    authurl: {{ store_auth_url }}
+    tenant: '{{ store_tenant_name }}'
+    region: {{ store_region }}
+    container: {{ store_registry_container }}
+http:
+  addr: 127.0.0.1:5000
+  host: http{% if ssl_enabled|bool %}s{% endif %}://{{ registry_servername }}/
+auth:
+  token:
+    realm: http{% if ssl_enabled|bool %}s{% endif %}://{{ registry_servername }}/auth
+    service: "Docker registry"
+    issuer: "DCI auth server"
+    rootcertbundle: {{ registry_sslcertificatefile }}

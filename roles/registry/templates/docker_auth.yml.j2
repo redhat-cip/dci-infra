@@ -1,0 +1,20 @@
+server:
+  addr: 127.0.0.1:5001
+
+token:
+  issuer: "DCI auth server"
+  expiration: 900
+  certificate: {{ registry_sslcertificatefile }}
+  key: {{ registry_sslcertificatekeyfile }}
+
+users:
+{% for user in registry_users %}
+  {{ user.name }}:
+    password: {{ user.password }}
+{% endfor %}
+
+acl:
+{% for user in registry_users %}
+  - match: {account: "{{ user.name }}"{% if user.filter is defined %}, name: "{{ user.filter }}"{% endif %}}
+    actions: ["{{ user.actions }}"]
+{% endfor %}
