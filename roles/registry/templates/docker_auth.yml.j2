@@ -1,0 +1,20 @@
+server:
+  addr: ':5001'
+
+token:
+  issuer: "DCI auth server"
+  expiration: 900
+  certificate: /ssl/pem/{{ registry_servername }}.pem
+  key: /ssl/private/{{ registry_servername }}.key
+
+users:
+{% for user in registry_users %}
+  {{ user.name }}:
+    password: {{ user.password }}
+{% endfor %}
+
+acl:
+{% for user in registry_users %}
+  - match: {account: "{{ user.name }}"{% if user.filter is defined %}, name: "{{ user.filter }}"{% endif %}}
+    actions: ["{{ user.actions }}"]
+{% endfor %}
