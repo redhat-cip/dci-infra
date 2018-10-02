@@ -2,3 +2,4 @@ ansible/hosts
 data/
 playbook.retry
 roles/Spredzy.*
+roles/redhat-cip.*
