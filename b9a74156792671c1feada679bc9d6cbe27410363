@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "720c7755_397823b6",
+        "filename": "roles/registry/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 30
+      },
+      "writtenOn": "2018-10-09T22:28:38Z",
+      "side": 1,
+      "message": "You can use package here and list:\n\npackage:\n  name: [\u0027foo\u0027, \u0027bar\u0027]",
+      "revId": "b9a74156792671c1feada679bc9d6cbe27410363",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
