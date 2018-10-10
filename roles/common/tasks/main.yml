@@ -108,3 +108,24 @@
   tags:
     - dci-core
   ignore_errors: True
+
+- name: Install Promotheus Repository
+  yum_repository:
+    name: promotheus
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/7/$basearch
+    description: promotheus
+    gpgcheck: no
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: 300
+
+- name: Install node_exporter for nodes
+  yum:
+    name: node_exporter
+    state: latest
+
+- name: Enable node_exporter and start it
+  systemd:
+    name: node_exporter
+    state: started
+    enabled: yes
