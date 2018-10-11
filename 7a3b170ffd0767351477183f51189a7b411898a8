@@ -22,6 +22,30 @@
       "revId": "7a3b170ffd0767351477183f51189a7b411898a8",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c31c33f1_ed7ea0d1",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2018-10-11T15:48:33Z",
+      "side": 1,
+      "message": "you meant absent ?\nanyway this code doesn\u0027t need to present because by default the package is not present so we just want to install it when necessary",
+      "parentUuid": "65311e29_220f5085",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 48,
+        "endChar": 25
+      },
+      "revId": "7a3b170ffd0767351477183f51189a7b411898a8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
