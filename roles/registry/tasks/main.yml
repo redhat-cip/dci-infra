@@ -1,0 +1,60 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2018 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Ensure the needed SELinux boolean are enabled
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
+- name: Install docker auth/distribution
+  yum:
+    name: '{{ item }}'
+  with_items:
+    - docker_auth
+    - docker-distribution
+
+- name: Ensure docker distribution is started
+  service:
+    name: docker-distribution
+    enabled: true
+    state: started
+
+- name: Generate the docker_auth config
+  template:
+    src: docker_auth.yml.j2
+    dest: /etc/docker_auth.yml
+
+- name: Ensuer docker auth is started
+  service:
+    name: docker_auth
+    enabled: true
+    state: started
+
+- name: Generate the registry config
+  template:
+    src: config.yml.j2
+    dest: /etc/docker-distribution/registry/config.yml
+  notify:
+    - restart distribution
+
+- name: Create the registry vhost
+  template:
+    src: dci_registry.conf.j2
+    dest: /etc/httpd/conf.d/dci_registry.conf
+  notify:
+    - reload httpd
