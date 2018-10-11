@@ -33,6 +33,24 @@
       "revId": "b9a74156792671c1feada679bc9d6cbe27410363",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "665595d6_4c8a0f1c",
+        "filename": "roles/registry/templates/config.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 56
+      },
+      "writtenOn": "2018-10-11T13:59:43Z",
+      "side": 1,
+      "message": "that\u0027s a problem with the registry and how ovh creates openstack account.\nThe registry wants a string for the tenant parameter but ovh creates tenant with number (ex: 0123456789) so the registry refuse to start if you don\u0027t have quote to the value.",
+      "parentUuid": "f1b85dc5_4ad15617",
+      "revId": "b9a74156792671c1feada679bc9d6cbe27410363",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
