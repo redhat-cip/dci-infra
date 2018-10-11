@@ -42,11 +42,10 @@
   tags:
     - dci-core
 
-- name: Ensure required httpd modules are installed
+- name: Ensure mod_wsgi is installed
   yum:
-    name: '{{ item }}'
-  with_items:
-    - mod_wsgi
+    name: mod_wsgi
+  when: wsgi_enabled|bool
   tags:
     - dci-core
 
