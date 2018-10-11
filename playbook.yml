@@ -16,7 +16,7 @@
 
 - name: Common-Configuration
   hosts: all
-  remote_user: centos
+  remote_user: dci
   become: yes
   roles:
     - common
