@@ -113,13 +113,3 @@
     enabled: yes
   tags:
     - dci-core
-
-- name: Allow http through firewalld
-  firewalld:
-    service: http
-    permanent: true
-    immediate: yes
-    state: enabled
-  tags:
-    - dci-core
-  when: firewalld.stdout == 'active'

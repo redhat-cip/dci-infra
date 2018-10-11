@@ -101,10 +101,3 @@
     state: latest
     update_cache: yes
     exclude: dci-api
-
-- name: Check if firewalld is installed
-  command: systemctl is-active firewalld
-  register: firewalld
-  tags:
-    - dci-core
-  ignore_errors: True
