@@ -1,0 +1,10 @@
+Code-Review+2: Gonéri Le Bouder <goneri@lebouder.net>
+Code-Review+1: François Charlier <francois.charlier@redhat.com>
+Code-Review+2: Thomas Vassilian <tvassili@redhat.com>
+Workflow+1: Dimitri Savineau <dsavinea@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Thu, 11 Oct 2018 21:13:57 +0000
+Reviewed-on: https://softwarefactory-project.io/r/13902
+Project: dci-infra
+Branch: refs/heads/master
