@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65311e29_220f5085",
+        "filename": "roles/httpd/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 526
+      },
+      "writtenOn": "2018-10-11T15:45:29Z",
+      "side": 1,
+      "message": "can we ensure disable when false ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 48,
+        "endChar": 25
+      },
+      "revId": "7a3b170ffd0767351477183f51189a7b411898a8",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
