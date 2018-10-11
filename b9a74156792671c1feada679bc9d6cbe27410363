@@ -16,6 +16,23 @@
       "revId": "b9a74156792671c1feada679bc9d6cbe27410363",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f1b85dc5_4ad15617",
+        "filename": "roles/registry/templates/config.yml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2018-10-11T13:56:28Z",
+      "side": 1,
+      "message": "why is this one between single quotes and not the others ?",
+      "revId": "b9a74156792671c1feada679bc9d6cbe27410363",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
