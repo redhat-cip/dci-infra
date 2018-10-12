@@ -126,34 +126,41 @@
   tags:
     - dci-core
 
+- name: Create env files
+  template:
+    src: '{{ item }}.sh.j2'
+    dest: '/etc/{{ item }}.sh'
+    mode: 0400
+  with_items:
+    - dci_admin
+    - dci_db
+  tags:
+    - dci-core
+
 # Install DCI itself
 #
 - name: Check if db is already in place
-  no_log: True
-  shell: . /opt/rh/rh-postgresql94/enable && psql -U {{ dbuser }} -h {{ dbhost }} -d {{ dbname }} -w -c 'SELECT count(*) FROM users'
-  environment:
-    PGPASSWORD: '{{ dbpassword }}'
+  shell: >
+    . /opt/rh/rh-postgresql94/enable &&
+    . /etc/dci_db.sh &&
+    psql -w -c 'SELECT count(*) FROM users'
   register: dbexist
   ignore_errors: yes
   tags:
     - dci-core
 
 - name: Initiate db schema
-  no_log: True
-  command: dci-dbinit
-  environment:
-    DCI_LOGIN: admin
-    DCI_PASSWORD: '{{ adminpassword }}'
+  shell: >
+    . /etc/dci_admin.sh &&
+    dci-dbinit
   when: dbexist is failed
   tags:
     - dci-core
 
 - name: Update the schema
-  no_log: True
-  command: dci-dbsync
-  environment:
-    DCI_LOGIN: admin
-    DCI_PASSWORD: '{{ adminpassword }}'
+  shell: >
+    . /etc/dci_admin.sh &&
+    dci-dbsync
   when: dbexist is success
   tags:
     - dci-core
