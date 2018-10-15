@@ -17,10 +17,9 @@
 ---
 - name: The necessary packages are installed
   package:
-    name: '{{ item }}'
-  with_items:
-    - createrepo
-    - mock
+    name:
+      - createrepo
+      - mock
 
 - name: The proper arborescence is created
   file:

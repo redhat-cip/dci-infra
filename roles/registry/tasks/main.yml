@@ -23,10 +23,9 @@
 
 - name: Install packages for docker_auth and docker-distribution
   yum:
-    name: '{{ item }}'
-  with_items:
-    - docker_auth
-    - docker-distribution
+    name:
+      - docker_auth
+      - docker-distribution
 
 - name: Ensure docker-distribution service is started
   service:

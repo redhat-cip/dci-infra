@@ -32,23 +32,21 @@
 
 - name: Install Openstack packages
   package:
-    name: '{{ item }}'
-    state: present
-  with_items:
-    - mariadb-server
-    - memcached
-    - openstack-keystone
-    - openstack-selinux
-    - openstack-swift
-    - openstack-swift-proxy
-    - openstack-swift-account
-    - openstack-swift-container
-    - openstack-swift-object
-    - openstack-swift-plugin-swift3
-    - python-keystoneclient
-    - python-memcached
-    - python-openstackclient
-    - python-swiftclient
+    name:
+      - mariadb-server
+      - memcached
+      - openstack-keystone
+      - openstack-selinux
+      - openstack-swift
+      - openstack-swift-proxy
+      - openstack-swift-account
+      - openstack-swift-container
+      - openstack-swift-object
+      - openstack-swift-plugin-swift3
+      - python-keystoneclient
+      - python-memcached
+      - python-openstackclient
+      - python-swiftclient
 
 - name: Copy MariaDB configuration
   template:
