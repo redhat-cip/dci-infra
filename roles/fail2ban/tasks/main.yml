@@ -22,11 +22,10 @@
 
 - name: Ensure fail2ban firewalld is absent
   yum:
-    name: '{{ item }}'
+    name:
+      - fail2ban
+      - fail2ban-firewalld
     state: absent
-  with_items:
-    - fail2ban
-    - fail2ban-firewalld
   notify: restart fail2ban
 
 - name: Install 01-sshd.conf
