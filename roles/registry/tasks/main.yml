@@ -21,14 +21,14 @@
     state: yes
     persistent: yes
 
-- name: Install docker auth/distribution
+- name: Install packages for docker_auth and docker-distribution
   yum:
     name: '{{ item }}'
   with_items:
     - docker_auth
     - docker-distribution
 
-- name: Ensure docker distribution is started
+- name: Ensure docker-distribution service is started
   service:
     name: docker-distribution
     enabled: true
@@ -39,7 +39,7 @@
     src: docker_auth.yml.j2
     dest: /etc/docker_auth.yml
 
-- name: Ensuer docker auth is started
+- name: Ensure docker_auth service is started
   service:
     name: docker_auth
     enabled: true
