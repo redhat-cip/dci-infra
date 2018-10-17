@@ -37,6 +37,12 @@ SQLALCHEMY_NATIVE_UNICODE = True
 
 # Stores configuration, to store files and components
 # STORE
+SWIFT_STORE = 'swift'
+FILE_STORE = 'file'
+{% if store_file_path is defined %}
+STORE_FILE_PATH = '{{ store_file_path }}'
+{% endif %}
+
 STORE_ENGINE = '{{ store_engine }}'
 STORE_USERNAME = '{{ store_username }}'
 STORE_PASSWORD = '{{ store_password }}'
