@@ -45,9 +45,17 @@
 
 # Ensure a backup of the database is made before
 # any update takes place
+- name: List package updates
+  yum:
+    list: updates
+    update_cache: true
+  register: rpmupdate
+
 - name: Ensure backup is made
   shell: . /opt/rh/rh-postgresql94/enable && swiftbackmeup backup --mode now
-  when: swiftbackmeup_modes is defined
+  when:
+    - swiftbackmeup_modes is defined
+    - "'dci-api' in rpmupdate.results|map(attribute='name')"
   tags:
     - dci-core
 
