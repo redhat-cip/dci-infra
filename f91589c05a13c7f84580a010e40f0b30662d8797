@@ -1,0 +1,8 @@
+Code-Review+2: Cédric Lecomte <ced.lecomte@gmail.com>
+Workflow+1: Cédric Lecomte <ced.lecomte@gmail.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Mon, 03 Dec 2018 11:45:20 +0000
+Reviewed-on: https://softwarefactory-project.io/r/14489
+Project: dci-infra
+Branch: refs/heads/master
