@@ -21,3 +21,6 @@ auth:
     service: "Docker registry"
     issuer: "DCI auth server"
     rootcertbundle: {{ registry_sslcertificatefile }}
+maintenance:
+  uploadpurging:
+    enabled: false
