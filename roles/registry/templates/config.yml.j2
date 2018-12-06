@@ -12,9 +12,6 @@ storage:
     tenant: '{{ store_tenant_name }}'
     region: {{ store_region }}
     container: {{ store_registry_container }}
-  maintenance:
-    uploadpurging:
-      enabled: false
 http:
   addr: 127.0.0.1:5000
   host: http{% if ssl_enabled|bool %}s{% endif %}://{{ registry_servername }}/
