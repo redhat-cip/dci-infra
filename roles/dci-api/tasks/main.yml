@@ -50,6 +50,8 @@
     list: updates
     update_cache: true
   register: rpmupdate
+  tags:
+    - dci-core
 
 - name: Ensure backup is made
   shell: . /opt/rh/rh-postgresql94/enable && swiftbackmeup backup --mode now
