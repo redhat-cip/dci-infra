@@ -177,11 +177,14 @@
 
 - name: Ensure apache can write files for DCI
   file:
-    path: '{{ api_filestore_path | default("/var/lib/dci-control-server/files") }}'
+    path: '{{ store_file_path | default("/var/lib/dci-control-server/files") }}'
     state: directory
     owner: apache
     group: apache
     recurse: true
+  when: store_engine == 'file'
+  tags:
+    - dci-core
 
 # Configure DCI-API vhost
 #
