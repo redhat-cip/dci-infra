@@ -59,7 +59,7 @@ The parameters used for the functional test suite are located in `dci-infra-data
 
 To be able to run those tests you need a specific set of packages:
 
- * **From yum**: `python2-dciclient`, `dci-agents`, `dci-feeders`, `python-tox` (found in EPEL for CentOS 7), `rubygems`, `ruby-devel` (on Fedora 23 `python3-dciclient` and `redhat-rpm-config`)
+ * **From yum**: `python2-dciclient`, `dci-agents`, `python-tox` (found in EPEL for CentOS 7), `rubygems`, `ruby-devel` (on Fedora 23 `python3-dciclient` and `redhat-rpm-config`)
  * **From gem**: rake, ansible\_spec
 
 The test suite should not be run as root
