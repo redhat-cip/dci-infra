@@ -41,12 +41,15 @@ SWIFT_STORE = 'swift'
 FILE_STORE = 'file'
 
 STORE_ENGINE = '{{ store_engine }}'
+{% if store_engine == 'swift' %}
 STORE_USERNAME = '{{ store_username }}'
 STORE_PASSWORD = '{{ store_password }}'
 STORE_TENANT_NAME = '{{ store_tenant_name }}'
 STORE_AUTH_URL = '{{ store_auth_url }}'
 STORE_REGION = '{{ store_region }}'
-STORE_CONTAINER = '{{ store_container }}'
+{% elif store_engine == 'file'  %}
+STORE_FILE_PATH = '{{ store_file_path | default("/var/lib/dci-control-server/files") }}'
+{% endif %}
 STORE_FILES_CONTAINER = '{{ store_files_container }}'
 STORE_COMPONENTS_CONTAINER = '{{ store_components_container }}'
 
