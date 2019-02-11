@@ -73,14 +73,14 @@ Finally start the service and configure the firewall so connections can reach th
 #> firewall-cmd --reload
 ```
 
-### DCI-API
+### DCI API Endpoint
 
-System packages are available for the `dci-api` in CentOS 7. See [Repositories]() for information about getting the DCI repositories.
+System packages are available for the `dci-control-server` in CentOS 7. See [Repositories]() for information about getting the DCI repositories.
 
-To install `dci-api`, simply install the package:
+To install `dci-control-server`, simply install the package:
 
 ``` sourceCode
-#> yum -y install dci-api
+#> yum -y install dci-control-sserver
 ```
 
 Adapt accordingly the configuration file located at `/etc/dci-api/settings.py`

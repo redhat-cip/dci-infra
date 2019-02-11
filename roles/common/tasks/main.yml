@@ -100,4 +100,4 @@
     name: '*'
     state: latest
     update_cache: yes
-    exclude: dci-api
+    exclude: dci-control-server

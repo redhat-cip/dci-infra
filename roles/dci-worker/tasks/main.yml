@@ -17,7 +17,7 @@
 ---
 - name: Ensure DCI-api is installed
   yum:
-    name: dci-api
+    name: dci-control-server
     state: latest
     update_cache: yes
   notify:

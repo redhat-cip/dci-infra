@@ -57,7 +57,7 @@
   shell: . /opt/rh/rh-postgresql94/enable && swiftbackmeup backup --mode now
   when:
     - swiftbackmeup_modes is defined
-    - "'dci-api' in rpmupdate.results|map(attribute='name')"
+    - "'dci-control-server' in rpmupdate.results|map(attribute='name')"
   tags:
     - dci-core
 
@@ -71,7 +71,7 @@
 #
 - name: Ensure DCI is installed
   yum:
-    name: dci-api
+    name: dci-control-server
     state: latest
     update_cache: yes
   notify:
