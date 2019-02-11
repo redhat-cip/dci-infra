@@ -22,6 +22,30 @@
       "revId": "f5b6eb56da56f0240a5a82e411934b73b7cea30f",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e158374f_48b0ea5a",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2019-02-11T17:09:52Z",
+      "side": 1,
+      "message": "Good catch :)",
+      "parentUuid": "eff6fc2c_a706a6c7",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 15
+      },
+      "revId": "f5b6eb56da56f0240a5a82e411934b73b7cea30f",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
