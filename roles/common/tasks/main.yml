@@ -57,14 +57,6 @@
     priority: 1
     gpgcheck: no
 
-- name: Add RDO Repository
-  yum_repository:
-    name: RDO-OpenStack
-    description: RDO YUM repo
-    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-pike/
-    exclude: python-zmq, zeromq
-    gpgcheck: no
-
 - name: Install chrony
   package:
     name: chrony
