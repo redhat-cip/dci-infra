@@ -38,7 +38,7 @@
 # Ensure postgresql client tools are installed
 - name: Ensure postgresql client tools installed
   yum:
-    name: rh-postgresql94-postgresql
+    name: rh-postgresql96-postgresql
     state: present
   tags:
     - dci-core
@@ -54,7 +54,7 @@
     - dci-core
 
 - name: Ensure backup is made
-  shell: . /opt/rh/rh-postgresql94/enable && swiftbackmeup backup --mode now
+  shell: . /opt/rh/rh-postgresql96/enable && swiftbackmeup backup --mode now
   when:
     - swiftbackmeup_modes is defined
     - "'dci-control-server' in rpmupdate.results|map(attribute='name')"
@@ -151,7 +151,7 @@
 #
 - name: Check if db is already in place
   shell: >
-    . /opt/rh/rh-postgresql94/enable &&
+    . /opt/rh/rh-postgresql96/enable &&
     . /etc/dci_db.sh &&
     psql -w -c 'SELECT count(*) FROM users'
   register: dbexist
