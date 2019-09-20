@@ -25,29 +25,29 @@
 - name: Ensure PostgreSQL packages are installed
   yum:
     name:
-      - rh-postgresql94-postgresql
-      - rh-postgresql94-postgresql-server
+      - rh-postgresql96-postgresql
+      - rh-postgresql96-postgresql-server
       - python-psycopg2
     state: present
   tags:
     - dci-core
 
-- name: Check if pg 9.4 config is present
+- name: Check if pg 9.6 config is present
   stat:
-    path: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+    path: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
   register: new_pg_conf_file
   tags:
      - dci-core
 
 - name: Initialize postgresql
-  shell: . /opt/rh/rh-postgresql94/enable && postgresql-setup --initdb --debug
+  shell: . /opt/rh/rh-postgresql96/enable && postgresql-setup --initdb --debug
   tags:
      - dci-core
   when: not new_pg_conf_file.stat.exists
 
 - name: Ensure PostgreSQL listen to all addresses
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
     regexp: "^listen_addresses = '*'"
     insertafter: '^#\s+-\s+Connection Settings'
     line: "listen_addresses = '*'"
@@ -56,14 +56,14 @@
 
 - name: Include PostgreSQL memory configuration
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/postgresql.conf
+    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
     line: "include = 'memory.conf'"
   tags:
     - dci-core
 
 - name: Write specific memory settings in memory.conf
   blockinfile:
-    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/memory.conf
+    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/memory.conf
     create: yes
     owner: postgres
     group: postgres
@@ -77,7 +77,7 @@
 
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
+    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
     line: 'host    all             all  {{ apiip }}/32            {{ item }}'
     insertafter: '^#\sIPv4\slocal.+'
   with_items:
@@ -88,7 +88,7 @@
 
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql94/lib/pgsql/data/pg_hba.conf
+    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
     regexp: '^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{ item }}$'
     insertafter: '^#\sIPv4\slocal.+'
     line: "host    all             all  127.0.0.1/32            {{ item }}"
@@ -98,9 +98,9 @@
   tags:
     - dci-core
 
-- name: Ensure PostgreSQL 9.4 service is started
+- name: Ensure PostgreSQL 9.6 service is started
   service:
-    name: rh-postgresql94-postgresql
+    name: rh-postgresql96-postgresql
     state: started
     enabled: yes
   tags:

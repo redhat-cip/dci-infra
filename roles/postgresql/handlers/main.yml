@@ -17,5 +17,5 @@
 ---
 - name: restart postgresql
   service:
-    name: rh-postgresql94-postgresql
+    name: rh-postgresql96-postgresql
     state: restarted
