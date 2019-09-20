@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49703ada_5e082992",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 405
+      },
+      "writtenOn": "2019-09-20T13:03:44Z",
+      "side": 1,
+      "message": "it will initialize the db on the next run because new_pg_conf_file do not exists right?",
+      "revId": "664619b9f97dca06bd5bd372fb0a44ec2879d709",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
