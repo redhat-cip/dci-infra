@@ -16,6 +16,24 @@
       "revId": "664619b9f97dca06bd5bd372fb0a44ec2879d709",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bbfc92ea_dd170f49",
+        "filename": "roles/postgresql/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2019-09-20T13:20:48Z",
+      "side": 1,
+      "message": "I understand the same as you, indeed.",
+      "parentUuid": "49703ada_5e082992",
+      "revId": "664619b9f97dca06bd5bd372fb0a44ec2879d709",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
