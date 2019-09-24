@@ -20,22 +20,10 @@
     name: epel-release
     state: present
 
-# TODO(spredzy): To Remove when python2-voluptuous 0.11.2 is present in EPEL
-- name: Check if python2-voluptuous is installed
-  shell: rpm -q --queryformat "%{VERSION}" python2-voluptuous
-  register: voluptuous_version
-  ignore_errors: True
-
-- name: Remove python2-voluptuous package
+- name: Remove python2-distro package
   yum:
-    name: python2-voluptuous
+    name: python2-distro
     state: absent
-  when: voluptuous_version.rc == 0 and voluptuous_version.stdout != '0.10.5'
-
-- name: Exclude python2-voluptuous from EPEL repo
-  shell: grep 'exclude=python2-voluptuous' /etc/yum.repos.d/epel.repo || sed -i '9iexclude=python2-voluptuous' /etc/yum.repos.d/epel.repo
-  when: voluptuous_version.rc == 0 and voluptuous_version.stdout != '0.10.5'
-# END
 
 - name: Ensure Priority is installed
   yum:
