@@ -88,7 +88,6 @@
     mode: '0644'
     remote_src: true
   with_items:
-    - keystone-wsgi-admin
     - keystone-wsgi-public
 
 - name: Copy Keystone configuration
@@ -96,7 +95,6 @@
     src: '{{ item }}'
     dest: '/etc/httpd/conf.d/{{ item }}'
   with_items:
-    - keystone_wsgi_admin.conf
     - keystone_wsgi_main.conf
 
 - name: Copy Keystone configuration
@@ -124,6 +122,13 @@
     state: restarted
     enabled: true
 
+- name: Create the openrc
+  template:
+    src: openrc
+    dest: '/home/{{ ansible_user }}/openrc'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+
 - block:
   - name: Run Keystone dbsync
     shell: 'keystone-manage db_sync'
@@ -138,26 +143,30 @@
   - name: Boostrap Keystone
     shell: |
       keystone-manage bootstrap --bootstrap-password {{ swift_ks_admin_token }} \
-      --bootstrap-admin-url http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ \
-      --bootstrap-internal-url http://{{ ansible_eth0.ipv4.address }}:5000/v2.0/ \
-      --bootstrap-public-url http://{{ ansible_host }}:5000/v2.0/ \
+      --bootstrap-admin-url http://{{ ansible_eth0.ipv4.address }}:5000/v3/ \
+      --bootstrap-internal-url http://{{ ansible_eth0.ipv4.address }}:5000/v3/ \
+      --bootstrap-public-url http://{{ ansible_host }}:5000/v3/ \
       --bootstrap-region-id regionOne
 
   - name: Create Swift auth
     shell: |
-      openstack role create swiftoperator --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_ks_admin_token }}
-      openstack project create service --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_ks_admin_token }}
-      openstack user create swift --project service --password {{ swift_service_password }} --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_ks_admin_token }}
-      openstack role add --project service --user swift admin --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_ks_admin_token }}
-      openstack service create --name swift --description "OpenStack Object Storage" object-store --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_ks_admin_token }}
-      openstack endpoint create --region regionOne object-store \
-      --adminurl http://{{ ansible_eth0.ipv4.address }}:8080/v1 \
-      --publicurl http://{{ ansible_host }}:8080/v1/AUTH_%\(tenant_id\)s \
-      --internalurl http://{{ ansible_eth0.ipv4.address }}:8080/v1/AUTH_%\(tenant_id\)s \
-      --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0/ --os-token={{ swift_ks_admin_token }}
-      openstack project create {{ store_tenant_name }} --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0 --os-token {{ swift_ks_admin_token }}
-      openstack user create {{ store_username }} --project {{ store_tenant_name }} --password {{ store_password }} --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0 --os-token {{ swift_ks_admin_token }}
-      openstack role add --project {{ store_tenant_name }} --user {{ store_username }} swiftoperator --os-url=http://{{ ansible_eth0.ipv4.address }}:35357/v2.0 --os-token {{ swift_ks_admin_token }}
+      source /home/{{ ansible_user }}/openrc
+      openstack project create --domain default --description "Service Project" service
+      openstack role create service
+      openstack role create member
+      openstack role create swiftoperator
+      openstack user create --project service --password {{ swift_service_password }} swift
+      openstack role add --project service --user swift swift
+      openstack role add --project service --user admin admin
+      openstack service create --name swift --description "OpenStack Object Storage" object-store
+      openstack endpoint create --region regionOne object-store public http://{{ ansible_host }}:8080/v1/AUTH_%\(tenant_id\)s
+      openstack endpoint create --region regionOne object-store internal http://{{ ansible_host }}:8080/v1/AUTH_%\(tenant_id\)s
+      openstack endpoint create --region regionOne object-store admin http://{{ ansible_eth0.ipv4.address }}:8080/v1
+      openstack project create {{ store_tenant_name }}
+      openstack user create --project {{ store_tenant_name }} --password {{ store_password }} {{ store_username }}
+      openstack role add --project {{ store_tenant_name }} --user {{ store_username }} member
+      openstack role add --project {{ store_tenant_name }} --user {{ store_username }} user
+      openstack role add --project {{ store_tenant_name }} --user {{ store_username }} swiftoperator
 
   - name: Test volume device type
     stat:
@@ -265,10 +274,3 @@
     - openstack-swift-object-auditor
     - openstack-swift-object-replicator
     - openstack-swift-object-updater
-
-- name: Create the openrc
-  template:
-    src: openrc
-    dest: '/home/{{ ansible_user }}/openrc'
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
