@@ -10,6 +10,18 @@ storage:
     password: {{ store_password }}
     authurl: {{ store_auth_url }}
     tenant: '{{ store_tenant_name }}'
+{% if store_user_domain_name %}
+    domain: {{ store_user_domain_name }}
+{% endif}
+{% if store_domain_id %}
+    domainid: {{ store_user_domain_id }}
+{% endif}
+{% if store_project_domain_name %}
+    tenantdomain: {{ store_project_domain_name }}
+{% endif %}
+{% if store_project_domain_id %}
+    tenantdomainid: {{ store_project_domain_id }}
+{% endif %}
     region: {{ store_region }}
     container: {{ store_registry_container }}
 http:
