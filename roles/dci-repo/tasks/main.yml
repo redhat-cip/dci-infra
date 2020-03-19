@@ -26,7 +26,7 @@
   file:
     path: '{{ repo_rootdir }}'
     state: directory
-    recurse: yes
+    recurse: no
     selevel: s0
     serole: object_r
     setype: httpd_sys_content_t
