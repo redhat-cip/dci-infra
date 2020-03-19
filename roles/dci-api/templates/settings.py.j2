@@ -47,11 +47,21 @@ STORE_PASSWORD = '{{ store_password }}'
 STORE_TENANT_NAME = '{{ store_tenant_name }}'
 STORE_AUTH_URL = '{{ store_auth_url }}'
 STORE_REGION = '{{ store_region }}'
-{% if store_identity_api_version is defined %}STORE_IDENTITY_API_VERSION = '{{ store_identity_api_version}}'{% endif %}
-{% if store_user_domain_id is defined %}STORE_USER_DOMAIN_ID = '{{ store_user_domain_id }}'{% endif %}
-{% if store_user_domain_name is defined %}STORE_USER_DOMAIN_NAME = '{{ store_user_domain_name }}'{% endif %}
-{% if store_project_domain_id is defined %}STORE_PROJECT_DOMAIN_ID = '{{ store_project_domain_id }}'{% endif %}
-{% if store_project_domain_name is defined %}STORE_PROJECT_DOMAIN_NAME = '{{ store_project_domain_name }}'{% endif %}
+{% if store_identity_api_version is defined %}
+STORE_IDENTITY_API_VERSION = '{{ store_identity_api_version}}'
+{% endif %}
+{% if store_user_domain_id is defined %}
+STORE_USER_DOMAIN_ID = '{{ store_user_domain_id }}'
+{% endif %}
+{% if store_user_domain_name is defined %}
+STORE_USER_DOMAIN_NAME = '{{ store_user_domain_name }}'
+{% endif %}
+{% if store_project_domain_id is defined %}
+STORE_PROJECT_DOMAIN_ID = '{{ store_project_domain_id }}'
+{% endif %}
+{% if store_project_domain_name is defined %}
+STORE_PROJECT_DOMAIN_NAME = '{{ store_project_domain_name }}'
+{% endif %}
 {% elif store_engine == 'file'  %}
 STORE_FILE_PATH = '{{ store_file_path | default("/var/lib/dci-control-server/files") }}'
 {% endif %}
