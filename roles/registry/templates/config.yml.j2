@@ -10,19 +10,19 @@ storage:
     password: {{ store_password }}
     authurl: {{ store_auth_url }}
     tenant: '{{ store_tenant_name }}'
-{% if store_identity_api_version %}
+{% if store_identity_api_version is defined %}
     authversion: {{ store_identity_api_version }}
 {% endif %}
-{% if store_user_domain_name %}
+{% if store_user_domain_name is defined %}
     domain: {{ store_user_domain_name }}
-{% endif}
-{% if store_domain_id %}
+{% endif %}
+{% if store_user_domain_id is defined %}
     domainid: {{ store_user_domain_id }}
-{% endif}
-{% if store_project_domain_name %}
+{% endif %}
+{% if store_project_domain_name is defined %}
     tenantdomain: {{ store_project_domain_name }}
 {% endif %}
-{% if store_project_domain_id %}
+{% if store_project_domain_id is defined %}
     tenantdomainid: {{ store_project_domain_id }}
 {% endif %}
     region: {{ store_region }}
