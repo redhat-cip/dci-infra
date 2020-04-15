@@ -105,6 +105,14 @@
   tags:
     - dci-core
 
+- name: Copy logrotate httpd configuration (backing up default one)
+  copy:
+    src: logrotate.conf
+    dest: /etc/logrotate.d/httpd
+    backup: yes
+  tags:
+    - dci-core
+
 - name: Ensure apache is running (and enable it at boot)
   service:
     name: httpd
