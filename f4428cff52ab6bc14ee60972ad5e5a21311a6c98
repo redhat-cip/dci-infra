@@ -1,0 +1,9 @@
+Code-Review+1: Yassine Lamgarchal <yassine.lamgarchal@redhat.com>
+Code-Review+2: François Charlier <francois.charlier@redhat.com>
+Workflow+1: François Charlier <francois.charlier@redhat.com>
+Verified+2: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-by: Zuul CI <zuul@softwarefactory-project.io>
+Submitted-at: Mon, 04 May 2020 10:27:24 +0000
+Reviewed-on: https://softwarefactory-project.io/r/18065
+Project: dci-infra
+Branch: refs/heads/master
