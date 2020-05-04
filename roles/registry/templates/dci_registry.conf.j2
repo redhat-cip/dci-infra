@@ -38,8 +38,8 @@ LoadModule proxy_http_module modules/mod_proxy_http.so
     ProxyPass        /auth http://localhost:5001/auth
     ProxyPassReverse /auth http://localhost:5001/auth
 
-    CustomLog "|/sbin/rotatelogs -n 14 logs/{{ registry_servername }}.%Y.%m.%d 86400" combined
-    ErrorLog "|/sbin/rotatelogs -n 14 logs/{{ registry_servername }}_errors.%Y.%m.%d 86400"
+    CustomLog logs/{{ registry_servername }} combined
+    ErrorLog logs/{{ registry_servername }}_errors
 </VirtualHost>
 {% else %}
 <VirtualHost *:80>
@@ -88,7 +88,7 @@ LoadModule proxy_http_module modules/mod_proxy_http.so
     ProxyPass        /auth http://localhost:5001/auth
     ProxyPassReverse /auth http://localhost:5001/auth
 
-    CustomLog "|/sbin/rotatelogs -n 14 logs/{{ registry_servername }}.%Y.%m.%d 86400" combined
-    ErrorLog "|/sbin/rotatelogs -n 14 logs/{{ registry_servername }}_errors.%Y.%m.%d 86400"
+    CustomLog logs/{{ registry_servername }} combined
+    ErrorLog logs/{{ registry_servername }}_errors
 </VirtualHost>
 {% endif %}

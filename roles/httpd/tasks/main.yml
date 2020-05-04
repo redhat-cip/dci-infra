@@ -105,34 +105,6 @@
   tags:
     - dci-core
 
-
-- name: Copy SELinux rotatelogs type enforcement file
-  copy: src=rotatelogs.te
-        dest=/tmp/
-  tags:
-    - dci-core
-
-- name: Compile SELinux rotatelogs module file
-  command: checkmodule -M -m -o /tmp/rotatelogs.mod /tmp/rotatelogs.te
-  tags:
-    - dci-core
-
-- name: Build SELinux rotatelogs policy package
-  command: semodule_package -o /tmp/rotatelogs.pp -m /tmp/rotatelogs.mod
-  tags:
-    - dci-core
-
-- name: Load SELinux rotatelogs policy package
-  command: semodule -i /tmp/rotatelogs.pp
-  tags:
-    - dci-core
-
-- name: Cleanup SELinux temporary files
-  file: path=/tmp/rotatelogs.*
-        state=absent
-  tags:
-    - dci-core
-
 - name: Ensure apache is running (and enable it at boot)
   service:
     name: httpd
