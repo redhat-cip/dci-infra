@@ -129,8 +129,8 @@ If one decide to go with the httpd + mod\_wsgi route, this is a working virtual 
   ServerName api.my.dci.com
   ServerAdmin root@my.dci.com
 
-  CustomLog logs/api.my.dci.com combined
-  ErrorLog logs/api.my.dci.com_errors
+  CustomLog logs/api.my.dci.com_log combined
+  ErrorLog logs/api.my.dci.com_errors_log
   DocumentRoot /usr/share/dci-api/
 
   WSGIScriptAlias / /usr/share/dci-api/wsgi.py
@@ -166,8 +166,8 @@ In order to serve those files we recommend using httpd with a vhost that looks l
   ServerName my.dci.com
   ServerAdmin root@my.dci.com
 
-  CustomLog logs/my.dci.com combined
-  ErrorLog logs/my.dci.com_errors
+  CustomLog logs/my.dci.com_log combined
+  ErrorLog logs/my.dci.com_errors_log
   DocumentRoot /srv/www/dci-ui
 
   <Directory /srv/www/dci-ui>
