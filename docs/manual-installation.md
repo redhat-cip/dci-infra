@@ -129,8 +129,7 @@ If one decide to go with the httpd + mod\_wsgi route, this is a working virtual 
   ServerName api.my.dci.com
   ServerAdmin root@my.dci.com
 
-  CustomLog "|/sbin/rotatelogs -n 14 logs/api.my.dci.com.%Y.%m.%d 86400" combined
-  ErrorLog "|/sbin/rotatelogs -n 14 logs/api.my.dci.com_errors.%Y.%m.%d 86400"
+  CustomLog logs/api.my.dci.com combined
   ErrorLog logs/api.my.dci.com_errors
   DocumentRoot /usr/share/dci-api/
 
