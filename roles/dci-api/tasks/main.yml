@@ -207,3 +207,26 @@
     job: '/usr/bin/dci-purge-swift-components'
   tags:
     - dci-core
+
+# Install UMB certs to be able to connect to umb.api.redhat.com
+#
+- name: Install UMB key file
+  copy:
+    content: "{{ umb_key }}"
+    dest: "{{ umb_key_file_path }}"
+  tags:
+    - dci-core
+
+- name: Install UMB crt file
+  copy:
+    content: "{{ umb_crt }}"
+    dest: "{{ umb_crt_file_path }}"
+  tags:
+    - dci-core
+
+- name: Install UMB ca file (RH-IT-Root-CA)
+  copy:
+    content: "{{ umb_ca }}"
+    dest: "{{ umb_ca_file_path }}"
+  tags:
+    - dci-core
