@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7d3708d1_20717395",
+        "filename": "roles/dci-worker/handlers/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-06-24T10:24:06Z",
+      "side": 1,
+      "message": "It\u0027s about the package, maybe I could rename it \"dci-control-server package upgraded\" to be clearer ?",
+      "parentUuid": "f5435345_9355e68d",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "dd13d739b5f06ff6f866ebf8f152f1f39797c186",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20bb2bed_b17dc5d8",
         "filename": "roles/dci-worker/tasks/main.yml",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-06-24T10:21:26Z",
       "side": 1,
       "message": "dci_control_server_upgraded or dci-control-server-upgraded will be easy fors search and debugging no ? why a space in the event name",
+      "range": {
+        "startLine": 24,
+        "startChar": 7,
+        "endLine": 24,
+        "endChar": 35
+      },
+      "revId": "dd13d739b5f06ff6f866ebf8f152f1f39797c186",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2452b814_61afc284",
+        "filename": "roles/dci-worker/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-06-24T10:24:06Z",
+      "side": 1,
+      "message": "Because it\u0027s allowed and I thought it would be easier to find without underscores \u0026 dashes.\n\ndci-control-server is the package name, looks easy to search \u0026 find",
+      "parentUuid": "20bb2bed_b17dc5d8",
       "range": {
         "startLine": 24,
         "startChar": 7,
