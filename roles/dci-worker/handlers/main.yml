@@ -1,5 +1,10 @@
 ---
 - name: restart dci-worker
-  service:
+  systemd:
     name: dci-worker
     state: restarted
+    daemon_reload: yes
+
+- name: propagate event for dci-control-server upgraded as a fact
+  set_fact:
+    dci_control_server_package_upgraded: True

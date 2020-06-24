@@ -21,12 +21,17 @@
     state: latest
     update_cache: yes
   notify:
-    - restart dci-worker
+    - reload httpd
+    - propagate event for dci-control-server upgraded as a fact
   tags:
     - dci-core
 
-- name: To be remove
-  shell: systemctl daemon-reload
+- name: Also trigger handlers when dci-control-server was upgraded in another play on the same host
+  command: /bin/true
+  notify:
+    - reload httpd
+  when:
+    - dci_control_server_package_upgraded is defined and dci_control_server_package_upgraded
   tags:
     - dci-core
 

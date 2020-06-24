@@ -20,6 +20,10 @@
     name: httpd
     state: reloaded
 
+- name: propagate event for dci-control-server upgraded as a fact
+  set_fact:
+    dci_control_server_package_upgraded: True
+
 - name: restart httpd
   service:
     name: httpd
