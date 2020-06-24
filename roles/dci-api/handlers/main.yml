@@ -19,6 +19,12 @@
   service:
     name: httpd
     state: reloaded
+  listen: "dci-control-server package upgraded"
+
+- name: Set a fact to notify other plays that dci-control-server has been upgraded
+  set_fact:
+    dci_control_server_package_upgraded: True
+  listen: "dci-control-server package upgraded"
 
 - name: restart httpd
   service:

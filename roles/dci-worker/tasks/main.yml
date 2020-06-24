@@ -21,12 +21,16 @@
     state: latest
     update_cache: yes
   notify:
-    - restart dci-worker
+    - "dci-control-server package upgraded"
   tags:
     - dci-core
 
-- name: To be remove
-  shell: systemctl daemon-reload
+- name: Force trigger handler for 'dci-control-server package upgraded' when dci-control-server was upgraded by another play on the same host
+  command: /bin/true
+  notify:
+    - "dci-control-server package upgraded"
+  when:
+    - dci_control_server_package_upgraded is defined and dci_control_server_package_upgraded
   tags:
     - dci-core
 
