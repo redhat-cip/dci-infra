@@ -11,3 +11,13 @@ DCI_DLRN_PASSWORD='{{ dci_worker_dlrn_password }}'
 
 export DCI_DLRN_LOGIN
 export DCI_DLRN_PASSWORD
+
+UMB_KEY_FILE_PATH='{{ umb_key_file_path }}'
+UMB_CRT_FILE_PATH='{{ umb_crt_file_path }}'
+UMB_CA_FILE_PATH='{{ umb_ca_file_path }}'
+UMB_BROKERS='{{ umb_brokers }}'
+
+export UMB_KEY_FILE_PATH
+export UMB_CRT_FILE_PATH
+export UMB_CA_FILE_PATH
+export UMB_BROKERS
