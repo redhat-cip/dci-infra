@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "6ca2f0c5_a9b1a2ec",
+        "filename": "roles/dci-worker/handlers/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 405
+      },
+      "writtenOn": "2020-06-26T07:16:40Z",
+      "side": 1,
+      "message": "I mean `dci_control_server_upgraded_fact: True` when \"dci-control-server upgraded\" should be `dci_worker_upgraded_fact: True` no ?\n\nI understand this:\n\n * line 2 - 7 reload dci-worker when \"dci-control-server upgraded\" event\n * line 9 - 12 set fact to tell other plays that DCI-WORKER has been upgrade (from line 2 - 7)",
+      "parentUuid": "7d3708d1_20717395",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "dd13d739b5f06ff6f866ebf8f152f1f39797c186",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20bb2bed_b17dc5d8",
         "filename": "roles/dci-worker/tasks/main.yml",
         "patchSetId": 1
