@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "d336831e_ada8ff8d",
+        "filename": "roles/dci-worker/handlers/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-06-26T07:29:33Z",
+      "side": 1,
+      "message": "Nope, it\u0027s really:\n\n* Line 2-7: restart dci-worker when \"dci-control-server package has been upgraded\"\n* Line 9-12: set a fact to tell other plays that the dci-control-server package has been upgraded",
+      "parentUuid": "6ca2f0c5_a9b1a2ec",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "dd13d739b5f06ff6f866ebf8f152f1f39797c186",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20bb2bed_b17dc5d8",
         "filename": "roles/dci-worker/tasks/main.yml",
         "patchSetId": 1
