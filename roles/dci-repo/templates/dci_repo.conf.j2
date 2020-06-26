@@ -38,7 +38,6 @@ server {
         proxy_set_header        X-Original-URI $request_uri;
         proxy_set_header        SSLVerify $ssl_client_verify;
         proxy_set_header        SSLFingerprint $ssl_client_fingerprint;
-        proxy_set_header        Authorization "Basic {{ nginxpassword | b64encode }}";
     }
 
     access_log /var/opt/rh/rh-nginx112/log/nginx/{{ repo_servername }} main;
