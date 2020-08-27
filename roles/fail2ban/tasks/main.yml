@@ -41,6 +41,23 @@
   when: "'dci-api' in group_names or 'dci-ui' in group_names"
   notify: restart fail2ban
 
+- name: Install 00-ignoreip.conf
+  template:
+    src: 00-ignoreip.conf.j2
+    dest: /etc/fail2ban/jail.d/00-ignoreip.conf
+    mode: 0644
+    owner: root
+    group: root
+  when: "fail2ban_ignored_ips is defined and fail2ban_ignored_ips|list|length > 0"
+  notify: restart fail2ban
+
+- name: Remove 00-ignoreip.conf
+  file:
+    path: /etc/fail2ban/jail.d/00-ignoreip.conf
+    state: absent
+  when: "fail2ban_ignored_ips is not defined or fail2ban_ignored_ips|list|length == 0"
+  notify: restart fail2ban
+
 - name: Start fail2ban service
   service:
     name: fail2ban
