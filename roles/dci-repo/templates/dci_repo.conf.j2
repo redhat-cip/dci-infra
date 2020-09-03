@@ -40,6 +40,6 @@ server {
         proxy_set_header        SSLFingerprint $ssl_client_fingerprint;
     }
 
-    access_log /var/opt/rh/rh-nginx112/log/nginx/{{ repo_servername }} main;
-    error_log /var/opt/rh/rh-nginx112/log/nginx/{{ repo_servername }}_errors;
+    access_log /var/opt/rh/rh-nginx112/log/nginx/{{ repo_servername }}_access_log main;
+    error_log /var/opt/rh/rh-nginx112/log/nginx/{{ repo_servername }}_error_log;
 }
