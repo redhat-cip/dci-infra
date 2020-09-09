@@ -21,7 +21,10 @@
   roles:
     - common
     - { role: redhat-cip.swiftbackmeup }
+    when: swift_backmeup_disabled is not defined
     - { role: Spredzy.lecm }
+    when: ssl_enabled is true
+    when:
   tags:
     - dci-core
     - packages
@@ -65,6 +68,7 @@
     - fail2ban
   tags:
     - dci-core
+  when: failban_disabled is not defined
 
 - name: Install the packages node
   hosts: packages
@@ -85,6 +89,7 @@
     - doc
   tags:
     - doc
+  when: doc_disabled is undefined
 
 - name: Install the swift node
   hosts: swift
