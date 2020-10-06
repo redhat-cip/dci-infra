@@ -1,0 +1,3 @@
+---
+openstack_version: rocky
+python-policycoreutils: policycoreutils-python
