@@ -15,23 +15,35 @@
 # under the License.
 
 ---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+
 - name: Ensure EPEL is installed
-  yum:
+  package:
     name: epel-release
     state: present
 
 - name: Remove python2-distro package
-  yum:
+  package:
     name: python2-distro
     state: absent
 
 - name: Ensure Priority is installed
-  yum:
+  package:
     name: yum-plugin-priorities
+    state: present
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat") and ansible_distribution_major_version == '6'
+
+- name: Install DCI packages GPG key
+  rpm_key:
+    key: "https://packages.distributed-ci.io/RPM-GPG-KEY-distributedci"
     state: present
 
 - name: Ensure dci-release is installed
-  yum:
+  package:
     name: "http://packages.distributed-ci.io/dci-release.el{{ ansible_distribution_major_version }}.noarch.rpm"
     state: present
   tags:
@@ -49,7 +61,7 @@
   yum_repository:
     name: RDO-OpenStack
     description: RDO YUM repo
-    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-rocky/
+    baseurl: http://mirror.centos.org/centos/$releasever/cloud/$basearch/openstack-{{ openstack_version }}/
     exclude: python-zmq, zeromq
     gpgcheck: no
 
@@ -69,8 +81,8 @@
     name: '{{ ansible_ssh_host }}'
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
-  yum:
-    name: policycoreutils-python
+  package:
+    name: "{{ python_policycoreutils }}"
     state: present
 
 - name: Ensure SELinux is enforced
@@ -79,12 +91,12 @@
     policy: targeted
 
 - name: Ensure dci-sshpubkeys is installed
-  yum:
+  package:
     name: dci-sshpubkeys
     state: present
 
 - name: Ensure packages are up to their latest release
-  yum:
+  package:
     name: '*'
     state: latest
     update_cache: yes
