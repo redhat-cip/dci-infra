@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71b03a3c_1a5c1b66",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-10-13T17:39:56Z",
+      "side": 1,
+      "message": "Maintaining, should this really be a 6 ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 83,
+        "endLine": 38,
+        "endChar": 124
+      },
+      "revId": "5743a8f6cd0f785ec45f4a40035c45ace3344291",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
