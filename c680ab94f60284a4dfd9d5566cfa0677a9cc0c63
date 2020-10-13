@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40100f47_e4ff5247",
+        "filename": "roles/common/tasks/main.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-10-13T09:44:20Z",
+      "side": 1,
+      "message": "6 ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 120,
+        "endLine": 38,
+        "endChar": 124
+      },
+      "revId": "c680ab94f60284a4dfd9d5566cfa0677a9cc0c63",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
