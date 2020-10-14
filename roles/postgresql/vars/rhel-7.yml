@@ -1,0 +1,11 @@
+---
+postgres_conf: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
+postgres_mem_conf: /var/opt/rh/rh-postgresql96/lib/pgsql/data/memory.conf
+postgres_auth_conf: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
+postgres_service: rh-postgresql96-postgresql
+postgres_packages:
+  - rh-postgresql96-postgresql
+  - rh-postgresql96-postgresql-server
+  - python-psycopg2
+postgres_init_cmd: . /opt/rh/rh-postgresql96/enable && postgresql-setup --initdb --debug
+
