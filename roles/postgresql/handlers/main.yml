@@ -17,5 +17,5 @@
 ---
 - name: restart postgresql
   service:
-    name: rh-postgresql96-postgresql
+    name: "{{ postgres_service }}"
     state: restarted

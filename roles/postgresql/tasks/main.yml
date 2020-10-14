@@ -15,39 +15,47 @@
 # under the License.
 
 ---
+- name: Gather OS specific variables (postgres)
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+  tags:
+    - dci-core
+
 - name: Enable SCL
   yum:
     name: centos-release-scl
     state: present
   tags:
     - dci-core
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat") and ansible_distribution_major_version == '7'
 
 - name: Ensure PostgreSQL packages are installed
-  yum:
-    name:
-      - rh-postgresql96-postgresql
-      - rh-postgresql96-postgresql-server
-      - python-psycopg2
+  package:
+    name: "{{ item }}"
     state: present
+  with_items:
+    - "{{ postgres_packages }}"
   tags:
     - dci-core
 
-- name: Check if pg 9.6 config is present
+- name: Check if postgresql config is present
   stat:
-    path: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
+    path: "{{ postgres_conf }}"
   register: new_pg_conf_file
   tags:
      - dci-core
 
 - name: Initialize postgresql
-  shell: . /opt/rh/rh-postgresql96/enable && postgresql-setup --initdb --debug
+  shell: "{{ postgres_init_cmd }}"
   tags:
      - dci-core
   when: not new_pg_conf_file.stat.exists
 
 - name: Ensure PostgreSQL listen to all addresses
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
+    dest: "{{ postgres_conf }}"
     regexp: "^listen_addresses = '*'"
     insertafter: '^#\s+-\s+Connection Settings'
     line: "listen_addresses = '*'"
@@ -56,28 +64,28 @@
 
 - name: Include PostgreSQL memory configuration
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/postgresql.conf
+    dest: "{{ postgres_conf }}"
     line: "include = 'memory.conf'"
   tags:
     - dci-core
 
 - name: Write specific memory settings in memory.conf
   blockinfile:
-    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/memory.conf
+    dest: "{{ postgres_mem_conf }}"
     create: yes
     owner: postgres
     group: postgres
     mode: 0600
     block: |
-      shared_buffers = {{ (ansible_memtotal_mb * 0.25)|int }}MB
-      effective_cache_size = {{ (ansible_memtotal_mb * 0.50)|int }}MB
+      shared_buffers = {{  (ansible_memtotal_mb * 0.25)|int }}MB
+      effective_cache_size = {{  (ansible_memtotal_mb * 0.50)|int }}MB
   notify: restart postgresql
   tags:
     - dci-core
 
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
+    dest: "{{ postgres_auth_conf }}"
     line: 'host    all             all  {{ apiip }}/32            {{ item }}'
     insertafter: '^#\sIPv4\slocal.+'
   with_items:
@@ -88,7 +96,7 @@
 
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
-    dest: /var/opt/rh/rh-postgresql96/lib/pgsql/data/pg_hba.conf
+    dest: "{{ postgres_auth_conf }}"
     regexp: '^host\s+all\s+all\s+127\.0\.0\.1/32\s+{{ item }}$'
     insertafter: '^#\sIPv4\slocal.+'
     line: "host    all             all  127.0.0.1/32            {{ item }}"
@@ -98,9 +106,9 @@
   tags:
     - dci-core
 
-- name: Ensure PostgreSQL 9.6 service is started
+- name: Ensure PostgreSQL service is started
   service:
-    name: rh-postgresql96-postgresql
+    name: "{{ postgres_service }}"
     state: started
     enabled: yes
   tags:
