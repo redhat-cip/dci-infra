@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "36ebc204_e50b70ec",
+        "filename": "roles/postgresql/vars/rhel-8.yml",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-10-21T12:45:32Z",
+      "side": 1,
+      "message": "Looking at postgresql versions available for RHEL-8 I see that there are different versions available as modules depending on the sub-version.\n\nDo we need to ensure the correct module is enabled to avoid surprises jumping from a postgresql version to another (which generally require a full re-import) ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "97c727e1da819656fce11e235c6c7dc4484a0e71",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
