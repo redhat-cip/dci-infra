@@ -15,6 +15,14 @@
 # under the License.
 
 ---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+  tags:
+    - dci-core
+
 - name: Ensure apache is present version
   yum:
     name: httpd
@@ -43,8 +51,8 @@
     - dci-core
 
 - name: Ensure mod_wsgi is installed
-  yum:
-    name: mod_wsgi
+  package:
+    name: "{{ mod_wsgi_package }}"
   when: wsgi_enabled|bool
   tags:
     - dci-core
@@ -60,6 +68,15 @@
   lineinfile:
     dest: /etc/httpd/conf.modules.d/00-mpm.conf
     regexp: '^LoadModule mpm_prefork_module modules/mod_mpm_prefork.so$'
+    state: absent
+  notify: reload httpd
+  tags:
+    - dci-core
+
+- name: Remove mpm event module
+  lineinfile:
+    dest: /etc/httpd/conf.modules.d/00-mpm.conf
+    regexp: '^LoadModule mpm_event_module modules/mod_mpm_event.so$'
     state: absent
   notify: reload httpd
   tags:
@@ -82,6 +99,7 @@
     - 'conf.modules.d/00-lua'
     - 'conf.modules.d/00-proxy'
     - 'conf.modules.d/01-cgi'
+    - 'conf.modules.d/10-proxy_h2'
   notify: reload httpd
   tags:
     - dci-core
