@@ -1,0 +1,9 @@
+---
+postgres_client_packages:
+  - "@postgresql:9.6"
+  - postgresql
+swiftbackmeup_command: swiftbackmeup backup --mode now
+dciclient_package: python3-dciclient
+dci_db_check_command: >
+    . /etc/dci_db.sh &&
+    psql -w -c 'SELECT count(*) FROM users'
