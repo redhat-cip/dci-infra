@@ -15,6 +15,14 @@
 # under the License.
 
 ---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+  tags:
+    - dci-core
+
 # Ensure the needed SELinux booleans are enabled
 - name: Ensure the needed SELinux booleans are enabled
   seboolean:
@@ -29,16 +37,17 @@
     - dci-core
 
 - name: Enable SCL
-  yum:
+  package:
     name: centos-release-scl
     state: present
   tags:
     - dci-core
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat") and ansible_distribution_major_version == '7'
 
 # Ensure postgresql client tools are installed
 - name: Ensure postgresql client tools installed
-  yum:
-    name: rh-postgresql96-postgresql
+  package:
+    name: "{{ postgres_client_package }}"
     state: present
   tags:
     - dci-core
@@ -46,7 +55,7 @@
 # Ensure a backup of the database is made before
 # any update takes place
 - name: List package updates
-  yum:
+  package:
     list: updates
     update_cache: true
   register: rpmupdate
@@ -54,7 +63,7 @@
     - dci-core
 
 - name: Ensure backup is made
-  shell: . /opt/rh/rh-postgresql96/enable && swiftbackmeup backup --mode now
+  shell: "{{ swiftbackmeup_command }}"
   when:
     - swiftbackmeup_modes is defined
     - "'dci-control-server' in rpmupdate.results|map(attribute='name')"
@@ -70,7 +79,7 @@
 # Install DCI-API
 #
 - name: Ensure DCI is installed
-  yum:
+  package:
     name: dci-control-server
     state: latest
     update_cache: yes
@@ -90,8 +99,8 @@
     - dci-core
 
 - name: Ensure DCI Client is installed
-  yum:
-    name: python2-dciclient
+  package:
+    name: "{{ dciclient_package }}"
     state: latest
     update_cache: yes
   tags:
@@ -106,7 +115,7 @@
   register: dci_dbsync_state
 
 - name: Pull dci-common for pre-I9db68725d6c8cd05fa50a9052abed206fd7811dc rpm
-  yum:
+  package:
     name: dci-common
     state: latest
   when: dci_dbsync_state.stat.exists == False
@@ -160,10 +169,7 @@
 # Install DCI itself
 #
 - name: Check if db is already in place
-  shell: >
-    . /opt/rh/rh-postgresql96/enable &&
-    . /etc/dci_db.sh &&
-    psql -w -c 'SELECT count(*) FROM users'
+  shell: "{{ dci_db_check_command }}"
   register: dbexist
   ignore_errors: yes
   tags:
