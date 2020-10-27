@@ -16,12 +16,12 @@
 
 ---
 - name: Install fail2ban-server
-  yum:
+  package:
     name: fail2ban-server
     state: present
 
 - name: Ensure fail2ban firewalld is absent
-  yum:
+  package:
     name:
       - fail2ban
       - fail2ban-firewalld
