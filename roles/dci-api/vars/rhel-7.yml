@@ -1,0 +1,8 @@
+---
+postgres_client_package: rh-postgresql96-postgresql
+swiftbackmeup_command: . /opt/rh/rh-postgresql96/enable && swiftbackmeup backup --mode now
+dciclient_package: python2-dciclient
+dci_db_check_command: >
+    . /opt/rh/rh-postgresql96/enable &&
+    . /etc/dci_db.sh &&
+    psql -w -c 'SELECT count(*) FROM users'
