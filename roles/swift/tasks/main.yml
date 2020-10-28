@@ -17,6 +17,12 @@
 # under the License.
 
 ---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+
 - name: Disable EPEL repository
   ini_file:
     path: '/etc/yum.repos.d/epel.repo'
@@ -25,6 +31,15 @@
     value: 0
     no_extra_spaces: true
 
+- name: Enable CentOS-PowerTools repository
+  ini_file:
+    path: '/etc/yum.repos.d/CentOS-PowerTools.repo'
+    section: 'PowerTools'
+    option: 'enabled'
+    value: 1
+    no_extra_spaces: true
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8'
+
 - name: Fix /etc/hosts
   lineinfile:
     dest: /etc/hosts
@@ -32,20 +47,8 @@
 
 - name: Install Openstack packages
   package:
-    name:
-      - mariadb-server
-      - memcached
-      - openstack-keystone
-      - openstack-selinux
-      - openstack-swift
-      - openstack-swift-proxy
-      - openstack-swift-account
-      - openstack-swift-container
-      - openstack-swift-object
-      - python-keystoneclient
-      - python-memcached
-      - python-openstackclient
-      - python-swiftclient
+    name: "{{ item }}"
+  with_items: "{{ openstack_packages }}"
 
 - name: Copy MariaDB configuration
   template:
