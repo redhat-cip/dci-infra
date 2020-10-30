@@ -1,4 +1,10 @@
 ---
+- name: Gather OS specific variables (postgres)
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+
 - name: Create SSL Directory
   file:
    path: '{{ repo_sslcacertfile | dirname }}'
@@ -35,7 +41,7 @@
 - name: Install nginx Vhost
   template:
     src: dci_repo.conf.j2
-    dest: /etc/opt/rh/rh-nginx112/nginx/conf.d/dci_repo.conf
+    dest: '/etc/{{nginx_scl_prefix_dir | default("") }}nginx/conf.d/dci_repo.conf'
   notify:
     - reload nginx
 

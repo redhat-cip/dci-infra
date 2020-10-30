@@ -1,0 +1,6 @@
+---
+nginx_packages: rh-nginx112
+nginx_config_file: /etc/opt/rh/rh-nginx112/nginx/nginx.conf
+nginx_service: rh-nginx112-nginx
+nginx_scl_prefix_dir: opt/rh/rh-nginx112/
+nginx_modules_scl_prefix_dir: /opt/rh/rh-nginx112/root
