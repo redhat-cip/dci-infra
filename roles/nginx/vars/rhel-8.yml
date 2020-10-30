@@ -1,0 +1,6 @@
+---
+nginx_packages:
+  - "@nginx:1.14"
+  - nginx
+nginx_config_file: /etc/nginx/nginx.conf
+nginx_service: nginx
