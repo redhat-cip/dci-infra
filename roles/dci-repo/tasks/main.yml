@@ -35,7 +35,7 @@
 - name: Install nginx Vhost
   template:
     src: dci_repo.conf.j2
-    dest: /etc/opt/rh/rh-nginx112/nginx/conf.d/dci_repo.conf
+    dest: '/etc/{{ nginx_scl_prefix_dir | default("") }}/nginx/conf.d/dci_repo.conf'
   notify:
     - reload nginx
 
