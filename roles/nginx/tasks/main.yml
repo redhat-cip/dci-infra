@@ -1,21 +1,31 @@
 ---
+- name: Gather OS specific variables (postgres)
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+
 - name: Enable SCL
   package:
     name: centos-release-scl
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat") and ansible_distribution_major_version == '7'
 
 - name: Ensure Nginx package is installed
   package:
-    name: rh-nginx112
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ nginx_packages }}"
 
 - name: Copy the default nginx configuration
   template:
     src: nginx.conf.j2
-    dest: /etc/opt/rh/rh-nginx112/nginx/nginx.conf
+    dest: "{{ nginx_config_file }}"
   notify:
     - reload nginx
 
 - name: Ensure Nginx is running (and enabled at boot)
   service:
-    name: rh-nginx112-nginx
+    name: "{{ nginx_service }}"
     state: started
     enabled: true

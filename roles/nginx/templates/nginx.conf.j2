@@ -1,9 +1,9 @@
 user nginx;
 worker_processes auto;
-error_log /var/opt/rh/rh-nginx112/log/nginx/error.log;
-pid /var/opt/rh/rh-nginx112/run/nginx/nginx.pid;
+error_log /var/{{ nginx_scl_prefix_dir | default("") }}log/nginx/error.log;
+pid /var/{{ nginx_scl_prefix_dir | default("") }}run/{% if ansible_os_family == "RedHat" and ansible_distribution_major_version | int < 8 %}nginx/{% endif %}nginx.pid;
 
-include /opt/rh/rh-nginx112/root/usr/share/nginx/modules/*.conf;
+include {{ nginx_modules_scl_prefix_dir | default("") }}/usr/share/nginx/modules/*.conf;
 
 events {
     worker_connections  1024;
@@ -14,7 +14,7 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
-    access_log /var/opt/rh/rh-nginx112/log/nginx/access.log main;
+    access_log /var/{{ nginx_scl_prefix_dir | default("") }}log/nginx/access.log main;
 
     sendfile        on;
     tcp_nopush      on;
@@ -23,8 +23,8 @@ http {
     types_hash_max_size 2048;
     server_tokens   off;
 
-    include       /etc/opt/rh/rh-nginx112/nginx/mime.types;
+    include       /etc/{{ nginx_scl_prefix_dir | default("") }}nginx/mime.types;
     default_type  application/octet-stream;
 
-    include /etc/opt/rh/rh-nginx112/nginx/conf.d/*.conf;
+    include /etc/{{ nginx_scl_prefix_dir | default("") }}nginx/conf.d/*.conf;
 }
