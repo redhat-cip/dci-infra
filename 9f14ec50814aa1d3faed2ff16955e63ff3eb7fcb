@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0097717a_c3775d56",
+        "filename": "roles/dci-api/vars/rhel-8.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2020-10-30T09:19:44Z",
+      "side": 1,
+      "message": "Is it the same as with the server, should we enable a specific version for the client (although it\u0027s less critical I imagine)",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 35
+      },
+      "revId": "9f14ec50814aa1d3faed2ff16955e63ff3eb7fcb",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    }
+  ]
+}
