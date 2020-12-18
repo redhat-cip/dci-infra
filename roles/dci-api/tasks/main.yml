@@ -82,7 +82,11 @@
 #
 - name: Ensure DCI is installed
   package:
-    name: dci-control-server
+    name:
+      - dci-control-server
+      - dci-umb
+      - "{{ dciauth_package}}"
+      - "{{ dciclient_package }}"
     state: latest
     update_cache: yes
   notify:
@@ -97,14 +101,6 @@
     - reload httpd
   when:
     - dci_control_server_package_upgraded is defined and dci_control_server_package_upgraded
-  tags:
-    - dci-core
-
-- name: Ensure DCI Client is installed
-  package:
-    name: "{{ dciclient_package }}"
-    state: latest
-    update_cache: yes
   tags:
     - dci-core
 
