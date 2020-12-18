@@ -1,0 +1,12 @@
+---
+feeder_wsgi_processes: 6
+feeder_wsgi_threads: 4
+feeder_dci_client_id: feeder/CHANGEME
+feeder_dci_api_secret: shhh_dont_talk_about_it
+feeder_repo_rsync_target: /repo
+feeder_registry_user: admin_registry_user
+feeder_registry_password: shhh_dont_say_it
+
+ssl_enabled: false
+wsgi_enabled: true
+apihost: api.example.com
