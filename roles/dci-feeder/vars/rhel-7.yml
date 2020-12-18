@@ -1,6 +1,3 @@
 ---
-openstack_version: rocky
-python_policycoreutils: policycoreutils-python
-
 dciauth_package: python2-dciauth
 dciclient_package: python2-dciclient
