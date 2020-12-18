@@ -69,26 +69,36 @@
   package:
     name: chrony
     state: present
+  tags:
+    - molecule-notest
 
 - name: Start chronyd service
   service:
     name: chronyd
     state: started
     enabled: yes
+  tags:
+    - molecule-notest
 
 - name: Set the server hostname
   hostname:
     name: '{{ ansible_ssh_host }}'
+  tags:
+    - molecule-notest
 
 - name: Ensure semanage is installed for SELinux boolean manipulation
   package:
     name: "{{ python_policycoreutils }}"
     state: present
+  tags:
+    - molecule-notest
 
 - name: Ensure SELinux is enforced
   selinux:
     state: enforcing
     policy: targeted
+  tags:
+    - molecule-notest
 
 - name: Ensure dci-sshpubkeys is installed
   package:
@@ -100,4 +110,11 @@
     name: '*'
     state: latest
     update_cache: yes
-    exclude: dci-control-server
+    exclude:
+      - dci-feeder-api
+      - dci-control-server
+      - dci-umb
+      - "{{ dciclient_package }}"
+      - "{{ dciauth_package }}"
+  tags:
+    - molecule-notest

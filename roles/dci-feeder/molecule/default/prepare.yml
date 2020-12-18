@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install iproute, containing 'ss' required to verify listening ports
+      package:
+        name: iproute
+        state: present
