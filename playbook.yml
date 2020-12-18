@@ -118,3 +118,12 @@
     - registry
   tags:
     - registry
+
+# Not yet
+# - name: Install DCI Feeder
+#   hosts: dci-feeder
+#   remote_user: dci
+#   become: yes
+#   roles:
+#     - httpd
+#     - dci-feeder
