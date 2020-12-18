@@ -1,0 +1,119 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2020 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "rhel-{{ ansible_distribution_major_version }}.yml"
+    - "rhel-7.yml"
+
+# Ensure the needed SELinux booleans are enabled
+- name: Ensure the needed SELinux booleans are enabled
+  seboolean:
+    name: '{{ item }}'
+    state: yes
+    persistent: yes
+  with_items:
+    - httpd_can_network_connect
+    # - httpd_can_network_connect_db
+    # - httpd_execmem
+  tags:
+    - dci-core
+    - molecule-notest
+
+# dci-feeder-api requires python-docker-py which is obsoleted by python2-docker
+- name: Allow yum to install obsolete packages
+  ini_file:
+    path: /etc/yum.conf
+    section: main
+    option: obsoletes
+    value: "0"
+  tags:
+    - dci-core
+
+- name: Install RH-IT-Root-CA required to access internal https resources
+  get_url:
+    url: https://password.corp.redhat.com/RH-IT-Root-CA.crt
+    dest: /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
+    checksum: sha256:86479b04ef23e30ba736c83da3f0c9d301beebdc97822521ca500118d3991c79
+    validate_certs: no
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - update-ca-trust
+  tags:
+    - dci-core
+    - molecule-notest
+
+- name: Install docker (required for python-docker-py to work)
+  package:
+    name: docker
+    state: latest
+  tags:
+    - dci-core
+
+- name: Ensure dci-feeder-api packages are installed
+  package:
+    name:
+      - dci-feeder-api
+      - "{{ dciclient_package }}"
+      - "{{ dciauth_package }}"
+    state: latest
+    update_cache: yes
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+- name: Ensure dci-umb package is installed
+  package:
+    name: dci-umb
+    state: latest
+    update_cache: yes
+  notify:
+    - restart dci-umb
+  tags:
+    dci-core
+
+- name: Create dci-feeder-api settings file
+  template:
+    src: local_settings.py.j2
+    dest: /etc/dci-feeder-api/local_settings.py
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+- name: Create dci-feeder-api vhost file
+  template:
+    src: dci-feeder-api.conf.j2
+    dest: /etc/httpd/conf.d/00_feeder.distributed-ci.io.conf
+  notify:
+    - reload httpd
+  tags:
+    - dci-core
+
+- name: Setup dci-feeder-api cache folder
+  file:
+    path: /var/cache/dci-feeder-api
+    state: directory
+    owner: dci
+    group: dci
+    mode: 0755
+  tags:
+    - dci-core
