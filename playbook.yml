@@ -29,6 +29,19 @@
     - packages
     - doc
 
+- name: Common Configuration for nodes inside Red Hat's network
+  hosts: dci_internal
+  remote_user: dci
+  become: yes
+  tasks:
+    - include_role:
+        name: common
+        tasks_from: rh-internal
+        handlers_from: rh-internal
+  tags:
+    - dci-core
+    - dci-internal
+
 - name: Install-PostgreSQL
   hosts: postgresql
   remote_user: dci
@@ -118,3 +131,12 @@
     - registry
   tags:
     - registry
+
+- name: Install DCI Feeder
+  hosts: dci-feeder
+  remote_user: dci
+  become: yes
+  roles:
+    - dci-feeder
+  tags:
+    - feeder
