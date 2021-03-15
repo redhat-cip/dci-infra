@@ -9,4 +9,3 @@ postgres_packages:
   - postgresql-server
   - python3-psycopg2
 postgres_init_cmd: postgresql-setup --initdb --debug
-

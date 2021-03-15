@@ -8,4 +8,3 @@ postgres_packages:
   - rh-postgresql96-postgresql-server
   - python-psycopg2
 postgres_init_cmd: . /opt/rh/rh-postgresql96/enable && postgresql-setup --initdb --debug
-
