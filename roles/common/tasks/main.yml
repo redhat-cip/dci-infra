@@ -100,4 +100,9 @@
     name: '*'
     state: latest
     update_cache: yes
-    exclude: dci-control-server
+    exclude:
+      - dci-feeder-api
+      - dci-control-server
+      - dci-umb
+      - "{{ dciclient_package }}"
+      - "{{ dciauth_package }}"
