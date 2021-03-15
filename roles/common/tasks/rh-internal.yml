@@ -1,0 +1,16 @@
+---
+- name: Install RH-IT-Root-CA required to access internal https resources
+  get_url:
+    url: https://password.corp.redhat.com/RH-IT-Root-CA.crt
+    dest: /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
+    checksum: sha256:86479b04ef23e30ba736c83da3f0c9d301beebdc97822521ca500118d3991c79
+    validate_certs: no
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - update-ca-trust
+  tags:
+    - dci-core
+    - molecule-notest
+
