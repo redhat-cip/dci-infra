@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: feeder
+  roles:
+    - common
+    - httpd
+    - dci-feeder

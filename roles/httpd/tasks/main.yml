@@ -49,6 +49,7 @@
     state: present
   tags:
     - dci-core
+    - molecule-notest
 
 - name: Ensure mod_wsgi is installed
   package:
