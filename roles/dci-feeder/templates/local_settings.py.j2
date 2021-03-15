@@ -1,0 +1,11 @@
+# In this file, you can override variables from the `settings.py` file
+# simply by redefining them, they'll be picked up automatically.
+
+DCI_CS_URL = '{% if ssl_enabled|bool %}https{% else %}http{% endif %}://{{ apihost }}'
+DCI_CLIENT_ID = '{{ feeder_dci_client_id }}'
+DCI_API_SECRET = '{{ feeder_dci_api_secret }}'
+
+DCI_REPO_RSYNC_TARGET = '{{ feeder_repo_rsync_target }}'
+
+DEST_REGISTRY_USER = '{{ feeder_registry_user }}'
+DEST_REGISTRY_PASSWORD = '{{ feeder_registry_password }}'

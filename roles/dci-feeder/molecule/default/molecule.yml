@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+  enabled: False
+log: true
+driver:
+  name: podman
+platforms:
+  - name: feeder
+    image: centos:7
+    pre_build_image: true
+    # Force DNS servers to avoid internal DNS server which may not work
+    dns_servers:
+      - 1.1.1.1
+      - 8.8.8.8
+    command: /usr/sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
+  # inventory:
+  #   group_vars:
+  #     all:
+  #       ssl_enabled: false
+  #       apihost: http://127.0.0.1
+verifier:
+  name: testinfra
+lint: |
+  set -e
+  yamllint .
+  ansible-lint -vv --exclude molecule .
+  flake8

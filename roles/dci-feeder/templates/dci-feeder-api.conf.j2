@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+    ServerName feeder.distributed-ci.io
+    ServerAdmin distributed-ci@redhat.com
+
+    CustomLog logs/feeder.distributed-ci.io_log combined
+    ErrorLog logs/feeder.distributed-ci.io_error_log
+    DocumentRoot /usr/share/dci-feeder-api/
+
+    SetEnv REQUESTS_CA_BUNDLE /etc/ssl/certs/ca-bundle.crt
+
+    WSGIScriptAlias / /usr/share/dci-feeder-api/wsgi.py
+    WSGIDaemonProcess dci-feeder-api user=dci group=dci display-name=%{GROUP} processes={{ feeder_wsgi_processes }} threads={{ feeder_wsgi_threads }}
+
+    <Directory /usr/share/dci-feeder-api/>
+       WSGIProcessGroup dci-feeder-api
+       WSGIApplicationGroup %{GLOBAL}
+       AllowOverride None
+       Require all granted
+    </Directory>
+</VirtualHost>

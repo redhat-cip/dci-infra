@@ -1,0 +1,10 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install packages required by tests
+      package:
+        name:
+          - iproute
+          - curl
+        state: present
