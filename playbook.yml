@@ -118,3 +118,13 @@
     - registry
   tags:
     - registry
+
+- name: Install DCI Feeder
+   hosts: dci-feeder
+  remote_user: dci
+  become: yes
+  roles:
+    - dci-feeder
+  tags:
+    - feeder
+    - dci-internal
