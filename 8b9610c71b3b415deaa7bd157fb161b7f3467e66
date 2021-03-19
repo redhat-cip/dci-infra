@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48a09ccc_a0b3d6f2",
+        "filename": "roles/dci-feeder/defaults/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 648
+      },
+      "writtenOn": "2021-03-19T23:28:26Z",
+      "side": 1,
+      "message": "using the ansible_processor_* facts would be better here instead of a random constant. Default to e.g. ansible_processor_cores and ansible_processor_threads_per_core",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e1e9cd0_f2cd247e",
+        "filename": "roles/dci-feeder/molecule/default/molecule.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 648
+      },
+      "writtenOn": "2021-03-19T23:28:26Z",
+      "side": 1,
+      "message": "why not centos:8 ?",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e707875f_937f6e2e",
+        "filename": "roles/dci-feeder/molecule/default/tests/test_default.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 648
+      },
+      "writtenOn": "2021-03-19T23:28:26Z",
+      "side": 1,
+      "message": "if you\u0027re gonna use curl make sure curl is installed in prepare.yml, you could also very easily use urllib to make a curl-like request in pure python.",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c7426a4_1db929e6",
+        "filename": "roles/dci-feeder/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 648
+      },
+      "writtenOn": "2021-03-19T23:28:26Z",
+      "side": 1,
+      "message": "if these comments aren\u0027t needed, delete the lines",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a787d4c_e0654339",
+        "filename": "roles/dci-feeder/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 648
+      },
+      "writtenOn": "2021-03-19T23:28:26Z",
+      "side": 1,
+      "message": "this looks like it shouldn\u0027t be part of this role. What if you want to use the feeder in a non-RH location?",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79006573_f584d172",
+        "filename": "roles/dci-feeder/templates/local_settings.py.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 648
+      },
+      "writtenOn": "2021-03-19T23:28:26Z",
+      "side": 1,
+      "message": "extra closing brackets at the end",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    }
+  ]
+}
