@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "171b7b26_548b0ec8",
+        "filename": "roles/dci-feeder/defaults/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T21:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d3b837e_0919e6e8",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e1e9cd0_f2cd247e",
         "filename": "roles/dci-feeder/molecule/default/molecule.yml",
         "patchSetId": 14
@@ -107,6 +125,24 @@
     },
     {
       "key": {
+        "uuid": "0121918a_fa7f4bca",
+        "filename": "roles/dci-feeder/molecule/default/tests/test_default.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T21:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f37bfee6_8747fd99",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6c7426a4_1db929e6",
         "filename": "roles/dci-feeder/tasks/main.yml",
         "patchSetId": 14
@@ -139,6 +175,24 @@
       "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8340c945_cf5d39ce",
+        "filename": "roles/dci-feeder/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T21:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab34e327_980b9d7e",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     },
     {
       "key": {
@@ -177,6 +231,24 @@
     },
     {
       "key": {
+        "uuid": "90ac199a_35b6ff22",
+        "filename": "roles/dci-feeder/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T21:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39e16777_6f81a833",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79006573_f584d172",
         "filename": "roles/dci-feeder/templates/local_settings.py.j2",
         "patchSetId": 14
@@ -209,6 +281,24 @@
       "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c446d21_bbcea440",
+        "filename": "roles/dci-feeder/templates/local_settings.py.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T21:13:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21233ce1_ba2990f6",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": false
     }
   ]
 }
