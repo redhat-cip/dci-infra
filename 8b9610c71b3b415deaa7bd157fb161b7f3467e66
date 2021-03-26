@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7d3b837e_0919e6e8",
+        "filename": "roles/dci-feeder/defaults/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T16:51:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "48a09ccc_a0b3d6f2",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5e1e9cd0_f2cd247e",
         "filename": "roles/dci-feeder/molecule/default/molecule.yml",
         "patchSetId": 14
@@ -30,6 +48,24 @@
       "writtenOn": "2021-03-19T23:28:26Z",
       "side": 1,
       "message": "why not centos:8 ?",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dd91165_f5a77384",
+        "filename": "roles/dci-feeder/molecule/default/molecule.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T16:51:23Z",
+      "side": 1,
+      "message": "The python code currently depends on libraries available only in EL7.",
+      "parentUuid": "5e1e9cd0_f2cd247e",
       "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "f37bfee6_8747fd99",
+        "filename": "roles/dci-feeder/molecule/default/tests/test_default.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T16:51:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e707875f_937f6e2e",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6c7426a4_1db929e6",
         "filename": "roles/dci-feeder/tasks/main.yml",
         "patchSetId": 14
@@ -64,6 +118,24 @@
       "writtenOn": "2021-03-19T23:28:26Z",
       "side": 1,
       "message": "if these comments aren\u0027t needed, delete the lines",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab34e327_980b9d7e",
+        "filename": "roles/dci-feeder/tasks/main.yml",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T16:51:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6c7426a4_1db929e6",
       "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": true
@@ -98,6 +170,24 @@
       "writtenOn": "2021-03-19T23:28:26Z",
       "side": 1,
       "message": "extra closing brackets at the end",
+      "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21233ce1_ba2990f6",
+        "filename": "roles/dci-feeder/templates/local_settings.py.j2",
+        "patchSetId": 14
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 28
+      },
+      "writtenOn": "2021-03-26T16:51:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "79006573_f584d172",
       "revId": "8b9610c71b3b415deaa7bd157fb161b7f3467e66",
       "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
       "unresolved": true
