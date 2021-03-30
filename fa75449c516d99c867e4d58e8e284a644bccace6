@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab6febe9_b3ac55f7",
+        "filename": "roles/dci-api/tasks/main.yml",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 166
+      },
+      "writtenOn": "2021-03-30T13:39:13Z",
+      "side": 1,
+      "message": "It actually simplify the role :+1:",
+      "revId": "fa75449c516d99c867e4d58e8e284a644bccace6",
+      "serverId": "6c1dc8ef-8b94-40e4-bd83-c2359d45ecc0",
+      "unresolved": true
+    }
+  ]
+}
