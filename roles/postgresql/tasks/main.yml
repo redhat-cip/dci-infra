@@ -86,11 +86,13 @@
 - name: Ensure user can identify with password authentication mechanisms
   lineinfile:
     dest: "{{ postgres_auth_conf }}"
-    line: 'host    all             all  {{ apiip }}/32            {{ item }}'
+    line: 'host    all             all  {{ item[0] }}/32            {{ item[1] }}'
+    regex: 'host    all             all  {{ item[0] }}/32            {{ item[1] }}'
     insertafter: '^#\sIPv4\slocal.+'
-  with_items:
-    - password
-    - md5
+  with_nested:
+    - "{{ apiips | list }}"
+    - [ 'password', 'md5' ]
+  notify: restart postgresql
   tags:
     - dci-core
 
