@@ -1,3 +1,7 @@
 ---
-sqlalchemy_pool_size: 5
-sqlalchemy_max_overflow: 15
+dci_api_wsgi_processes: "{{ ansible_processor_count|int * 2 }}"
+dci_api_wsgi_threads: "{{ ansible_processor_count|int * 4 }}"
+dci_api_wsgi_maximum_requests: 200
+
+sqlalchemy_pool_size: "{{ dci_api_wsgi_threads|int }}"
+sqlalchemy_max_overflow: "{{ dci_api_wsgi_threads|int * 5 }}"
