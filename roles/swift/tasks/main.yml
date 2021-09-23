@@ -33,11 +33,12 @@
 
 - name: Enable CentOS-PowerTools repository
   ini_file:
-    path: '/etc/yum.repos.d/CentOS-PowerTools.repo'
-    section: 'PowerTools'
+    path: '/etc/yum.repos.d/CentOS-Linux-PowerTools.repo'
+    section: 'powertools'
     option: 'enabled'
     value: 1
     no_extra_spaces: true
+    create: false
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == '8'
 
 - name: Fix /etc/hosts

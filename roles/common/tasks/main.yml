@@ -26,6 +26,12 @@
     name: epel-release
     state: present
 
+- name: Ensure ca-certificates is up to date
+  package:
+    name: ca-certificates
+    update_cache: yes
+    state: latest
+
 - name: Remove python2-distro package
   package:
     name: python2-distro
