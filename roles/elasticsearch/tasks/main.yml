@@ -1,0 +1,52 @@
+---
+- name: Setting sysctl values
+  become: true
+  sysctl: name={{ item.name }} value={{ item.value }} sysctl_set=yes
+  with_items:
+    - { name: "vm.max_map_count", value: 262144}
+  when:
+    - set_sysctl | bool
+
+- name: Ensure config directories exist
+  become: true
+  file:
+    path: "{{ elasticsearch_path }}/{{ item }}"
+    state: directory
+    mode: 0775
+    owner: "{{ elasticsearch_uid }}"
+    group: "{{ elasticsearch_gid }}"
+  loop:
+    - config
+    - data
+    - logs
+
+- name: Copying over elasticsearch.yml
+  become: true
+  template:
+    src: "elasticsearch.yml.j2"
+    dest: "{{ elasticsearch_path }}/config/elasticsearch.yml"
+    mode: "0660"
+  notify:
+    - Restart elasticsearch container
+
+- name: Ensure podman is installed
+  become: true
+  package:
+    name: "podman"
+    state: present
+
+- name: Create Elasticsearch service file
+  become: true
+  template:
+    src: "elasticsearch.service.j2"
+    dest: "/etc/systemd/system/{{ elasticsearch_service }}.service"
+    mode: 0664
+  notify: Restart elasticsearch container
+
+- name: Enable elasticsearch service
+  become: true
+  service:
+    name: "{{ elasticsearch_service }}.service"
+    state: started
+    enabled: yes
+  when: elasticsearch_enabled | bool

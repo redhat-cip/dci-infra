@@ -1,0 +1,7 @@
+---
+- name: Restart elasticsearch container
+  become: true
+  systemd:
+    name: "{{ elasticsearch_service }}.service"
+    state: restarted
+    daemon_reload: yes

@@ -140,3 +140,12 @@
     - dci-feeder
   tags:
     - feeder
+
+- name: Install DCI Elasticsearch
+  hosts: analytics
+  remote_user: dci
+  become: yes
+  roles:
+    - elasticsearch
+  tags:
+    - elasticsearch

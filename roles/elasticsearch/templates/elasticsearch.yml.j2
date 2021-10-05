@@ -1,0 +1,15 @@
+cluster.name: {{ elasticsearch_cluster_name }}
+node.name: {{ elasticsearch_node_name }}
+
+{{ elasticsearch_config | to_nice_yaml }}
+
+{% if elasticsearch_ssl_enabled | bool %}
+xpack.security.enabled: true
+xpack.security.http.ssl.enabled: true
+xpack.security.transport.ssl.enabled: true
+xpack.security.http.ssl.key: {{ elasticsearch_ssl_key }}
+xpack.security.http.ssl.certificate: {{ elasticsearch_ssl_crt }}
+xpack.security.http.ssl.certificate_authorities: {{ elasticsearch_ssl_ca }}
+{% else %}
+xpack.security.enabled: false
+{% endif %}
