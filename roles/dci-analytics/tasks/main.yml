@@ -1,0 +1,10 @@
+---
+- name: Ensure dci-analytics package is installed
+  package:
+    name:
+      - dci-analytics
+    state: latest
+    update_cache: yes
+
+- name: Run podman auto-update
+  ansible.builtin.shell: podman auto-update
