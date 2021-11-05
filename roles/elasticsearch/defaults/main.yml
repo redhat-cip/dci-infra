@@ -2,7 +2,7 @@
 elasticsearch_cluster_name: "elasticsearch"
 elasticsearch_config:
   discovery.zen.minimum_master_nodes: 1
-  action.auto_create_index: false
+  action.auto_create_index: true
   indices.cache.cleanup_interval: "1m"
   network.host: "0.0.0.0"
   transport.host: "0.0.0.0"
@@ -11,7 +11,7 @@ elasticsearch_config:
   node.data: true
   node.ingest: true
   discovery.type: "single-node"
-elasticsearch_container_name: "dci_analytics_es"
+elasticsearch_container_name: "dci-elasticsearch"
 elasticsearch_enabled: true
 elasticsearch_gid: "0"
 elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
