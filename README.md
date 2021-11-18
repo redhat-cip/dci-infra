@@ -27,3 +27,4 @@ deploy the minimal service required.
 - registry: Install and configure the container registry.
 - swift: Install an AIO swift.
 - elasticsearch: Install and configure the container elasticsearch.
+- dci-analytics: Install and configure the container dci-analytics.

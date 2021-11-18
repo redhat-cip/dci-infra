@@ -149,3 +149,12 @@
     - elasticsearch
   tags:
     - elasticsearch
+
+- name: Install DCI Analytics
+  hosts: analytics
+  remote_user: dci
+  become: yes
+  roles:
+    - dci-analytics
+  tags:
+    - dci-analytics
