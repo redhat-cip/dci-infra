@@ -71,7 +71,7 @@
   notify:
     - restart dci-umb
   tags:
-    dci-core
+    - dci-core
 
 - name: Create dci-feeder-api settings file
   template:
@@ -98,5 +98,13 @@
     owner: dci
     group: dci
     mode: 0755
+  tags:
+    - dci-core
+
+- name: Enable dci-umb service
+  service:
+    name: dci-umb
+    enabled: yes
+    state: started
   tags:
     - dci-core
