@@ -8,3 +8,22 @@
 
 - name: Run podman auto-update
   ansible.builtin.shell: podman auto-update
+
+- name: start dci-analytics services
+  become: true
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - dci-analytics.service
+    - dci-analytics-sync.timer
+    - dci-analytics-sync.service
+
+- name: Create environment file used by the dci-analytics container
+  become: true
+  template:
+    src: "dci-analytics.env.j2"
+    dest: "/run/dci-analytics.env"
+    mode: 0644
+  notify: Restart dci-analytics container

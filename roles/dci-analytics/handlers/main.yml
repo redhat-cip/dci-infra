@@ -1,0 +1,7 @@
+---
+- name: Restart dci-analytics container
+  become: true
+  systemd:
+    name: "dci-analytics.service"
+    state: restarted
+    daemon_reload: yes
