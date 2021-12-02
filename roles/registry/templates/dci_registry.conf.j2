@@ -38,6 +38,8 @@ LoadModule proxy_http_module modules/mod_proxy_http.so
     ProxyPass        /auth http://localhost:5001/auth
     ProxyPassReverse /auth http://localhost:5001/auth
 
+    ProxyTimeout     300
+
     CustomLog logs/{{ registry_servername }}_access_log combined
     ErrorLog logs/{{ registry_servername }}_error_log
 </VirtualHost>
@@ -87,6 +89,8 @@ LoadModule proxy_http_module modules/mod_proxy_http.so
 
     ProxyPass        /auth http://localhost:5001/auth
     ProxyPassReverse /auth http://localhost:5001/auth
+
+    ProxyTimeout     300
 
     CustomLog logs/{{ registry_servername }}_access_log combined
     ErrorLog logs/{{ registry_servername }}_error_log
