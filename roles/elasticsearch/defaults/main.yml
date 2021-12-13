@@ -14,7 +14,7 @@ elasticsearch_config:
 elasticsearch_container_name: "dci-elasticsearch"
 elasticsearch_enabled: true
 elasticsearch_gid: "0"
-elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
 elasticsearch_node_name: "{{ inventory_hostname }}"
 elasticsearch_path: "/opt/elasticsearch"
 elasticsearch_service: "elasticsearch"
