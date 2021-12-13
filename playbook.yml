@@ -149,6 +149,7 @@
     - elasticsearch
   tags:
     - elasticsearch
+    - dci-core
 
 - name: Install DCI Analytics
   hosts: analytics
@@ -158,3 +159,4 @@
     - dci-analytics
   tags:
     - dci-analytics
+    - dci-core
