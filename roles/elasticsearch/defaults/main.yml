@@ -18,7 +18,7 @@ elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
 elasticsearch_node_name: "{{ inventory_hostname }}"
 elasticsearch_path: "/opt/elasticsearch"
 elasticsearch_service: "elasticsearch"
-elasticsearch_ssl_enabled: true
+elasticsearch_ssl_enabled: false
 elasticsearch_ssl_key: "/usr/share/elasticsearch/config/certs/analytics.distributed-ci.io.key"
 elasticsearch_ssl_crt: "/usr/share/elasticsearch/config/certs/analytics.distributed-ci.io.crt"
 elasticsearch_ssl_ca: "/usr/share/elasticsearch/config/certs/ca.crt"
