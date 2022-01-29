@@ -33,7 +33,7 @@
 
 - name: Enable CentOS-PowerTools repository
   ini_file:
-    path: '/etc/yum.repos.d/CentOS-Linux-PowerTools.repo'
+    path: '/etc/yum.repos.d/CentOS-Stream-PowerTools.repo'
     section: 'powertools'
     option: 'enabled'
     value: 1
