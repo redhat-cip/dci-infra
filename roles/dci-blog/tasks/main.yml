@@ -1,0 +1,50 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2022 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Ensure the blog directory exists
+  file:
+    path: "{{ blog_directory }}"
+    state: directory
+    mode: "0755"
+    owner: dci
+    group: dci
+  register: blog_directory_result
+
+- name: Set SELinux context for blog directory
+  command: restorecon -R "{{ blog_directory }}"
+  when: blog_directory_result.changed
+
+- name: Create a welcome file when the blog directory was just created
+  lineinfile:
+    create: yes
+    path: "{{ blog_directory }}/index.html"
+    line: "<html><head><title>Hello</title></head><body><h1>Hello world!</h1>;)</body></html>"
+    mode: "0644"
+    owner: dci
+    group: dci
+  when:
+    - blog_directory_result.changed
+    - blog_directory_result.diff.before.state == "absent"
+
+- name: Create blog vhost file
+  template:
+    src: dci_blog.conf
+    dest: /etc/httpd/conf.d/dci_blog.conf
+  notify:
+    - reload httpd
+  tags:
+    - dci-core

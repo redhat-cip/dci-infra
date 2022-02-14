@@ -100,7 +100,19 @@
     - httpd
     - doc
   tags:
+    - dci-core
     - doc
+
+- name: Install the blog node
+  hosts: blog
+  remote_user: dci
+  become: yes
+  roles:
+    - httpd
+    - dci-blog
+  tags:
+    - dci-core
+    - blog
 
 - name: Install the swift node
   hosts: swift
