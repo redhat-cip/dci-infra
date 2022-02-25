@@ -38,6 +38,7 @@
     group: dci
   when:
     - blog_directory_result.changed
+    - blog_directory_result.diff.before.get("state")
     - blog_directory_result.diff.before.state == "absent"
 
 - name: Create blog vhost file
