@@ -40,6 +40,12 @@
     - blog_directory_result.changed
     - blog_directory_result.diff.before.state == "absent"
 
+- name: Install the blog package
+  package:
+    name:
+      - dci-blog
+    state: present
+
 - name: Create blog vhost file
   template:
     src: dci_blog.conf
