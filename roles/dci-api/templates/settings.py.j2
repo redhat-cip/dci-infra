@@ -39,9 +39,23 @@ SQLALCHEMY_NATIVE_UNICODE = True
 # STORE
 SWIFT_STORE = 'swift'
 FILE_STORE = 'file'
+S3_STORE = 's3'
 
 STORE_ENGINE = '{{ store_engine }}'
-{% if store_engine == 'swift' %}
+STORE_FILES_CONTAINER = '{{ store_files_container }}'
+STORE_COMPONENTS_CONTAINER = '{{ store_components_container }}'
+
+{% if store_engine == 's3' %}
+STORE_S3_AWS_ACCESS_KEY_ID = '{{ store_s3_aws_access_key_id }}'
+STORE_S3_AWS_SECRET_ACCESS_KEY = '{{ store_s3_aws_secret_access_key }}'
+STORE_S3_AWS_REGION = '{{ store_s3_aws_region }}'
+{% if store_s3_endpoint_url | default(None) %}
+STORE_S3_ENDPOINT_URL = '{{ store_s3_endpoint_url }}'
+{% endif %}
+{% if store_s3_signature_version | default(None) %}
+STORE_S3_SIGNATURE_VERSION = '{{ store_s3_signature_version }}'
+{% endif %}
+{% elif store_engine == 'swift' %}
 STORE_USERNAME = '{{ store_username }}'
 STORE_PASSWORD = '{{ store_password }}'
 STORE_TENANT_NAME = '{{ store_tenant_name }}'
@@ -65,8 +79,6 @@ STORE_PROJECT_DOMAIN_NAME = '{{ store_project_domain_name }}'
 {% elif store_engine == 'file'  %}
 STORE_FILE_PATH = '{{ store_file_path | default("/var/lib/dci-control-server/files") }}'
 {% endif %}
-STORE_FILES_CONTAINER = '{{ store_files_container }}'
-STORE_COMPONENTS_CONTAINER = '{{ store_components_container }}'
 
 # ZMQ Connection
 ZMQ_CONN = '{{ zmq_conn }}'
