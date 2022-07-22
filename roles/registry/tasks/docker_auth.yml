@@ -1,0 +1,57 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2022 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Create the docker_auth config directory
+  file:
+    path: /etc/docker_auth
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+
+- name: Create the docker_auth log directory
+  file:
+    path: /var/log/docker_auth
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+
+- name: Generate the docker_auth config
+  template:
+    src: docker_auth.yml.j2
+    dest: /etc/docker_auth/config.yml
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    - restart docker-auth
+
+- name: Systemd Unit for docker-auth Podman Container
+  copy:
+    src: docker-auth.service
+    dest: /etc/systemd/system/docker-auth.service
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - reload systemd
+
+- name: Start service for docker-auth
+  service:
+    name: docker-auth
+    state: started

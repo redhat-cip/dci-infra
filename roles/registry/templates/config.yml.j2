@@ -3,8 +3,11 @@ log:
   fields:
     service: registry
 storage:
+  delete:
+    enabled: true
   cache:
     layerinfo: inmemory
+{% if registry_store == "swift" %}
   swift:
     username: {{ store_username }}
     password: {{ store_password }}
@@ -27,12 +30,28 @@ storage:
 {% endif %}
     region: {{ store_region }}
     container: {{ store_registry_container }}
+{% elif registry_store == "s3" %}
+  s3:
+    accesskey: {{ registry_aws_accesskey }}
+    secretkey: {{ registry_aws_secretkey }}
+    region: {{ registry_aws_region }}
+    bucket: {{ registry_aws_bucket }}
+    encrypt: true
+    keyid: {{ registry_aws_kms_key_id }}
+{% endif %}
+
 http:
-  addr: 127.0.0.1:5000
+  addr: :5000
   host: http{% if ssl_enabled|bool %}s{% endif %}://{{ registry_servername }}/
+{% if ssl_enabled|bool %}
+  tls:
+    certificate: {{ registry_sslcertificatefullchainfile }}
+    key: {{ registry_sslcertificatekeyfile}}
+{% endif %}
+
 auth:
   token:
     realm: http{% if ssl_enabled|bool %}s{% endif %}://{{ registry_servername }}/auth
     service: "Docker registry"
     issuer: "DCI auth server"
-    rootcertbundle: {{ registry_sslcertificatefile }}
+    rootcertbundle: {{ registry_sslcertificatefullchainfile }}

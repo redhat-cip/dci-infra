@@ -11,6 +11,14 @@
    state: directory
    recurse: yes
 
+- name: Ensure the needed SELinux booleans are enabled
+  seboolean:
+    name: '{{ item }}'
+    state: yes
+    persistent: yes
+  with_items:
+    - httpd_can_network_connect
+
 - name: Install SSL Certificate file
   copy:
     content: "{{ repo_servercert }}"

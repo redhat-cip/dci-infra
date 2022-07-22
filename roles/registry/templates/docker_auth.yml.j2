@@ -1,11 +1,11 @@
 server:
-  addr: 127.0.0.1:5001
+  addr: :5001
+  certificate: {{ registry_sslcertificatefile }}
+  key: {{ registry_sslcertificatekeyfile }}
 
 token:
   issuer: "DCI auth server"
   expiration: 900
-  certificate: {{ registry_sslcertificatefile }}
-  key: {{ registry_sslcertificatekeyfile }}
 
 users:
 {% for user in registry_users %}

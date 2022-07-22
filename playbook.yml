@@ -128,7 +128,6 @@
   hosts: dci_registry
   become: yes
   roles:
-    - httpd
     - registry
   tags:
     - registry

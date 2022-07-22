@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2018 Red Hat, Inc.
+# Copyright 2018-2022 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -15,45 +15,10 @@
 # under the License.
 
 ---
-- name: Ensure the needed SELinux boolean are enabled
-  seboolean:
-    name: httpd_can_network_connect
-    state: yes
-    persistent: yes
+- name: Install podman
+  package:
+    name: podman
 
-- name: Install packages for docker_auth and docker-distribution
-  yum:
-    name:
-      - docker_auth
-      - docker-distribution
+- import_tasks: docker_auth.yml
 
-- name: Ensure docker-distribution service is started
-  service:
-    name: docker-distribution
-    enabled: true
-    state: started
-
-- name: Generate the docker_auth config
-  template:
-    src: docker_auth.yml.j2
-    dest: /etc/docker_auth.yml
-
-- name: Ensure docker_auth service is started
-  service:
-    name: docker_auth
-    enabled: true
-    state: started
-
-- name: Generate the registry config
-  template:
-    src: config.yml.j2
-    dest: /etc/docker-distribution/registry/config.yml
-  notify:
-    - restart distribution
-
-- name: Create the registry vhost
-  template:
-    src: dci_registry.conf.j2
-    dest: /etc/httpd/conf.d/dci_registry.conf
-  notify:
-    - reload httpd
+- import_tasks: docker_distribution.yml

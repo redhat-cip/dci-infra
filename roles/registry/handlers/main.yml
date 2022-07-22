@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2018 Red Hat, Inc.
+# Copyright 2018-2022 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -15,12 +15,15 @@
 # under the License.
 
 ---
-- name: reload httpd
+- name: restart docker-registry
   service:
-    name: httpd
-    state: reloaded
-
-- name: restart distribution
-  service:
-    name: docker-distribution
+    name: docker-registry
     state: restarted
+
+- name: restart docker-auth
+  service:
+    name: docker-auth
+    state: restarted
+
+- name: reload systemd
+  command: systemctl daemon-reload
