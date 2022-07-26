@@ -22,6 +22,7 @@ elasticsearch_ssl_enabled: false
 elasticsearch_ssl_key: "/usr/share/elasticsearch/config/certs/analytics.distributed-ci.io.key"
 elasticsearch_ssl_crt: "/usr/share/elasticsearch/config/certs/analytics.distributed-ci.io.crt"
 elasticsearch_ssl_ca: "/usr/share/elasticsearch/config/certs/ca.crt"
+elasticsearch_sslcerts_path: "/etc/ssl/certs/analytics.distributed-ci.io/"
 elasticsearch_uid: "1000"
 
 elasticsearch_ports:
@@ -32,6 +33,6 @@ elasticsearch_volumes:
   - "{{ elasticsearch_path }}/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:Z"
   - "{{ elasticsearch_path }}/data:/usr/share/elasticsearch/data:Z"
   - "{{ elasticsearch_path }}/logs:/usr/share/elasticsearch/logs:Z"
-  - "/etc/ssl/certs/analytics.distributed-ci.io/:/usr/share/elasticsearch/config/certs:Z"
+  - "{{ elasticsearch_sslcerts_path }}:/usr/share/elasticsearch/config/certs:Z"
 
 set_sysctl: true
