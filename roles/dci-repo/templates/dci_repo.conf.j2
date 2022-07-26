@@ -1,19 +1,5 @@
 server {
     server_name               {{ repo_servername }};
-    listen                    {{ repo_port|default(80) }};
-
-    location '/.well-known/acme-challenge' {
-        default_type "text/plain";
-        alias /etc/ssl/letsencrypt/challenges/{{ repo_servername }};
-    }
-
-    location / {
-        return 301 https://$server_name$request_uri;
-    }
-}
-
-server {
-    server_name               {{ repo_servername }};
     listen                    443 ssl;
     ssl_certificate           {{ repo_sslcertificatefile }};
     ssl_certificate_key       {{ repo_sslcertificatekeyfile }};
