@@ -16,7 +16,6 @@
 
 - name: Common-Configuration
   hosts: all
-  remote_user: dci
   become: yes
   roles:
     - common
@@ -32,7 +31,6 @@
 
 - name: Common Configuration for nodes inside Red Hat's network
   hosts: dci_internal
-  remote_user: dci
   become: yes
   tasks:
     - include_role:
@@ -44,30 +42,26 @@
     - dci-internal
 
 - name: Install-PostgreSQL
-  hosts: postgresql
-  remote_user: dci
+  hosts: dci_database
   become: yes
   roles:
     - postgresql
 
 - name: Install-DCI-Control-Server
-  hosts: dci-api
-  remote_user: dci
+  hosts: dci_api
   become: yes
   roles:
     - httpd
     - dci-api
 
 - name: Install-DCI-Worker
-  hosts: dci-worker
-  remote_user: dci
+  hosts: dci_worker
   become: yes
   roles:
     - dci-worker
 
 - name: Install-WebAPP
-  hosts: dci-ui
-  remote_user: dci
+  hosts: dci_ui
   become: yes
   roles:
     - httpd
@@ -75,7 +69,6 @@
 
 - name: Install-fail2ban
   hosts: all
-  remote_user: dci
   become: yes
   roles:
     - role: fail2ban
@@ -84,8 +77,7 @@
     - dci-core
 
 - name: Install the packages node
-  hosts: packages
-  remote_user: dci
+  hosts: dci_packages
   become: yes
   roles:
     - httpd
@@ -94,8 +86,7 @@
     - packages
 
 - name: Install the docs node
-  hosts: doc
-  remote_user: dci
+  hosts: dci_doc
   become: yes
   roles:
     - httpd
@@ -105,8 +96,7 @@
     - doc
 
 - name: Install the blog node
-  hosts: blog
-  remote_user: dci
+  hosts: dci_blog
   become: yes
   roles:
     - httpd
@@ -126,8 +116,7 @@
     - dci-core
 
 - name: Install-Repo-Server
-  hosts: dci-repo
-  remote_user: dci
+  hosts: dci_repo
   become: yes
   roles:
     - nginx
@@ -136,8 +125,7 @@
     - dci-core
 
 - name: Install DCI registry
-  hosts: registry
-  remote_user: dci
+  hosts: dci_registry
   become: yes
   roles:
     - httpd
@@ -146,8 +134,7 @@
     - registry
 
 - name: Install DCI Feeder
-  hosts: dci-feeder
-  remote_user: dci
+  hosts: dci_feeder
   become: yes
   roles:
     - dci-feeder
@@ -155,8 +142,7 @@
     - feeder
 
 - name: Install DCI Elasticsearch
-  hosts: analytics
-  remote_user: dci
+  hosts: dci_analytics
   become: yes
   roles:
     - elasticsearch
@@ -165,8 +151,7 @@
     - dci-core
 
 - name: Install DCI Analytics
-  hosts: analytics
-  remote_user: dci
+  hosts: dci_analytics
   become: yes
   roles:
     - dci-analytics
