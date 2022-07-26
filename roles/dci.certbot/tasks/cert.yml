@@ -1,0 +1,7 @@
+---
+- name: Create certificates
+  command:
+    cmd: "certbot-3 certonly --non-interactive --agree-tos --dns-ovh --dns-ovh-credentials /etc/letsencrypt/ovh.ini -d {{ certbot_domains|list|join(' -d ') }}"
+    creates: "/etc/letsencrypt/live/{{ certbot_domains|list|first }}"
+  become: true
+  become_user: "{{ certbot_user }}"

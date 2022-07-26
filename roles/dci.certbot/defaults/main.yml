@@ -1,0 +1,8 @@
+---
+certbot_user: {{ ansible_user }}
+certbot_group: {{ ansible_user }}
+
+certbot_cron_minute: 36
+certbot_cron_hour: 3
+
+certbot_dns_ovh_endpoint: ovh-eu

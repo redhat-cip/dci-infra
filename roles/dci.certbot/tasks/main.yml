@@ -1,0 +1,50 @@
+---
+# tasks file for dci_certbot
+- name: Install Certbot
+  dnf:
+    name:
+      - python3-certbot
+      - python3-certbot-dns-ovh
+    enablerepo: epel
+    state: present
+  become: true
+  become_user: root
+
+- name: Setup paths & permissions
+  file:
+    path: "{{ item }}"
+    owner: "{{ certbot_user }}"
+    group: "{{ certbot_group }}"
+  with_items:
+    - /etc/letsencrypt
+    - /var/lib/letsencrypt
+    - /var/log/letsencrypt
+
+- name: Register an account
+  shell:
+    cmd: >
+      certbot-3 register --no-eff-email
+      {% if certbot_email|default(false) %}--email {{ certbot_email }}
+      {% else %}--register-unsafely-without-email{% endif %}
+      && touch /etc/letsencrypt/.registered"
+    creates: /etc/certbot/.registered
+  become: true
+  become_user: "{{ certbot_user }}"
+
+- name: Create DNSAPI credentials file
+  template:
+    src: dnsapi_ovh.ini.j2
+    dest: /etc/letsencrypt/dnsapi_ovh.ini
+    owner: "{{ certbot_user }}"
+    group: "{{ certbot_group }}"
+    mode: "0600"
+  become: true
+  become_user: "{{ certbot_user }}"
+
+- name: Install crontab for renewal
+  cron:
+    minute: "{{ certbot_cron_minute }}"
+    hour: "{{ certbot_cron_hour }}"
+    job: "certbot-3 renew --non-interactive --agree-tos"
+  become: true
+  become_user: "{{ certbot_user }}"
