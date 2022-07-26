@@ -20,10 +20,6 @@
   roles:
     - common
     - prometheus-node-exporter
-    - role: redhat-cip.swiftbackmeup
-      when: swift_backmeup_disabled is not defined
-    - role: Spredzy.lecm
-      when: ssl_enabled|bool
   tags:
     - dci-core
     - packages
@@ -104,16 +100,6 @@
   tags:
     - dci-core
     - blog
-
-- name: Install the swift node
-  hosts: swift
-  remote_user: dci
-  become: yes
-  roles:
-    - httpd
-    - swift
-  tags:
-    - dci-core
 
 - name: Install-Repo-Server
   hosts: dci_repo
