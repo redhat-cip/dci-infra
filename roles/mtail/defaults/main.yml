@@ -1,0 +1,36 @@
+---
+##
+# Programs
+
+# Where programs will be stored
+mtail_programs_path: /etc/mtail/
+# List of the programs to copy to the host
+mtail_programs: []
+
+##
+# Log files & acls
+
+# List of log files to watch
+mtail_logs: []
+
+# Default to set acls to the direct folders containing log files
+# customize according to your needs if you need more.
+mtail_acl_folders: "{{ mtail_logs | map('dirname') | unique }}"
+# Should we apply acls recursively ?
+mtail_acl_recursive: False
+# Use the following to set acl to all declared log files
+#    WARNING: won't work with wildcards though
+#mtail_acl_files: mtail_logs
+mtail_acl_files: []
+
+##
+# Extra options
+
+mtail_extra_options: ""
+
+##
+# Service user
+
+mtail_user: mtail
+mtail_group: mtail
+

@@ -131,3 +131,6 @@
     enabled: yes
   tags:
     - dci-core
+
+- name: Prometheus apache exporter
+  import_tasks: prometheus-apache-exporter.yml

@@ -3,3 +3,4 @@ data/
 playbook.retry
 roles/Spredzy.*
 roles/redhat-cip.*
+roles/prometheus-*

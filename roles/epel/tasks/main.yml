@@ -1,0 +1,24 @@
+---
+- name: Ensure EPEL is installed (CentOS)
+  package:
+    name: epel-release
+    state: present
+  become: true
+  become_user: root
+  when: ansible_distribution == "CentOS"
+
+- name: Ensure EPEL is installed (RedHat)
+  block:
+    - name: Search for the EPEL repo file
+      stat:
+        path: /etc/yum.repos.d/epel.repo
+      register: epel_dot_repo
+
+    - name: Install EPEL
+      package:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version}}.noarch.rpm
+        state: present
+      become: true
+      become_user: root
+      when: epel_dot_repo.stat.exists is not defined or not epel_dot_repo.stat.exists
+  when: ansible_distribution == "RedHat"

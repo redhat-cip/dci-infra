@@ -1,0 +1,1 @@
+MTAIL_OPTS=-progs {{ mtail_programs_path }} -logs {{ mtail_logs | list | join(',') }}{% if mtail_extra_options is defined and mtail_extra_options %} {{ mtail_extra_options }}{% endif %}

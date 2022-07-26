@@ -20,6 +20,7 @@
   become: yes
   roles:
     - common
+    - prometheus-node-exporter
     - role: redhat-cip.swiftbackmeup
       when: swift_backmeup_disabled is not defined
     - role: Spredzy.lecm

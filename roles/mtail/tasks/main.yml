@@ -1,0 +1,138 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2017 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Ensure mtail is installed
+  package:
+    name: mtail
+    state: latest
+  become: True
+  notify:
+    - restart mtail
+
+- name: Ensure mtail group exists
+  group:
+    name: mtail
+    state: present
+    system: True
+  become: True
+
+- name: Ensure mtail user exists
+  user:
+    name: mtail
+    group: mtail
+    shell: /sbin/nologin
+    system: True
+    create_home: no
+  become: True
+
+- name: Ensure the logs folder's acl mask allows overriding
+  acl:
+    path: "{{ item }}"
+    etype: mask
+    permissions: rx
+    recursive: "{{ mtail_acl_recursive }}"
+    state: present
+  loop: "{{ mtail_acl_folders | list }}"
+  when: mtail_acl_folders is defined and mtail_acl_folders
+  become: true
+  tags: acl
+
+- name: Ensure mtail has access to the logs folder
+  acl:
+    path: "{{ item }}"
+    entity: "{{ mtail_user }}"
+    etype: user
+    permissions: rX
+    recursive: "{{ mtail_acl_recursive }}"
+    state: present
+  loop: "{{ mtail_acl_folders | list }}"
+  when: mtail_acl_folders is defined and mtail_acl_folders
+  become: True
+  tags: acl
+
+- name: Ensure mtail has access to the logs files
+  acl:
+    etype: user
+    entity: "{{ mtail_user }}"
+    path: "{{ item }}"
+    permissions: r
+  loop: "{{ mtail_acl_files | list }}"
+  when: mtail_acl_files is defined and mtail_acl_files
+  become: True
+  tags: acl
+
+- name: Ensure mtail configuration is set
+  template:
+    src: mtail_sysconfig.j2
+    dest: /etc/default/mtail
+    backup: yes
+    mode: 0644
+    owner: root
+    group: root
+  become: True
+  notify:
+    - restart mtail
+
+- name: Create systemd conf override directory
+  file:
+    path: /etc/systemd/system/mtail.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: True
+
+- name: Configure mtail systemd service to run as mtail user
+  copy:
+    src: user_override.conf
+    dest: /etc/systemd/system/mtail.service.d/user_override.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: True
+  notify:
+    - restart mtail
+
+- name: Ensure the mtail programs directory exists
+  file:
+    path: "{{ mtail_programs_path }}"
+    mode: 0755
+    owner: "{{ mtail_user }}"
+    group: "{{ mtail_group }}"
+    state: directory
+  become: True
+
+- name: Install mtail programs
+  copy:
+    src: "{{ item }}"
+    dest: "{{ mtail_programs_path }}/{{ item | basename }}"
+    owner: "{{ mtail_user }}"
+    group: "{{ mtail_group }}"
+    mode: 0644
+  loop: "{{ mtail_programs | list }}"
+  when: mtail_programs is defined and mtail_programs
+  become: True
+  notify:
+    - restart mtail
+
+- name: Ensure the service is enabled and started
+  service:
+    name: mtail
+    enabled: yes
+    state: started
+    daemon_reload: yes
+  become: True

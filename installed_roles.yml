@@ -1,2 +1,6 @@
 - src: redhat-cip.swiftbackmeup
 - src: Spredzy.lecm
+- src: https://github.com/redhat-cip/ansible-role-prometheus-apache-exporter
+  name: prometheus-apache-exporter
+- src: https://github.com/redhat-cip/ansible-role-prometheus-node-exporter
+  name: prometheus-node-exporter
