@@ -1,0 +1,27 @@
+# Parser for the common apache log format as follow.
+# LogFormat "%h %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-agent}i\"
+counter apache_http_requests_total by request_method, request_uri, status_code
+
+/^/ +
+/(?P<remote_host>[0-9A-Za-z\.:-]+) / + # %h
+/(?P<remote_logname>[0-9A-Za-z-]+) / + # %l
+/(?P<remote_username>[0-9A-Za-z-]+) / + # %u
+/\[(?P<timestamp>\d{2}\/\w{3}\/\d{4}:\d{2}:\d{2}:\d{2} (\+|-)\d{4})\] / + # %u
+/"(?P<request_method>[A-Z]+) (?P<request_uri>\S+?)(\?\S+)? (?P<http_version>HTTP\/[0-9\.]+)" / + # \"%r\"
+/(?P<status_code>\d{3}) / + # %>s
+/((?P<response_size>\d+)|-) / + # %b
+/"(?P<referer>\S+)" / + # \"%{Referer}i\"
+/"(?P<user_agent>[[:print:]]+)"/ + # \"%{User-agent}i\"
+/$/ {
+  const UUID_OR_INT /([[:xdigit:]]{8}-([[:xdigit:]]{4}-){3}[[:xdigit:]]{12}|\d+)/
+
+  $request_uri =~ /(?P<endpoint>\S+?\/)/ + UUID_OR_INT + /(?P<endpoint_after>\/\S*)?/ {
+    $endpoint_after =~ /(?P<ep_next>\S+?\/)/ + UUID_OR_INT + /(?P<ep_end>\/\S*)?/ {
+      apache_http_requests_total[$request_method][$endpoint + ":UUID:" + $ep_next + ":UUID:" + $ep_end][$status_code]++
+    } else {
+      apache_http_requests_total[$request_method][$endpoint + ":UUID:" + $endpoint_after][$status_code]++
+    }
+  } else {
+    apache_http_requests_total[$request_method][$request_uri][$status_code]++
+  }
+}
