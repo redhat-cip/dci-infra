@@ -15,7 +15,7 @@ mtail_logs: []
 
 # Default to set acls to the direct folders containing log files
 # customize according to your needs if you need more.
-mtail_acl_folders: "{{ mtail_logs | map('dirname') | unique }}"
+mtail_acl_folders: "{{ mtail_logs | map('dirname') | unique | list }}"
 # Should we apply acls recursively ?
 mtail_acl_recursive: False
 # Use the following to set acl to all declared log files
@@ -33,4 +33,3 @@ mtail_extra_options: ""
 
 mtail_user: mtail
 mtail_group: mtail
-
