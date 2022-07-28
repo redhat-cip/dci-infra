@@ -45,6 +45,8 @@
     serole: object_r
     setype: httpd_sys_content_t
     seuser: system_u
+    owner: dci
+    group: dci
 
 - name: Install nginx Vhost
   template:
@@ -69,6 +71,6 @@
 
 - name: Add dci feeder pub key
   authorized_key:
-    user: root
+    user: dci
     key: '{{ dci_feeder_pubkey }}'
   when: dci_feeder_pubkey is defined
