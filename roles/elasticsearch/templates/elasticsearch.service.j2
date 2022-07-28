@@ -9,7 +9,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%n.ctr-id
-ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm -d {% for port in elasticsearch_ports %} -p {{ port }}{% endfor %} {% for volume in elasticsearch_volumes %}-v {{ volume }} {% endfor %} --name {{ elasticsearch_container_name }} {{ elasticsearch_image }}
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --sdnotify=conmon --cgroups=no-conmon --rm -d --network=host {% for port in elasticsearch_ports %} -p {{ port }}{% endfor %} {% for volume in elasticsearch_volumes %}-v {{ volume }} {% endfor %} --name {{ elasticsearch_container_name }} {{ elasticsearch_image }}
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
 Type=notify
