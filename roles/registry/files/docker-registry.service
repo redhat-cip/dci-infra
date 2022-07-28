@@ -14,7 +14,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%n.ctr-id
-ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --rm --sdnotify=conmon --replace -d --name docker_registry --network host -v /etc/docker-registry/config.yml:/etc/docker/registry/config.yml:ro -v /etc/ssl/letsencrypt:/etc/ssl/letsencrypt:ro,Z docker.io/registry:2
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --rm --sdnotify=conmon --replace -d --name docker_registry --network host -v /etc/docker-registry/config.yml:/etc/docker/registry/config.yml:ro -v /etc/letsencrypt:/etc/letsencrypt:ro,Z docker.io/registry:2
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
 Type=notify
