@@ -1,0 +1,64 @@
+---
+- name: aws cli command
+  block:
+    - name: Is aws-cli installed in the base system
+      stat:
+        path: /usr/local/bin/aws
+      register: aws_cli_binary
+
+    - name: Install the aws-cli package
+      package:
+        name: awscli
+      become: true
+      when:
+        - not aws_cli_binary.stat.exists|default(False)
+
+- name: aws cli configuration
+  block:
+    - name: aws cli config Directory
+      file:
+        path: ~/.aws
+        state: directory
+        mode: 0700
+
+    - name: aws cli defaults
+      template:
+        src: aws_config.j2
+        dest: ~/.aws/config
+        mode: 0600
+
+    - name: aws cli credentials
+      template:
+        src: aws_credentials.j2
+        dest: ~/.aws/credentials
+        mode: 0600
+
+- name: yolo_backup
+  block:
+    - name: install yolo_backup
+      copy:
+        src: yolo_backup.sh
+        dest: ~/yolo_backup.sh
+        mode: 0700
+
+    - name: yolo_backup cron jobs send emails to some people
+      cron:
+        name: MAILTO
+        env: true
+        job: "{{ yolo_backup_emails }}"
+      when:
+        - yolo_backup_emails is defined
+
+    - name: Install cron jobs for yolo_backup
+      cron:
+        name: "yolo_backup {{ job.mode }}"
+        minute: "{{ job.minute|default('*') }}"
+        hour: "{{ job.hour|default('*') }}"
+        dow: "{{ job.dow|default('*') }}"
+        day: "{{ job.day|default('*') }}"
+        month: "{{ job.month|default('*') }}"
+        job: "~/yolo_backup.sh {{ job.mode }}"
+      loop: "{{ yolo_backup_crons|default([]) }}"
+      loop_control:
+        loop_var: job
+        label: "{{ job.mode }}"

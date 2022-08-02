@@ -65,9 +65,12 @@
     - dci-core
 
 - name: Ensure backup is made
-  shell: "{{ swiftbackmeup_command }}"
+  command: "{{ dci_db_backup_command }}"
+  delegate_to: "{{ groups.dci_database|first }}"
+  become: true
+  become_user: "{{ yolo_backup_user|default('dci') }}"
   when:
-    - swiftbackmeup_modes is defined
+    - dci_db_backup_before_cs_upgrade|default(False)
     - "'dci-control-server' in rpmupdate.results|map(attribute='name')"
   tags:
     - dci-core

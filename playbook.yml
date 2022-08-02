@@ -42,6 +42,8 @@
   become: yes
   roles:
     - postgresql
+    - role: yolo_backup
+      become_user: "{{ yolo_backup_user|default(dci) }}"
 
 - name: Install-DCI-Control-Server
   hosts: dci_api
