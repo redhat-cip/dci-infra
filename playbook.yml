@@ -81,6 +81,18 @@
     - httpd
     - packages
   tags:
+    - dci-core
+    - packages
+
+- name: Configure the jumpbox/bastion node
+  hosts: dci_bastion
+  become: yes
+  tasks:
+    - import_role:
+        name: packages
+        tasks_from: zuul_user
+  tags:
+    - dci-core
     - packages
 
 - name: Install the docs node
