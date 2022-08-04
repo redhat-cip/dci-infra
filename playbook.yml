@@ -45,11 +45,16 @@
     - role: yolo_backup
       become_user: "{{ yolo_backup_user|default(dci) }}"
 
+- name: Install httpd
+  hosts: dci_api:dci_ui:dci_packages:dci_doc:dci_blog
+  become: yes
+  roles:
+    - httpd
+
 - name: Install-DCI-Control-Server
   hosts: dci_api
   become: yes
   roles:
-    - httpd
     - dci-api
 
 - name: Install-DCI-Worker
@@ -62,7 +67,6 @@
   hosts: dci_ui
   become: yes
   roles:
-    - httpd
     - dci-ui
 
 - name: Install-fail2ban
@@ -78,7 +82,6 @@
   hosts: dci_packages
   become: yes
   roles:
-    - httpd
     - packages
   tags:
     - packages
@@ -87,7 +90,6 @@
   hosts: dci_doc
   become: yes
   roles:
-    - httpd
     - doc
   tags:
     - dci-core
@@ -97,7 +99,6 @@
   hosts: dci_blog
   become: yes
   roles:
-    - httpd
     - dci-blog
   tags:
     - dci-core
