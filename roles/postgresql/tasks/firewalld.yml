@@ -1,0 +1,45 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2022 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+---
+- name: Create a firewalld zone to handle incoming connections to the database
+  firewalld:
+    zone: postgresql-access
+    permanent: true
+    state: present
+  register: firewalld_zone_postgresql_acces_result
+
+- name: Reload firewalld if the zone was created
+  command:
+    cmd: firewall-cmd --reload
+  when: firewalld_zone_postgresql_acces_result.changed|default(false)
+
+- name: Allow postgresql service for zone postgresql-access
+  firewalld:
+    service: postgresql
+    zone: postgresql-access
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Allow servers defined in apiips into the postgresql-access zone
+  firewalld:
+    source: "{{ item }}/32"
+    zone: postgresql-access
+    state: enabled
+    permanent: true
+    immediate: true
+  with_items:
+    - "{{ apiips | list }}"

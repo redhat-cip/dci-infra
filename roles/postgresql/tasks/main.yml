@@ -145,3 +145,8 @@
   become_user: postgres
   tags:
     - dci-core
+
+- name: Apply firewalld configuration for PostgreSQL
+  import_tasks: firewalld.yml
+  tags:
+    - dci-core

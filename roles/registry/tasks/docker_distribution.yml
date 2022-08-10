@@ -13,7 +13,6 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
 ---
 - name: Create the docker-registry config directory
   file:
@@ -49,3 +48,10 @@
   service:
     name: docker-registry
     state: started
+
+- name: Allow incoming traffic on port 5000/tcp for docker-registry
+  firewalld:
+    port: 5000/tcp
+    state: enabled
+    permanent: true
+    immediate: true

@@ -74,3 +74,10 @@
     user: dci
     key: '{{ dci_feeder_pubkey }}'
   when: dci_feeder_pubkey is defined
+
+- name: Allow incoming https traffic
+  firewalld:
+    service: https
+    state: enabled
+    permanent: true
+    immediate: true

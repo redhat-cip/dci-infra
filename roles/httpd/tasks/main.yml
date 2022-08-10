@@ -134,3 +134,20 @@
 
 - name: Prometheus apache exporter
   import_tasks: prometheus-apache-exporter.yml
+
+- name: Allow incoming http traffic
+  firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Allow incoming https traffic
+  firewalld:
+    service: https
+    state: enabled
+    permanent: true
+    immediate: true
+  when: ssl_enabled|bool
+  tags:
+    - dci-core

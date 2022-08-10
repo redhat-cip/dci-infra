@@ -123,3 +123,6 @@
       - "{{ dciauth_package }}"
   tags:
     - molecule-notest
+
+- name: Apply firewalld rules
+  import_tasks: firewalld.yml

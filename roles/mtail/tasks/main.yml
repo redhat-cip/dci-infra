@@ -136,3 +136,11 @@
     state: started
     daemon_reload: yes
   become: True
+
+- name: Allow incoming connections to mtail (prometheus exporter)
+  firewalld:
+    port: 3903/tcp
+    zone: prometheus
+    state: enabled
+    permanent: true
+    immediate: true
