@@ -1,14 +1,4 @@
 ---
-- name: Ensure apache/httpd server-status is enabled (for prometheus-apache-exporter)
-  become: true
-  copy:
-    src: status.conf
-    dest: /etc/httpd/conf.d/status.conf
-    mode: '0644'
-    owner: root
-    group: root
-  notify: reload httpd
-
 - name: Install Prometheus Apache Exporter & Mtail
   include_role:
     name: "{{ role_name_item }}"
