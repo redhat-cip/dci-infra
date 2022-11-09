@@ -13,8 +13,8 @@
   become: true
   template:
     src: "dci-analytics.env.j2"
-    dest: "/run/dci-analytics.env"
-    mode: 0644
+    dest: "/etc/dci-analytics.env"
+    mode: 0640
   notify: Restart dci-analytics container
 
 - name: enable dci-analytics services
