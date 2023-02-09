@@ -15,96 +15,78 @@
 # under the License.
 
 ---
-- name: Gather OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "rhel-{{ ansible_distribution_major_version }}.yml"
-    - "rhel-7.yml"
-
-# Ensure the needed SELinux booleans are enabled
-- name: Ensure the needed SELinux booleans are enabled
-  seboolean:
-    name: '{{ item }}'
-    state: yes
-    persistent: yes
-  with_items:
-    - httpd_can_network_connect
-  tags:
-    - dci-core
-    - molecule-notest
-
-# dci-feeder-api requires python-docker-py which is obsoleted by python2-docker
-- name: Allow yum to install obsolete packages
-  ini_file:
-    path: /etc/yum.conf
-    section: main
-    option: obsoletes
-    value: "0"
-  tags:
-    - dci-core
-
-- name: Install docker (required for python-docker-py to work)
+- name: Ensure podman is installed
+  become: true
   package:
-    name: docker
-    state: latest
-  tags:
-    - dci-core
+    name: "podman"
+    state: present
 
-- name: Ensure dci-feeder-api packages are installed
-  package:
-    name:
-      - dci-feeder-api
-      - "{{ dciclient_package }}"
-      - "{{ dciauth_package }}"
-    state: latest
-    update_cache: yes
-  notify:
-    - reload httpd
-  tags:
-    - dci-core
+- name: Make sure we're authenticated on the private registry
+  containers.podman.podman_login:
+    username: "{{ feeder_registry_user }}"
+    password: "{{ feeder_registry_password }}"
+    registry: "{{ feeder_registry_url }}"
 
-- name: Ensure dci-umb package is installed
-  package:
-    name: dci-umb
-    state: latest
-    update_cache: yes
-  notify:
-    - restart dci-umb
-  tags:
-    - dci-core
-
-- name: Create dci-feeder-api settings file
-  template:
-    src: local_settings.py.j2
-    dest: /etc/dci-feeder-api/local_settings.py
-  notify:
-    - reload httpd
-  tags:
-    - dci-core
-
-- name: Create dci-feeder-api vhost file
-  template:
-    src: dci-feeder-api.conf.j2
-    dest: /etc/httpd/conf.d/00_feeder.distributed-ci.io.conf
-  notify:
-    - reload httpd
-  tags:
-    - dci-core
-
-- name: Setup dci-feeder-api cache folder
+- name: Create the dci-feeder-api settings directory
   file:
-    path: /var/cache/dci-feeder-api
+    path: /etc/dci-feeder-api
     state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Create the dci-feeder-api logs directory
+  file:
+    path: "/var/log/dci-feeder-api{{ item }}"
+    state: directory
+    mode: '0755'
     owner: dci
     group: dci
-    mode: 0755
-  tags:
-    - dci-core
+  loop:
+    - "/"
+    - "jobs/"
 
-- name: Enable dci-umb service
-  service:
-    name: dci-umb
-    enabled: yes
-    state: started
-  tags:
-    - dci-core
+- name: Create dci-feeder-api settings environment file
+  template:
+    src: feeder-container.env.j2
+    dest: /etc/dci-feeder-api/feeder-container.env
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart dci-feeder-api
+
+- name: Create the ocp-pull-secret.json file
+  copy:
+    content: "{{ feeder_ocp_pullsecret_json }}"
+    dest: /etc/dci-feeder-api/ocp-pull-secret.json
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart dci-feeder-api
+
+- name: Get the dci user uid/gid
+  user:
+    name: dci
+  register: feeder_dci_user
+
+- debug:
+    var: feeder_dci_user
+
+- name: Create the dci-feeder-api systemd unit file
+  template:
+    src: container-dci-feeder-api.service.j2
+    dest: /etc/systemd/system/container-dci-feeder-api.service
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart dci-feeder-api
+
+- name: Enable feeder port in firewalld
+  firewalld:
+    port: 5003/tcp
+    state: enabled
+    permanent: true
+    immediate: true

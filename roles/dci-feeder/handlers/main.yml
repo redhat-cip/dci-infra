@@ -15,12 +15,9 @@
 # under the License.
 
 ---
-- name: reload httpd
-  service:
-    name: httpd
-    state: reloaded
-
-- name: restart dci-umb
-  service:
-    name: dci-umb
+- name: restart dci-feeder-api
+  systemd:
+    name: container-dci-feeder-api.service
     state: restarted
+    enabled: true
+    daemon_reload: true
