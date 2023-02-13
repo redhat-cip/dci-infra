@@ -44,7 +44,7 @@
     group: dci
   loop:
     - "/"
-    - "jobs/"
+    - "/jobs/"
 
 - name: Create dci-feeder-api settings environment file
   template:
