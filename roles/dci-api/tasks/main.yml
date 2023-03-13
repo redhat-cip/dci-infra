@@ -210,6 +210,15 @@
 
 # Configure DCI-API vhost
 #
+- name: Create the logs directory
+  file:
+    path: "/var/log/httpd/{{ api_servername }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0750
+  tags: dci-core
+
 - name: Create vhost file
   template:
     src: dci_api.conf

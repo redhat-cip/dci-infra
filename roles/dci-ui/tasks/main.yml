@@ -36,6 +36,15 @@
 
 # Configure DCI-UI vhost
 #
+- name: Create the logs directory
+  file:
+    path: "/var/log/httpd/{{ ui_servername }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0750
+  tags: dci-core
+
 - name: Create vhost file
   template:
     src: dci_ui.conf

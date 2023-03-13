@@ -39,10 +39,22 @@
     - 'development'
     - 'extras'
 
+- name: Create the logs directory
+  file:
+    path: "/var/log/httpd/{{ api_servername }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0750
+  tags: dci-core
+
 - name: The vhost file is configured
   template:
     dest: /etc/httpd/conf.d/02_packages.distributed-ci.io.conf
     src: 02_packages.distributed-ci.io.conf
+    owner: root
+    group: root
+    mode: 0644
   notify: reload httpd
 
 - name: Create the Zuul user

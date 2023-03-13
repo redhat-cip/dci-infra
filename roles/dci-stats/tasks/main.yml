@@ -1,0 +1,110 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2022 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Ensure the stats directory exists
+  file:
+    path: "{{ stats_directory }}"
+    state: directory
+    mode: "0755"
+    owner: dci
+    group: dci
+  register: stats_directory_result
+
+- name: Set SELinux context for stats directory
+  command: restorecon -R "{{ stats_directory }}"
+  when: stats_directory_result.changed
+
+- name: Create a welcome file when the stats directory was just created
+  lineinfile:
+    create: yes
+    path: "{{ stats_directory }}/index.html"
+    line: "<html><head><title>Hello</title></head><body><h1>Hello world!</h1>;)</body></html>"
+    mode: "0644"
+    owner: dci
+    group: dci
+  when:
+    - stats_directory_result.changed
+    - stats_directory_result.diff.before.get("state")
+    - stats_directory_result.diff.before.state == "absent"
+
+- name: Create the logs directory
+  file:
+    path: "/var/log/httpd/{{ stats_servername }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0750
+  tags: dci-core
+
+- name: Create stats vhost file
+  template:
+    src: dci_stats.conf
+    dest: /etc/httpd/conf.d/dci_stats.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - reload httpd
+
+- name: Ensure goaccess is present
+  package:
+    name:
+      - goaccess
+    state: present
+
+- name: Copy logrotate configuration
+  copy:
+    src: logrotate
+    dest: /etc/logrotate.d/httpd
+
+- name: Copy goaccess script
+  template:
+    src: goaccess
+    dest: /etc/logrotate.d/httpd-prerotate/goaccess
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Ensure DB Directory exist
+  file:
+    path: "/var/lib/goaccess-db"
+    state: directory
+    mode: "0755"
+    owner: dci
+    group: dci
+
+- name: Create DB directory for each parsed vhost
+  file:
+    path: "/var/lib/goaccess-db/{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: dci
+    group: dci
+  with_items:
+    - "{{ blog_servername }}"
+    - "{{ api_servername }}"
+    - "{{ ui_servername }}"
+    - "{{ doc_servername }}"
+    - "{{ packages_servername }}"
+    - "{{ stats_servername }}"
+
+- name: Create authfile
+  htpasswd:
+    path: /etc/httpd/.stats-htpasswd
+    name: "{{ dci_stats_user }}"
+    password: "{{ dci_stats_password }}"
+    crypt_scheme: md5_crypt

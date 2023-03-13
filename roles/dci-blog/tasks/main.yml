@@ -47,6 +47,14 @@
       - dci-blog
     state: present
 
+- name: Create the logs directory
+  file:
+    path: "/var/log/httpd/{{ blog_servername }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0750
+
 - name: Create blog vhost file
   template:
     src: dci_blog.conf
