@@ -69,6 +69,11 @@
   delegate_to: "{{ groups.dci_database|first }}"
   become: true
   become_user: "{{ yolo_backup_user|default('dci') }}"
+  # Backups can take some time
+  # To avoid ssh connection behaving badly (timeout, ansible not resuming after backup done)
+  # we run as an async task, limiting it to 30 minutes and checking if it's done every 15 seconds
+  async: 30
+  poll: 15
   when:
     - dci_db_backup_before_cs_upgrade|default(False)
     - "'dci-control-server' in rpmupdate.results|map(attribute='name')"
