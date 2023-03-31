@@ -29,12 +29,6 @@
   notify:
     - Restart elasticsearch container
 
-- name: Ensure podman is installed
-  become: true
-  package:
-    name: "podman"
-    state: present
-
 - name: Create Elasticsearch service file
   become: true
   template:

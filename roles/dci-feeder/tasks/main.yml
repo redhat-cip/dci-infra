@@ -15,12 +15,6 @@
 # under the License.
 
 ---
-- name: Ensure podman is installed
-  become: true
-  package:
-    name: "podman"
-    state: present
-
 - name: Make sure we're authenticated on the private registry
   containers.podman.podman_login:
     username: "{{ feeder_registry_user }}"
