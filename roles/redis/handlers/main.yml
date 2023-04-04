@@ -1,0 +1,7 @@
+---
+- name: restart redis container
+  systemd:
+    name: "container-redis.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true

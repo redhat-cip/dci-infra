@@ -15,72 +15,11 @@
 # under the License.
 
 ---
-- name: Make sure we're authenticated on the private registry
-  containers.podman.podman_login:
-    username: "{{ feeder_registry_user }}"
-    password: "{{ feeder_registry_password }}"
-    registry: "{{ feeder_registry_url }}"
+- name: Feeder common configuration
+  import_tasks: common.yml
 
-- name: Create the dci-feeder-api settings directory
-  file:
-    path: /etc/dci-feeder-api
-    state: directory
-    mode: '0755'
-    owner: root
-    group: root
+- name: Feeder API
+  import_tasks: feeder_api.yml
 
-- name: Create the dci-feeder-api logs directory
-  file:
-    path: "/var/log/dci-feeder-api{{ item }}"
-    state: directory
-    mode: '0755'
-    owner: dci
-    group: dci
-  loop:
-    - "/"
-    - "/jobs/"
-
-- name: Create dci-feeder-api settings environment file
-  template:
-    src: feeder-container.env.j2
-    dest: /etc/dci-feeder-api/feeder-container.env
-    mode: '0644'
-    owner: root
-    group: root
-  notify:
-    - restart dci-feeder-api
-
-- name: Create the ocp-pull-secret.json file
-  copy:
-    content: "{{ feeder_ocp_pullsecret_json }}"
-    dest: /etc/dci-feeder-api/ocp-pull-secret.json
-    mode: '0644'
-    owner: root
-    group: root
-  notify:
-    - restart dci-feeder-api
-
-- name: Get the dci user uid/gid
-  user:
-    name: dci
-  register: feeder_dci_user
-
-- debug:
-    var: feeder_dci_user
-
-- name: Create the dci-feeder-api systemd unit file
-  template:
-    src: container-dci-feeder-api.service.j2
-    dest: /etc/systemd/system/container-dci-feeder-api.service
-    mode: '0644'
-    owner: root
-    group: root
-  notify:
-    - restart dci-feeder-api
-
-- name: Enable feeder port in firewalld
-  firewalld:
-    port: 5003/tcp
-    state: enabled
-    permanent: true
-    immediate: true
+- name: Feeder Workers
+  import_tasks: feeder_workers.yml

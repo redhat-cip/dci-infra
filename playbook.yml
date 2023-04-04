@@ -137,6 +137,7 @@
   hosts: dci_feeder
   become: yes
   roles:
+    - redis
     - dci-feeder
   tags:
     - feeder

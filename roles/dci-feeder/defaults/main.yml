@@ -29,3 +29,7 @@ feeder_google_chat_kni_thread_id: dummy
 
 feeder_ocp_pullsecret_json: '"dummy"'
 feeder_ocp_pullsecret_file: /etc/dci-feeder-api/ocp-pull-secret.json
+
+feeder_rq_queue_name: dcifeeder
+feeder_rq_redis_host: localhost
+feeder_workers_count: 2
