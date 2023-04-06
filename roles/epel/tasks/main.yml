@@ -14,6 +14,22 @@
         path: /etc/yum.repos.d/epel.repo
       register: epel_dot_repo
 
+    - name: Install EPEL8 GPG key
+      rpm_key:
+        key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+        fingerprint: 94E2 79EB 8D8F 25B2 1810  ADF1 21EA 45AB 2F86 D6A1
+      when:
+        - epel_dot_repo.stat.exists is not defined or not epel_dot_repo.stat.exists
+        - ansible_distribution_major_version == "8"
+
+    - name: Install EPEL9 GPG key
+      rpm_key:
+        key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+        fingerprint: FF8A D134 4597 106E CE81  3B91 8A38 72BF 3228 467C
+      when:
+        - epel_dot_repo.stat.exists is not defined or not epel_dot_repo.stat.exists
+        - ansible_distribution_major_version == "9"
+
     - name: Install EPEL
       package:
         name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version}}.noarch.rpm
