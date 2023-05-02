@@ -64,6 +64,3 @@
   user:
     name: dci
   register: feeder_dci_user
-
-- debug:
-    var: feeder_dci_user

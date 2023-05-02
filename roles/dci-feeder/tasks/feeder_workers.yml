@@ -18,18 +18,18 @@
 - name: Create the dci-feeder-worker systemd unit file
   template:
     src: container-dci-feeder-worker.service.j2
-    dest: /etc/systemd/system/container-dci-feeder-worker@.service
+    dest: "/etc/systemd/system/container-dci-feeder-worker{{ queue.worker_name | ternary('-' + queue.worker_name, '') }}@.service"
     mode: "0644"
     owner: root
     group: root
-  notify:
-    - restart dci-feeder-workers
   register:  dci_feeder_worker_systemd_unit
 
 - name: Enable the dci-feeder-worker service
   systemd:
-    name: "container-dci-feeder-worker@{{ item }}.service"
-    state: started
+    name: "container-dci-feeder-worker{{ queue.worker_name | ternary('-' + queue.worker_name, '') }}@{{ worker_id }}.service"
+    state: "{{ dci_feeder_worker_systemd_unit.changed | ternary('restarted', 'restarted') }}"
     enabled: true
-    daemon_reload: "{{ dci_feeder_worker_systemd_unit is changed }}"
-  loop: "{{ range(1, feeder_workers_count + 1) | list }}"
+    daemon_reload: "{{ dci_feeder_worker_systemd_unit.changed | bool }}"
+  loop: "{{ range(1, queue.workers_count + 1) | list }}"
+  loop_control:
+    loop_var: worker_id

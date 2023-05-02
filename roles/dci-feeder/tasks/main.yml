@@ -22,4 +22,7 @@
   import_tasks: feeder_api.yml
 
 - name: Feeder Workers
-  import_tasks: feeder_workers.yml
+  include_tasks: feeder_workers.yml
+  loop: "{{ feeder_rq_queues }}"
+  loop_control:
+    loop_var: queue

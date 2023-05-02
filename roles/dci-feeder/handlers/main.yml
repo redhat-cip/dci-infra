@@ -21,11 +21,3 @@
     state: restarted
     enabled: true
     daemon_reload: true
-
-- name: restart dci-feeder-workers
-  systemd:
-    name: "container-dci-feeder-worker@{{ item }}.service"
-    state: restarted
-    enabled: true
-    daemon_reload: true
-  loop: "{{ range(1, feeder_workers_count + 1) | list }}"

@@ -30,7 +30,7 @@
     name: container-dci-feeder-api.service
     state: started
     enabled: true
-    daemon_reload: "{{ dci_feeder_api_systemd_unit is changed }}"
+    daemon_reload: "{{ dci_feeder_api_systemd_unit.changed }}"
 
 - name: Enable feeder port in firewalld
   firewalld:
