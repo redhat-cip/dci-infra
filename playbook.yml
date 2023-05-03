@@ -116,6 +116,15 @@
     - dci-core
     - blog
 
+- name: Install-Stats
+  hosts: dci_blog
+  become: yes
+  roles:
+    - dci-stats
+  tags:
+    - dci-core
+    - stats
+
 - name: Install-Repo-Server
   hosts: dci_repo
   become: yes

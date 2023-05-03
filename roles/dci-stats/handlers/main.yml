@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2017 Red Hat, Inc.
+# Copyright 2015 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -15,20 +15,7 @@
 # under the License.
 
 ---
-- name: The necessary packages are installed
-  package:
-    name: dci-doc
-
-- name: Create the logs directory
-  file:
-    path: "/var/log/httpd/{{ doc_servername }}"
-    state: directory
-    owner: apache
-    group: apache
-    mode: 0750
-
-- name: The vhost file is configured
-  template:
-    dest: /etc/httpd/conf.d/03_docs.distributed-ci.io.conf
-    src: 03_docs.distributed-ci.io.conf
-  notify: reload httpd
+- name: reload httpd
+  service:
+    name: httpd
+    state: reloaded

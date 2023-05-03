@@ -1,0 +1,16 @@
+/var/log/httpd/*/*.log {
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    daily
+    rotate 5
+    prerotate
+        if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+            run-parts /etc/logrotate.d/httpd-prerotate; \
+        fi; \
+    endscript
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+    endscript
+}

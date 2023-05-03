@@ -1,0 +1,3 @@
+---
+stats_servername: stats.distributed-ci.io
+stats_directory: /var/www/html/stats

@@ -115,6 +115,16 @@
   tags:
     - dci-core
 
+- name: Copy HTTPD configuration
+  copy:
+    src: '{{ item }}'
+    dest: '/etc/httpd/conf/{{ item }}'
+  with_items:
+    - httpd.conf
+  notify: reload httpd
+  tags:
+    - dci-core
+
 - name: Copy SSL configuration
   copy:
     src: ssl-sec.conf
@@ -123,6 +133,19 @@
   when: ssl_enabled|bool
   tags:
     - dci-core
+
+- name: Copy logrotate configuration for DCI vhosts
+  copy:
+    src: logrotate
+    dest: /etc/logrotate.d/httpd-dci
+  tags:
+    - dci-core
+
+- name: Ensure the logrotate prerotate directory exists
+  file:
+    path: "/etc/logrotate.d/httpd-prerotate"
+    state: directory
+    mode: "0755"
 
 - name: Ensure apache is running (and enable it at boot)
   service:
