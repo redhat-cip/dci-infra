@@ -66,11 +66,6 @@
       - goaccess
     state: present
 
-- name: Copy logrotate configuration
-  copy:
-    src: logrotate
-    dest: /etc/logrotate.d/httpd
-
 - name: Copy goaccess script
   template:
     src: goaccess
