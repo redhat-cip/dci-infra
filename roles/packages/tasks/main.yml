@@ -41,7 +41,7 @@
 
 - name: Create the logs directory
   file:
-    path: "/var/log/httpd/{{ api_servername }}"
+    path: "/var/log/httpd/{{ packages_servername }}"
     state: directory
     owner: apache
     group: apache
