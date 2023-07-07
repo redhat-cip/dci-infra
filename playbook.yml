@@ -151,6 +151,14 @@
   tags:
     - feeder
 
+- name: Install DCI UMB
+  hosts: dci_umb
+  become: yes
+  roles:
+    - dci-umb
+  tags:
+    - dci-umb
+
 - name: Install DCI Elasticsearch
   hosts: dci_analytics
   become: yes

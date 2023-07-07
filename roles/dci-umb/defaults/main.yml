@@ -1,0 +1,6 @@
+---
+dci_umb_topic_sources:
+  - queue://Consumer.name.VirtualTopic.example1.name
+  - topic://VirtualTopic.example2.name
+dci_umb_brokers: amqps://broker.example.com
+dci_umb_destination_url: http://dci-feeder-api.example.com/events
