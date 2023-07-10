@@ -27,7 +27,7 @@
 - name: Enable the dci-feeder-worker service
   systemd:
     name: "container-dci-feeder-worker{{ queue.worker_name | ternary('-' + queue.worker_name, '') }}@{{ worker_id }}.service"
-    state: "{{ dci_feeder_worker_systemd_unit.changed | ternary('restarted', 'restarted') }}"
+    state: "{{ dci_feeder_worker_systemd_unit.changed | ternary('restarted', 'started') }}"
     enabled: true
     daemon_reload: "{{ dci_feeder_worker_systemd_unit.changed | bool }}"
   loop: "{{ range(1, queue.workers_count + 1) | list }}"
