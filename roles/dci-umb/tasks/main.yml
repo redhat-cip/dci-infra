@@ -1,0 +1,90 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2023 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+---
+- name: Make sure we're authenticated on the private registry
+  containers.podman.podman_login:
+    username: "{{ dciumb_registry_user }}"
+    password: "{{ dciumb_registry_password }}"
+    registry: "{{ dciumb_registry_url }}"
+
+- name: Create the dci-umb settings directory
+  file:
+    path: /etc/dci-umb
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Create dci-umb settings environment file
+  template:
+    src: dci-umb.env.j2
+    dest: /etc/dci-umb/dci-umb.env
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart dci-umb
+
+- name: Create the dci-umb certificates directory
+  file:
+    path: '{{ dci_umb_certs_basedir }}'
+    state: directory
+    mode: '0750'
+    owner: root
+    group: root
+
+- name: Create the dci-umb client certificate
+  copy:
+    dest: '{{ dci_umb_crt_file_path }}'
+    content: '{{ dci_umb_crt }}'
+    mode: '0640'
+    owner: root
+    group: root
+
+- name: Create the dci-umb client certificate key
+  copy:
+    dest: '{{ dci_umb_key_file_path }}'
+    content: '{{ dci_umb_key }}'
+    mode: '0640'
+    owner: root
+    group: root
+
+- name: Create the RH-IT-Root-CA certificate
+  copy:
+    dest: '{{ dci_umb_ca_file_path }}'
+    content: '{{ dci_umb_ca }}'
+    mode: '0640'
+    owner: root
+    group: root
+
+- name: Create the dci-umb systemd unit file
+  template:
+    src: container-dci-umb.service.j2
+    dest: /etc/systemd/system/container-dci-umb.service
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart dci-umb
+  register: dci_umb_systemd_unit
+
+- name: Enable the dci-umb service
+  systemd:
+    name: container-dci-umb.service
+    state: started
+    enabled: true
+    daemon_reload: "{{ dci_umb_systemd_unit.changed }}"
