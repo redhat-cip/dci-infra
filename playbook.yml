@@ -125,15 +125,6 @@
     - dci-core
     - stats
 
-- name: Install-Repo-Server
-  hosts: dci_repo
-  become: yes
-  roles:
-    - nginx
-    - dci-repo
-  tags:
-    - dci-core
-
 - name: Install DCI registry
   hosts: dci_registry
   become: yes
