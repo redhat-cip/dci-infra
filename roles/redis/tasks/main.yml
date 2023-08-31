@@ -16,3 +16,33 @@
     state: started
     enabled: true
     daemon_reload: "{{ redis_systemd_unit is changed }}"
+
+- name: Create a firewalld zone to handle incoming connections to redis
+  firewalld:
+    zone: redis-access
+    permanent: true
+    state: present
+  register: firewalld_zone_redis_access_result
+
+- name: Reload firewalld if the zone was created
+  command:
+    cmd: firewall-cmd --reload
+  when: firewalld_zone_redis_access_result.changed|default(false)
+
+- name: Allow redis service for zone redis-access
+  firewalld:
+    service: redis
+    zone: redis-access
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Allow hosts from dci_feeder_worker group to connect to redis
+  firewalld:
+    source: "{{ hostvars[item].ansible_host }}/32"
+    zone: redis-access
+    state: enabled
+    permanent: true
+    immediate: true
+  loop:
+    "{{ groups['dci_feeder_worker']|default([]) }}"
