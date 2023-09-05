@@ -139,6 +139,7 @@
   roles:
     - redis
     - dci-feeder
+    - rq_exporter
   tags:
     - feeder
 

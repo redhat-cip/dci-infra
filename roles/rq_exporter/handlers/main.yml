@@ -1,0 +1,7 @@
+---
+- name: restart rq_exporter container
+  systemd:
+    name: "container-rq_exporter.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true

@@ -1,0 +1,26 @@
+---
+- name: Create the rq_exporter systemd unit file
+  copy:
+    src: container-rq_exporter.service
+    dest: /etc/systemd/system/container-rq_exporter.service
+    mode: '0644'
+    owner: root
+    group: root
+  notify:
+    - restart rq_exporter container
+  register: rq_exporter_systemd_unit
+
+- name: Enable and start the rq_exporter service
+  systemd:
+    name: container-rq_exporter.service
+    state: started
+    enabled: true
+    daemon_reload: "{{ rq_exporter_systemd_unit is changed }}"
+
+- name: Allow incoming connections to rq_exporter
+  firewalld:
+    port: 9100/tcp
+    zone: prometheus
+    state: enabled
+    permanent: true
+    immediate: true
