@@ -19,7 +19,7 @@
 
 - name: Allow incoming connections to rq_exporter
   firewalld:
-    port: 9100/tcp
+    port: 9726/tcp
     zone: prometheus
     state: enabled
     permanent: true
