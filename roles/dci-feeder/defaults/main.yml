@@ -33,8 +33,15 @@ feeder_ocp_pullsecret_file: /etc/dci-feeder-api/ocp-pull-secret.json
 feeder_rq_queues:
   - queue_name: dcifeeder
     worker_name: ""
+    worker_image: registry.distributed-ci.io/distributedci/dci-feeder-api:latest
     workers_count: 2
   - queue_name: dcifeeder_quick
     worker_name: quick
+    worker_image: registry.distributed-ci.io/distributedci/dci-feeder-api:latest
+    workers_count: 1
+  - queue_name: dcifeeder_podman
+    worker_name: podman
+    worker_image: registry.distributed-ci.io/distributedci/dci-worker-podman:latest
+    worker_args: --privileged --security-opt label=disable --security-opt seccomp=unconfined --device=/dev/fuse:rw
     workers_count: 1
 feeder_rq_redis_host: localhost

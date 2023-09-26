@@ -28,7 +28,8 @@ ExecStart=/usr/bin/podman run \
 	--user {{ feeder_dci_user.uid }}:{{ feeder_dci_user.group }} \
     --volume /etc/dci-feeder-api/ocp-pull-secret.json:{{ feeder_ocp_pullsecret_file }} \
     --volume /var/log/dci-feeder-api:/var/log/dci-feeder-api:z \
-    registry.distributed-ci.io/distributedci/dci-feeder-api:latest \
+    {{ queue.worker_args | default('') }} \
+    {{ queue.worker_image }} \
     rq worker -u "redis://{{ feeder_rq_redis_host }}" {{ queue.queue_name }}
 ExecStop=/usr/bin/podman exec dci-feeder-worker{{ queue.worker_name | ternary('-' + queue.worker_name, '') }}-%i /bin/kill -TERM 1
 ExecStop=/usr/bin/podman stop --ignore --time 30 --cidfile=%t/%n.ctr-id
