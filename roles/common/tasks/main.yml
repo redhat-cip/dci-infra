@@ -44,8 +44,16 @@
 
 - name: Install DCI packages GPG key
   rpm_key:
-    key: "https://packages.distributed-ci.io/RPM-GPG-KEY-distributedci"
+    key: "https://packages.distributed-ci.io/RPM-GPG-KEY-DCI-2024"
     state: present
+
+- name: Make sure we don't have the old package signing keys
+  ansible.builtin.rpm_key:
+    state: absent
+    key: "{{ item }}"
+  loop:
+    - DD55B388071B927D # RPM-GPG-KEY-distributedci
+    - F82CD13F9250D061 # RPM-GPG-KEY-distributedci-el9
 
 - name: Ensure dci-release is installed
   package:
