@@ -1,38 +1,35 @@
 ---
-- name: Ensure dci-analytics package is installed
-  package:
-    name:
-      - dci-analytics
-    state: latest
-
-- name: Run podman auto-update
-  ansible.builtin.shell: podman auto-update
-
 - name: Create environment file used by the dci-analytics container
-  become: true
   template:
     src: "dci-analytics.env.j2"
     dest: "/etc/dci-analytics.env"
     mode: 0640
   notify: Restart dci-analytics container
 
-- name: enable dci-analytics services
-  become: true
+- name: Install dci-analytics unit files
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/lib/systemd/system/{{ item }}"
+  loop:
+    - dci-analytics-sync.service
+    - dci-analytics-sync.timer
+    - dci-analytics.service
+  notify:
+    - Reload systemd for dci-analytics
+    - Restart dci-analytics container
+    - Restart dci-analytics-sync timer
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Make sure dci-analytics services are enabled
   systemd:
     name: "{{ item }}"
     enabled: yes
-    daemon_reload: true
   loop:
     - dci-analytics.service
     - dci-analytics-sync.timer
     - dci-analytics-sync.service
 
-- name: start dci-analytics services
-  become: true
-  systemd:
-    name: "{{ item }}"
-    state: started
-    daemon_reload: true
-  loop:
-    - dci-analytics.service
-    - dci-analytics-sync.timer
+- name: Update dci-analytics container with podman auto-update
+  ansible.builtin.shell: podman auto-update

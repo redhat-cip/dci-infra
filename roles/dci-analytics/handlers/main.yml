@@ -1,7 +1,16 @@
 ---
+- name: Reload systemd for dci-analytics
+  systemd:
+    daemon_reload: yes
+
 - name: Restart dci-analytics container
-  become: true
   systemd:
     name: "dci-analytics.service"
     state: restarted
-    daemon_reload: yes
+    enabled: yes
+
+- name: Restart dci-analytics-sync timer
+  systemd:
+    name: dci-analytics-sync.timer
+    state: restarted
+    enabled: yes
