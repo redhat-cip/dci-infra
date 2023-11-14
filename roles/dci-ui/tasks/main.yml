@@ -21,7 +21,6 @@
   yum:
     name: dci-ui
     state: latest
-    update_cache: yes
   notify:
     - reload httpd
   tags:

@@ -122,13 +122,18 @@
   package:
     name: '*'
     state: latest
-    update_cache: yes
+    nobest: yes
     exclude:
       - dci-feeder-api
       - dci-control-server
       - dci-umb
       - "{{ dciclient_package }}"
       - "{{ dciauth_package }}"
+  # This can take some time when there are many packages to upgrade
+  # To avoid ssh connection stalling (timeout not detected after a while without traffic)
+  # we run as an async task, limiting it to 30 minutes and checking if it's done every 10 seconds
+  async: 1800
+  poll: 10
   tags:
     - molecule-notest
 

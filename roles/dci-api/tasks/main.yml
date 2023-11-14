@@ -59,7 +59,6 @@
 - name: List package updates
   package:
     list: updates
-    update_cache: true
   register: rpmupdate
   tags:
     - dci-core
@@ -96,7 +95,6 @@
       - "{{ dciauth_package}}"
       - "{{ dciclient_package }}"
     state: latest
-    update_cache: yes
   notify:
     - reload httpd
     - propagate event for dci-control-server upgraded as a fact

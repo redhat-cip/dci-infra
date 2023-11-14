@@ -19,7 +19,6 @@
   yum:
     name: dci-control-server
     state: latest
-    update_cache: yes
   notify:
     - restart dci-worker
     - propagate event for dci-control-server upgraded as a fact
