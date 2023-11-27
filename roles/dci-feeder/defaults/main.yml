@@ -45,3 +45,5 @@ feeder_rq_queues:
     worker_args: --privileged --security-opt label=disable --security-opt seccomp=unconfined --device=/dev/fuse:rw
     workers_count: 1
 feeder_rq_redis_host: localhost
+
+feeder_soft_delete_expiration_days: 7
