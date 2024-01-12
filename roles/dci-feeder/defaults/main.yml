@@ -27,6 +27,8 @@ feeder_google_chat_token: dummy
 feeder_google_chat_thread_id: dummy
 feeder_google_chat_kni_thread_id: dummy
 
+feeder_slack_webhook_url: dummy
+
 feeder_ocp_pullsecret_json: '"dummy"'
 feeder_ocp_pullsecret_file: /etc/dci-feeder-api/ocp-pull-secret.json
 
