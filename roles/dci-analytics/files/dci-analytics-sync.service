@@ -6,4 +6,4 @@ After=network.target
 Type=oneshot
 User=dci
 Group=dci
-ExecStart=/bin/bash -c '/usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/duration_cumulated; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/components_coverage; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/junit; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/pipelines'
+ExecStart=/bin/bash -c '/usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/duration_cumulated; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/components_coverage; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/junit; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/pipelines; /usr/bin/curl -XPOST http://127.0.0.1:2345/synchronization/jobs'
