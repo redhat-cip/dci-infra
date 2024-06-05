@@ -1,5 +1,6 @@
 ---
 openstack_version: ussuri
+rdo_repository_mirror_host: vault.centos.org
 python_policycoreutils: python3-policycoreutils
 
 dciauth_package: python3-dciauth

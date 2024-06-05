@@ -16,10 +16,7 @@
 
 ---
 - name: Gather OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "rhel-{{ ansible_distribution_major_version }}.yml"
-    - "rhel-7.yml"
+  include_vars: "rhel-{{ ansible_distribution_major_version }}.yml"
   tags:
     - dci-core
 

@@ -16,10 +16,23 @@
 
 ---
 - name: Gather OS specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "rhel-{{ ansible_distribution_major_version }}.yml"
-    - "rhel-7.yml"
+  include_vars: "rhel-{{ ansible_distribution_major_version }}.yml"
+
+- name: Add DCI Extras
+  yum_repository:
+    name: DCI-Extras
+    description: DCI Extras YUM repo
+    baseurl: https://packages.distributed-ci.io/repos/extras/el/$releasever/$basearch/
+    priority: "1"
+    gpgcheck: no
+
+- name: Add RDO Repository
+  yum_repository:
+    name: RDO-OpenStack
+    description: RDO YUM repo
+    baseurl: http://{{ rdo_repository_mirror_host }}/centos/$releasever-stream/cloud/$basearch/openstack-{{ openstack_version }}/
+    includepkgs: python-oslo-i18n-lang.noarch python-oslo-utils-lang.noarch python3-alembic.noarch python3-debtcollector.noarch python3-flask.noarch python3-funcsigs.noarch python3-iso8601.noarch python3-keystoneauth1.noarch python3-keystoneclient.noarch python3-os-service-types.noarch python3-oslo-config.noarch python3-oslo-i18n.noarch python3-oslo-serialization.noarch  python3-oslo-utils.noarch python3-requests.noarch python3-six.noarch python3-sqlalchemy-utils.noarch python3-stevedore.noarch python3-swiftclient.noarch python3-werkzeug.noarch
+    gpgcheck: no
 
 - name: Install EPEL
   include_role:
@@ -35,12 +48,6 @@
   package:
     name: python2-distro
     state: absent
-
-- name: Ensure Priority is installed
-  package:
-    name: yum-plugin-priorities
-    state: present
-  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat") and ansible_distribution_major_version == '7'
 
 - name: Install DCI packages GPG key
   rpm_key:
@@ -61,22 +68,6 @@
     state: present
   tags:
     - dci-core
-
-- name: Add DCI Extras
-  yum_repository:
-    name: DCI-Extras
-    description: DCI Extras YUM repo
-    baseurl: https://packages.distributed-ci.io/repos/extras/el/$releasever/$basearch/
-    priority: "1"
-    gpgcheck: no
-
-- name: Add RDO Repository
-  yum_repository:
-    name: RDO-OpenStack
-    description: RDO YUM repo
-    baseurl: http://mirror.centos.org/centos/{{ '$releasever' if (ansible_distribution_major_version == '7') else '$releasever' + '-stream' }}/cloud/$basearch/openstack-{{ openstack_version }}/
-    includepkgs: python-oslo-i18n-lang.noarch python-oslo-utils-lang.noarch python3-alembic.noarch python3-debtcollector.noarch python3-flask.noarch python3-funcsigs.noarch python3-iso8601.noarch python3-keystoneauth1.noarch python3-keystoneclient.noarch python3-os-service-types.noarch python3-oslo-config.noarch python3-oslo-i18n.noarch python3-oslo-serialization.noarch  python3-oslo-utils.noarch python3-requests.noarch python3-six.noarch python3-sqlalchemy-utils.noarch python3-stevedore.noarch python3-swiftclient.noarch python3-werkzeug.noarch
-    gpgcheck: no
 
 - name: Install chrony
   package:
