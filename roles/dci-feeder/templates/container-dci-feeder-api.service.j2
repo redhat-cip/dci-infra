@@ -30,10 +30,11 @@ ExecStart=/usr/bin/podman run \
     --label io.containers.autoupdate=registry \
     --volume /etc/dci-feeder-api/ocp-pull-secret.json:{{ feeder_ocp_pullsecret_file }} \
     --volume /var/log/dci-feeder-api:/var/log/dci-feeder-api:z registry.distributed-ci.io/distributedci/dci-feeder-api:latest gunicorn wsgi:application \
+    --workers 4 \
     --access-logfile /var/log/dci-feeder-api/gunicorn-access.log \
     --error-logfile /var/log/dci-feeder-api/gunicorn-error.log \
     --log-level debug \
-    --timeout 0 \
+    --timeout 600 \
     --bind 0.0.0.0:5003
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
