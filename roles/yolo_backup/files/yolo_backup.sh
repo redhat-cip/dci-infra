@@ -19,14 +19,19 @@ function do_snap(){
     /usr/bin/pg_dump -d dci -Fc --file "${BASEDIR}/db_dump-${TS}"
 }
 
+function fail(){
+    echo $1
+    exit $2
+}
+
 NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 echo "Snapshotting $PERIOD to $BUCKET"
 
 echo $(date -Iseconds) "  >>>> Starting snapshot creation"
-do_snap $NOW || (echo "Snapshot creation failed"; exit 2)
+do_snap $NOW || fail "Snapshot creation failed" 2
 echo $(date -Iseconds) "  <<<< Finished snapshot"
 echo $(date -Iseconds) "  >>>> Sending to S3"
-/usr/local/bin/aws s3 cp "$BASEDIR/db_dump-$NOW" s3://$BUCKET/$PERIOD/db_dump-$NOW --only-show-errors && rm -fv "${BASEDIR}/db_dump-$NOW" || (echo "Upload failed"; exit 3)
+/usr/local/bin/aws s3 cp "$BASEDIR/db_dump-$NOW" s3://$BUCKET/$PERIOD/db_dump-$NOW --only-show-errors && rm -fv "${BASEDIR}/db_dump-$NOW" || fail "Upload failed" 3
 echo $(date -Iseconds) "  <<<< Sent"
 /usr/local/bin/aws s3 ls s3://$BUCKET/$PERIOD/db_dump-$NOW
