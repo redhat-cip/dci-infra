@@ -128,5 +128,8 @@
   tags:
     - molecule-notest
 
+- name: Configure dnf-automatic & dnf-makecache
+  import_tasks: dnf-automatic.yml
+
 - name: Apply firewalld rules
   import_tasks: firewalld.yml
