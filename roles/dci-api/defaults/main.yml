@@ -7,3 +7,5 @@ sqlalchemy_pool_size: "{{ dci_api_wsgi_threads|int }}"
 sqlalchemy_max_overflow: "{{ dci_api_wsgi_threads|int * 5 }}"
 
 max_content_length_mb: 32
+
+rhdl_api_url: "https://rhdl.distributed-ci.io/api/v1"
