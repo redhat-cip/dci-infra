@@ -4,6 +4,8 @@ feeder_dci_api_secret: shhh_dont_talk_about_it
 feeder_registry_url: registry.example.com
 feeder_registry_user: admin_registry_user
 feeder_registry_password: shhh_dont_say_it
+stage_red_hat_registry_user: feeder
+stage_red_hat_registry_password: ""
 
 ssl_enabled: false
 apihost: api.example.com
