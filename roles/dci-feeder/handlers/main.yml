@@ -21,3 +21,4 @@
     state: restarted
     enabled: true
     daemon_reload: true
+  when: "'dci_feeder' in group_names"
