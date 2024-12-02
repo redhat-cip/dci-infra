@@ -1,0 +1,70 @@
+[Unit]
+Description=The {{ __quadlet }} container
+# start image service first
+After={{ __quadlet }}-image.service
+# this dependency is implicit, only here as a reminder
+# Requires={{ __quadlet }}-image.service
+{% for r in __config.requires | default([]) -%}
+After={{ r }}
+Requires={{ r }}
+{% endfor %}
+
+[Container]
+Image={{ __quadlet }}.image
+ContainerName={{ __quadlet }}
+{% if 'command' in __config -%}
+Exec={{ __config.command }}
+{% endif %}
+HostName={{ __quadlet }}
+{% for e in __config.env | default({}) -%}
+Environment={{ e | upper }}="{{ __config.env[e] }}"
+{% endfor %}
+{% if __config.env_file is defined -%}
+EnvironmentFile={{ __config.env_file }}
+{% endif %}
+{% if __config.health | default({}) | length > 0 -%}
+HealthCmd={{ __config.health.cmd }}
+HealthInterval={{ __config.health.interval | default('5s') }}
+HealthRetries={{ __config.health.retries | default('5') }}
+HealthStartPeriod={{ __config.health.start_period | default('10s') }}
+HealthTimeout={{ __config.health.timeout | default('5s') }}
+{% endif %}
+Network={{ __config.network | default('quadlet.network') }}
+{% for c in __config.capabilities | default([]) -%}
+AddCapability={{ c }}
+{% endfor %}
+{% for p in __config.ports | default([]) -%}
+PublishPort={{ p }}
+{% endfor %}
+{% if not __config.always_pull | default(true) | bool -%}
+Pull=always
+{% endif %}
+{% if __config.user | default('') != '' -%}
+User={{ __config.user }}
+{% endif %}
+{% for v in __config.volumes | default([]) -%}
+Volume={{ v }}
+{% endfor %}
+{% if __config.security_labels | default({}) | length > 0 -%}
+SecurityLabelDisable={{ 'true' if __config.security_labels.disable | default(False) else 'false' }}
+{% if __config.security_labels.file_type is defined -%}
+SecurityLabelFileType={{ __config.security_labels.file_type }}
+{% endif %}
+{% if __config.security_labels.level is defined -%}
+SecurityLabelLevel={{ __config.security_labels.level }}
+{% endif %}
+{% if __config.security_labels.nested is defined -%}
+SecurityLabelNested={{ 'true' if __config.security_labels.nested | bool else 'false' }}
+{% endif %}
+{% if __config.security_labels.type is defined -%}
+SecurityLabelType={{ __config.security_labels.type }}
+{% endif %}
+{% endif %}
+
+[Service]
+Restart=always
+RestartSec=1
+StartLimitInterval=0
+
+[Install]
+WantedBy={{ __config.wanted_by | default('multi-user.target') }}

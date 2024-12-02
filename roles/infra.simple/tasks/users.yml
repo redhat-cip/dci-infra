@@ -1,0 +1,16 @@
+---
+- name: Create system users
+  ansible.builtin.user:
+    name: "{{ item.key }}"
+    state: "{{ item.value.state | default('present') }}"
+    uid: "{{ item.value.uid | default(omit) }}"
+    group: "{{ item.value.group | default(omit) }}"
+    groups: "{{ item.value.groups | default(omit) }}"
+    home: "{{ item.value.home | default(omit) }}"
+    create_home: "{{ item.value.create_home | default(true) | bool }}"
+    shell: "{{ item.value.shell | default('/sbin/nologin') }}"
+    system: "{{ item.value.system | default(true) | bool }]"
+  loop: "{{ simple_users | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+...

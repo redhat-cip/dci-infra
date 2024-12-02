@@ -1,0 +1,9 @@
+---
+- name: Restart quadlets
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: restarted
+    daemon-reload: true
+  loop: "{{ _simple_quadlets_to_restart | default([]) | ansible.builtin.unique }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+...

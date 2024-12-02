@@ -1,0 +1,11 @@
+---
+- name: Ensure Policy Core Utils python bindings are installed
+  ansible.builtin.package:
+    name: python3-policycoreutils
+    state: present
+
+- name: Ensure SELinux is enforced
+  ansible.posix.selinux:
+    state: enforcing
+    policy: targeted
+...

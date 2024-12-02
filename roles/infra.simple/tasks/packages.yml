@@ -1,0 +1,7 @@
+---
+- name: Install RPM packages
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ simple_packages }}"
+...

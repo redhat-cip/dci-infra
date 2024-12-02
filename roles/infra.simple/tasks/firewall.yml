@@ -1,0 +1,21 @@
+---
+- name: Manage firewalld services
+  ansible.posix.firewalld:
+    service: "{{ item.key }}"
+    state: "{{ item.value.state | default('enabled') }}"
+    permanent: "{{ item.value.permanent | default(true) }}"
+    immediate: "{{ item.value.immediate | default(true) }}"
+  loop: "{{ simple_firewalld_services | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Manage firewalld ports
+  ansible.posix.firewalld:
+    port: "{{ item.key }}"
+    state: "{{ item.value.state | default('enabled') }}"
+    permanent: "{{ item.value.permanent | default(true) }}"
+    immediate: "{{ item.value.immediate | default(true) }}"
+  loop: "{{ simple_firewalld_ports | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+...

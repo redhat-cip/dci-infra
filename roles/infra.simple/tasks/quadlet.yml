@@ -1,0 +1,39 @@
+---
+- name: Create image quadlet
+  ansible.builtin.template:
+    src: quadlet.image.j2
+    dest: "/etc/containers/systemd/{{ __quadlet }}.image"
+    mode: "0644"
+  register: __image
+  notify: Restart quadlets
+
+- name: Create container quadlet
+  ansible.builtin.template:
+    src: quadlet.container.j2
+    dest: "/etc/containers/systemd/{{ __quadlet }}.container"
+    mode: "0644"
+  register: __container
+  notify: Restart quadlets
+
+# if the image or container definition changed, this should trigger a restart
+- name: Append to list of quadlets to restart  # noqa: no-handler
+  ansible.builtin.set_fact:
+    _simple_quadlets_to_restart: "{{ _simple_quadlets_to_restart | default([]) + [__quadlet] }}"
+  when: >
+    __image.changed | bool or
+    __container.changed | bool
+
+- name: Make sure service is running
+  ansible.builtin.systemd_service:
+    name: "{{ __quadlet }}"
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Restart image service if pull == 'always'
+  ansible.builtin.systemd_service:
+    name: "{{ __quadlet }}-image"
+    state: restarted
+  when: __config.pull | default('never') == 'always'
+  ignore_errors: "{{ ansible_check_mode }}"
+...

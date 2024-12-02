@@ -15,7 +15,7 @@
 # under the License.
 
 - name: Common-Configuration
-  hosts: all
+  hosts: all:!dci_ng
   become: yes
   roles:
     - common
@@ -70,7 +70,7 @@
     - dci-ui
 
 - name: Install-fail2ban
-  hosts: all
+  hosts: all:!dci_ng
   become: yes
   roles:
     - role: fail2ban

@@ -1,0 +1,85 @@
+---
+- name: Include SELinux tasks
+  ansible.builtin.include_tasks:
+    file: selinux.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - base
+    - selinux
+
+- name: Include base tasks
+  ansible.builtin.include_tasks:
+    file: base.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - base
+
+- name: Include package tasks
+  ansible.builtin.include_tasks:
+    file: packages.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - packages
+
+- name: Include DCI tasks
+  ansible.builtin.include_tasks:
+    file: dci.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - dci
+
+- name: Include user tasks
+  ansible.builtin.include_tasks:
+    file: users.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - users
+
+- name: Include firewall tasks
+  ansible.builtin.include_tasks:
+    file: firewall.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - firewall
+    - firewalld
+
+- name: Include SSH tasks
+  ansible.builtin.include_tasks:
+    file: ssh.yml
+    apply:
+      tags:
+        - ssh
+  tags:
+    - ssh
+
+- name: Include file and directory tasks
+  ansible.builtin.include_tasks:
+    file: files.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - files
+
+- name: Include container tasks
+  ansible.builtin.include_tasks:
+    file: containers.yml
+    apply:
+      tags:
+        - always
+  tags:
+    - containers
+    - podman
+...

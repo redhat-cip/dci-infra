@@ -1,0 +1,16 @@
+---
+- name: Import DCI GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://packages.distributed-ci.io/RPM-GPG-KEY-DCI-2024
+
+- name: Install DCI Release
+  ansible.builtin.dnf:
+    name: "https://packages.distributed-ci.io/dci-release.el{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+
+- name: Install DCI SSH Public Keys
+  ansible.builtin.dnf:
+    name: dci-sshpubkeys
+    state: present
+...

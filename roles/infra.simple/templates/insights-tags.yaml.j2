@@ -1,0 +1,5 @@
+---
+group: {{ simple_insights_conf.group | default('distributed-ci') }}
+app: {{ simple_insights_conf.app | default('dci') }}
+Lifecycle: {{ simple_insights_conf.lifecycle| default('production') }}
+...

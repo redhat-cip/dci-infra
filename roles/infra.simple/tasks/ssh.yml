@@ -1,0 +1,15 @@
+---
+# we add bastion key by default
+- name: Build list for SSH access
+  ansible.builtin.set_fact:
+    _simple_ssh_access: "{{ simple_ssh_access + [_default_bastion_ssh] }}"
+
+- name: Add SSH keys
+  ansible.posix.authorized_key:
+    user: "{{ item.user }}"
+    key: "{{ item.key }}"
+    key_options: "{{ item.key_options | default([]) | join(',') }}"
+  loop: "{{ _simple_ssh_access }}"
+  loop_control:
+    label: "{{ item.user }}"
+...
