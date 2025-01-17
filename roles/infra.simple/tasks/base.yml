@@ -1,4 +1,13 @@
 ---
+- name: Turn on persistent journal
+  ansible.builtin.file:
+    path: /var/log/journal
+    owner: root
+    group: systemd-journal
+    mode: '2755'
+    state: directory
+    setype: var_log_t
+
 - name: Set host name
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}.{{ simple_domainname }}"
@@ -106,5 +115,5 @@
     state: started
     enabled: true
     daemon_reload: true
-  ignore_errors: "{{ ansible_check_mode | bool }}"
+  when: not ansible_check_mode
 ...

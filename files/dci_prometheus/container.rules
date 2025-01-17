@@ -1,0 +1,58 @@
+# vim: filetype=yaml
+groups:
+- name: container
+
+  rules:
+  - alert: container_stuck_starting
+    expr: >
+      podman_container_state == 0 or
+      podman_container_state == 1
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container stuck starting
+      description: >
+        The container {{ $labels.name }} on instance
+        {{ $labels.instance }} appears to be stuck
+        while starting with state {{ $value }}
+        (0=created, 1=initialized)
+
+  - alert: container_stuck_terminating
+    expr: >
+      podman_container_state == 5 or
+      podman_container_state == 6 or
+      podman_container_state == 7
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container stuck terminating
+      description: >
+        The container {{ $labels.name }} on instance
+        {{ $labels.instance }} appears to be stuck
+        while terminating with state {{ $value }}
+        (5=exited, 6=removing, 7=stopping)
+
+  - alert: container_unhealthy
+    expr: podman_container_health == 1
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: Unhealthy container
+      description: >
+        The container {{ $labels.name }} on instance
+        {{ $labels.instance }} reports not healthy
+
+  - alert: container_healthcheck_starting
+    expr: podman_container_health == 2
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container health check stuck in startup
+      description: >
+        The container {{ $labels.name }} on instance
+        {{ $labels.instance }} has health check stuck
+        in 'starting' for over 5 minutes

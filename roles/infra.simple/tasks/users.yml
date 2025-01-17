@@ -1,4 +1,14 @@
 ---
+- name: Create system groups
+  ansible.builtin.group:
+    name: "{{ item.key }}"
+    state: "{{ item.value.state | default('present') }}"
+    gid: "{{ item.value.gid }}"
+    system: "{{ item.value.system | default(true) | bool }}"
+  loop: "{{ simple_groups | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
 - name: Create system users
   ansible.builtin.user:
     name: "{{ item.key }}"
@@ -9,7 +19,7 @@
     home: "{{ item.value.home | default(omit) }}"
     create_home: "{{ item.value.create_home | default(true) | bool }}"
     shell: "{{ item.value.shell | default('/sbin/nologin') }}"
-    system: "{{ item.value.system | default(true) | bool }]"
+    system: "{{ item.value.system | default(true) | bool }}"
   loop: "{{ simple_users | ansible.builtin.dict2items }}"
   loop_control:
     label: "{{ item.key }}"

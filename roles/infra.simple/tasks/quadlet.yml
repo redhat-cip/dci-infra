@@ -1,5 +1,5 @@
 ---
-- name: Create image quadlet
+- name: Manage image quadlet
   ansible.builtin.template:
     src: quadlet.image.j2
     dest: "/etc/containers/systemd/{{ __quadlet }}.image"
@@ -7,7 +7,7 @@
   register: __image
   notify: Restart quadlets
 
-- name: Create container quadlet
+- name: Manage container quadlet
   ansible.builtin.template:
     src: quadlet.container.j2
     dest: "/etc/containers/systemd/{{ __quadlet }}.container"
@@ -23,17 +23,10 @@
     __image.changed | bool or
     __container.changed | bool
 
-- name: Make sure service is running
+- name: Ensure service state is started
   ansible.builtin.systemd_service:
     name: "{{ __quadlet }}"
     state: started
     daemon-reload: true
-  ignore_errors: "{{ ansible_check_mode }}"
-
-- name: Restart image service if pull == 'always'
-  ansible.builtin.systemd_service:
-    name: "{{ __quadlet }}-image"
-    state: restarted
-  when: __config.pull | default('never') == 'always'
-  ignore_errors: "{{ ansible_check_mode }}"
+  when: not ansible_check_mode
 ...

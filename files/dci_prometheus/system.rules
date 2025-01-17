@@ -1,0 +1,71 @@
+# vim: filetype=yaml
+groups:
+- name: system
+
+  rules:
+  - alert: processor_usage_too_high
+    expr: >
+      (
+        (
+          count(
+            count(node_cpu_seconds_total) by (instance, cpu)
+          ) by (instance)
+          -
+          avg(
+            sum by (instance, mode)(irate(node_cpu_seconds_total{mode=~'idle'}[5m]))
+          ) by (instance)
+        )
+      )
+      /
+      count(
+        count(node_cpu_seconds_total) by (instance, cpu)
+      ) by (instance)
+      > 0.95
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      description: >
+        Instance {{ $labels.instance }} has processor above 95%
+        (current value: {{ printf "%.2f" $value }}%) for over 5 minutes'
+      summary: Processor usage above 95%
+
+  - alert: diskspace_almost_exhausted
+    expr: node_filesystem_free_bytes{fstype='xfs'} / node_filesystem_size_bytes{fstype='xfs'} * 100 < 10
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Disk space almost exhausted
+      description: >
+        Instance {{ $labels.instance }} has disk space less than 10% available
+        (current value: {{ printf "%.2f" $value }}% available) for over 5 minutes'
+
+  - alert: memory_usage_limit
+    expr: (node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Cached_bytes) / node_memory_MemTotal_bytes * 100 > 90
+    for: 15m
+    labels:
+      severity: critical
+    annotations:
+      summary: Memory usage above 90%
+      description: >
+        Instance {{ $labels.instance }} has memory usage above 90%
+        (current value: {{ printf "%.2f" $value }}% used) for over 15 minutes'
+
+  - alert: node_down
+    expr: up{job="node"} == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: Node exporter down
+      description: Node exporter on {{ $labels.instance }} is down
+
+  - alert: node_unreachable
+    expr: up{job="ssh"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: SSH unreachable
+      description: SSH on {{ $labels.instance }} has been unreachable for over 5 minutes

@@ -20,7 +20,7 @@
     __config: "{{ item.value }}"
   ansible.builtin.include_tasks:
     file: quadlet.yml
-  loop: "{{ simple_group_quadlets | combine(simple_host_quadlets) | ansible.builtin.dict2items }}"
+  loop: "{{ simple_global_quadlets | ansible.builtin.combine(simple_group_quadlets) | ansible.builtin.combine(simple_host_quadlets) | ansible.builtin.dict2items }}"
   loop_control:
     label: "{{ item.key }}"
 ...

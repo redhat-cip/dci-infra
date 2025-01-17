@@ -1,0 +1,23 @@
+modules:
+  http_2xx:
+    prober: http
+    timeout: 2s
+    http:
+      preferred_ip_protocol: ip4
+      method: GET
+
+  tcp:
+    prober: tcp
+
+  ssh:
+    prober: tcp
+    tcp:
+      query_response:
+        - expect: ^SSH-2.0-
+        - send: SSH-2.0-blackbox-ssh-check
+
+  icmp:
+    prober: icmp
+    timeout: 5s
+    icmp:
+      ttl: 5

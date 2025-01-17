@@ -20,5 +20,6 @@ simple_files: {}
 
 # containers
 simple_quadlet_subnet: 192.168.100.0/24
+simple_global_quadlets: {}
 simple_group_quadlets: {}
 simple_host_quadlets: {}
