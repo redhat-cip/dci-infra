@@ -125,6 +125,7 @@
   # we run as an async task, limiting it to 30 minutes and checking if it's done every 10 seconds
   async: 1800
   poll: 10
+  when: not ansible_check_mode
   tags:
     - molecule-notest
 
