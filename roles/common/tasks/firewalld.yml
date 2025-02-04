@@ -44,7 +44,9 @@
     gather_subset: local
   delegate_to: monitoring
   delegate_facts: true
-  when: hostvars.monitoring.ansible_local is not defined
+  when: 
+    - groups.monitoring is defined and "monitoring" in groups.monitoring
+    - hostvars.monitoring.ansible_local is not defined
 
 - name: Set the source for the monitoring hosts
   ansible.posix.firewalld:
