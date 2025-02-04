@@ -38,16 +38,6 @@
     cmd: firewall-cmd --reload
   when: firewalld_zone_monitoring_result.changed | bool
 
-# TODO: remove this task once openstack monitoring VM goes away
-- name: Read local facts from monitoring instance
-  ansible.builtin.setup:
-    gather_subset: local
-  delegate_to: monitoring
-  delegate_facts: true
-  when: 
-    - groups.monitoring is defined and "monitoring" in groups.monitoring
-    - hostvars.monitoring.ansible_local is not defined
-
 - name: Set the source for the monitoring hosts
   ansible.posix.firewalld:
     source: "{{ item }}"
