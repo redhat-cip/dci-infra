@@ -1,0 +1,49 @@
+---
+- name: Applying firewall configuration
+  ansible.builtin.debug:
+    var: _config
+
+- name: Manage zone
+  ansible.posix.firewalld:
+    zone: "{{ _config.zone | default(simple_firewalld_default_zone) }}"
+    state: present
+    permanent: true
+  register: _zone_result
+
+- name: Reload firewalld if zone was created  # noqa: no-changed-when no-handler
+  ansible.builtin.command:
+    cmd: firewall-cmd --reload
+  when:
+    - _zone_result.changed | bool
+    - not ansible_check_mode
+
+- name: Set zone sources  # noqa: ignore-errors
+  ansible.posix.firewalld:
+    zone: "{{ _config.zone | default(simple_firewalld_default_zone) }}"
+    source: "{{ _config.source }}"
+    state: enabled
+    permanent: true
+    immediate: true
+  when: _config.source is defined
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Manage services  # noqa: ignore-errors
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    zone: "{{ _config.zone | default(simple_firewalld_default_zone) }}"
+    state: enabled
+    permanent: true
+    immediate: true
+  loop: "{{ _config.services | default([]) }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Manage ports  # noqa: ignore-errors
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    zone: "{{ _config.zone | default(simple_firewalld_default_zone) }}"
+    state: enabled
+    permanent: true
+    immediate: true
+  loop: "{{ _config.ports | default([]) }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+...

@@ -3,14 +3,19 @@
 simple_packages: []
 simple_mounts: {}
 simple_users: {}
+simple_groups: {}
 simple_node_exporter: {}
 
 # SSH access
 simple_ssh_access: []
 
 # firewalld
-simple_firewalld_services: {}
-simple_firewalld_ports: {}
+simple_firewalld_default_zone: public
+simple_firewalld_monitoring_zone: monitoring
+simple_firewalld_config:
+  - zone: "{{ simple_firewalld_default_zone }}"
+    services:
+      - ssh
 
 # systemd services
 simple_services: {}
@@ -20,6 +25,6 @@ simple_files: {}
 
 # containers
 simple_quadlet_subnet: 192.168.100.0/24
-simple_global_quadlets: {}
-simple_group_quadlets: {}
-simple_host_quadlets: {}
+simple_global_quadlets: {}  # to define in group_vars/all
+simple_group_quadlets: {}  # to define in group_vars/<group>
+simple_quadlets: {}  # to define in host_vars

@@ -1,21 +1,26 @@
 ---
-- name: Manage firewalld services
-  ansible.posix.firewalld:
-    service: "{{ item.key }}"
-    state: "{{ item.value.state | default('enabled') }}"
-    permanent: "{{ item.value.permanent | default(true) }}"
-    immediate: "{{ item.value.immediate | default(true) }}"
-  loop: "{{ simple_firewalld_services | ansible.builtin.dict2items }}"
-  loop_control:
-    label: "{{ item.key }}"
+- name: Install python firewalld bindings
+  ansible.builtin.package:
+    name:
+      - python3-firewall
 
-- name: Manage firewalld ports
-  ansible.posix.firewalld:
-    port: "{{ item.key }}"
-    state: "{{ item.value.state | default('enabled') }}"
-    permanent: "{{ item.value.permanent | default(true) }}"
-    immediate: "{{ item.value.immediate | default(true) }}"
-  loop: "{{ simple_firewalld_ports | ansible.builtin.dict2items }}"
+- name: Enable firewalld
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Build final firewalld configuration
+  ansible.builtin.set_fact:
+    _firewalld_config: "{{ _firewalld_config | default([]) + hostvars[inventory_hostname][item] }}"
+  loop: "{{ hostvars[inventory_hostname].keys() }}"
+  when:
+    - item.startswith("simple_firewalld_rules_")
+
+- name: Apply FirewallD config
+  ansible.builtin.include_tasks:
+    file: firewalld.yml
+  loop: "{{ _firewalld_config }}"
   loop_control:
-    label: "{{ item.key }}"
+    loop_var: _config
 ...
