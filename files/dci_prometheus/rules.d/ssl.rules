@@ -1,0 +1,12 @@
+# vim: filetype=yaml
+groups:
+  - name: ssl
+    rules:
+      - alert: certificate_expiring
+        expr: probe_ssl_earliest_cert_expiry{job=~"blackbox_2xx_ssl.*"} - time() < 86400 * 10
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          description: 'SSL certificate on {{ $labels.instance  }} will expire in less than 10 days'
+          summary: 'SSL certificate expires in less than 10 days'

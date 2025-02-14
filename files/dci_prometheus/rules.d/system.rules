@@ -1,7 +1,6 @@
 # vim: filetype=yaml
 groups:
 - name: system
-
   rules:
   - alert: processor_usage_too_high
     expr: >

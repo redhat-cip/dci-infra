@@ -1,10 +1,9 @@
 # vim: filetype=yaml
 groups:
 - name: http
-
   rules:
   - alert: http_probe_failed
-    expr: probe_success{job="blackbox_2xx"} == 0
+    expr: probe_success{job="blackbox_2xx_ssl"} == 0
     for: 5m
     labels:
       severity: critical
@@ -14,7 +13,7 @@ groups:
         URL endpoint {{ $labels.instance }} probing has failed for over 5 minutes
 
   - alert: http_status_code_2xx
-    expr: probe_http_status_code{job="blackbox_2xx"} >= 300
+    expr: probe_http_status_code{job="blackbox_2xx_ssl"} >= 300
     for: 10m
     labels:
       severity: critical

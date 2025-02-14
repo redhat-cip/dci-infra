@@ -1,7 +1,6 @@
 # vim: filetype=yaml
 groups:
 - name: container
-
   rules:
   - alert: container_stuck_starting
     expr: >

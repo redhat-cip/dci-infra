@@ -1,0 +1,12 @@
+# vim: filetype=yaml
+groups:
+  - name: domain
+    rules:
+      - alert: domain_expiring
+        expr: domain_expiry_days < 45
+        for: 60m
+        labels:
+          severity: critical
+        annotations:
+          description: 'Domain {{ $labels.domain }} will expire in {{ $value }} days'
+          summary: 'Domain expires in < 45 days'

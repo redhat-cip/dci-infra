@@ -6,6 +6,24 @@ modules:
       preferred_ip_protocol: ip4
       method: GET
 
+  http_2xx_ssl:
+    prober: http
+    timeout: 2s
+    http:
+      preferred_ip_protocol: ip4
+      method: GET
+      fail_if_not_ssl: true
+
+  http_401_ssl:
+    prober: http
+    timeout: 2s
+    http:
+      valid_status_codes:
+        - 401
+      preferred_ip_protocol: ip4
+      method: GET
+      fail_if_not_ssl: true
+
   tcp:
     prober: tcp
 
