@@ -1,0 +1,92 @@
+---
+- name: Manage group
+  ansible.builtin.group:
+    name: "{{ prometheus_group }}"
+    state: present
+    system: true
+    gid: "{{ prometheus_gid | default(omit) }}"
+
+- name: Manage user
+  ansible.builtin.user:
+    name: "{{ prometheus_user }}"
+    state: present
+    system: true
+    uid: "{{ prometheus_uid | default(omit) }}"
+    group: "{{ prometheus_group }}"
+    home: "{{ prometheus_db_dir }}"
+    shell: /usr/sbin/nologin
+
+- name: Manage directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+  loop:
+    - "{{ prometheus_config_dir }}"
+    - "{{ prometheus_config_dir }}/rules.d"
+    - "{{ prometheus_db_dir }}"
+
+- name: Render main configuration
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_config_dir }}/prometheus.yml"
+    mode: '0644'
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+  notify:
+    - Restart prometheus
+
+- name: Write AWS credentials
+  ansible.builtin.copy:
+    content: "{{ prometheus_aws_credentials }}"
+    dest: "{{ prometheus_config_dir }}/aws.credentials"
+    mode: '0640'
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+  notify:
+    - Restart prometheus
+
+- name: Copy static rule files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ prometheus_config_dir }}/rules.d/{{ item | basename }}"
+    mode: '0644'
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+  with_fileglob: 'rules.d/*.rules'
+  loop_control:
+    label: "{{ item | basename }}"
+  notify:
+    - Restart prometheus
+
+- name: Create image quadlet
+  vars:
+    _quadlet: prometheus
+    _config: "{{ prometheus_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0640'
+  notify:
+    - Restart prometheus
+
+- name: Create container quadlet
+  vars:
+    _quadlet: prometheus
+    _config: "{{ prometheus_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0640'
+  notify:
+    - Restart prometheus
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: prometheus.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

@@ -10,15 +10,55 @@
   loop_control:
     label: "{{ item.key | dirname }}"
 
-- name: Create files from file list
-  ansible.builtin.copy:
+- name: Create (templated) files from file list
+  vars:
+    _params:
+      skip: true
+      files:
+        - "{{ item.value.template }}"
+      paths:
+        - "{{ playbook_dir }}/templates/{{ inventory_hostname }}"
+        - "{{ playbook_dir }}/templates/_"
+  ansible.builtin.template:
     dest: "{{ item.key }}"
-    src: "{{ item.value.src | default(omit) }}"
-    content: "{{ item.value.content | default(omit) }}"
+    src: "{{ lookup('first_found', _params) }}"
     mode: "{{ item.value.mode | default(omit) }}"
     owner: "{{ item.value.owner | default(omit) }}"
     group: "{{ item.value.group | default(omit) }}"
   loop: "{{ simple_files | ansible.builtin.dict2items }}"
   loop_control:
     label: "{{ item.key }}"
+  when: item.value.template is defined
+
+- name: Create (static) files from file list
+  vars:
+    _params:
+      skip: true
+      files:
+        - "{{ item.value.src }}"
+      paths:
+        - "{{ playbook_dir }}/files/{{ inventory_hostname }}"
+        - "{{ playbook_dir }}/files/_"
+  ansible.builtin.copy:
+    dest: "{{ item.key }}"
+    src: "{{ lookup('first_found', _params) }}"
+    mode: "{{ item.value.mode | default(omit) }}"
+    owner: "{{ item.value.owner | default(omit) }}"
+    group: "{{ item.value.group | default(omit) }}"
+  loop: "{{ simple_files | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when: item.value.src is defined
+
+- name: Create (inline) files from file list
+  ansible.builtin.copy:
+    dest: "{{ item.key }}"
+    content: "{{ item.value.content }}"
+    mode: "{{ item.value.mode | default(omit) }}"
+    owner: "{{ item.value.owner | default(omit) }}"
+    group: "{{ item.value.group | default(omit) }}"
+  loop: "{{ simple_files | ansible.builtin.dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when: item.value.content is defined
 ...

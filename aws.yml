@@ -1,7 +1,67 @@
 ---
-- hosts: dci_ng
+- name: Base setup for AWS infra
+  hosts: dci_ng
   gather_facts: true
   become: true
+
   roles:
-    - infra.simple
+    - name: infra.simple
+      tags:
+        - base
+
+    - name: infra.node_exporter
+      tags:
+        - base
+        - node_exporter
+
+    - name: infra.quadlet
+      tags:
+        - base
+        - podman
+
+    - name: quadlet.podman_exporter
+      tags:
+        - base
+        - podman
+
+- name: Setup monitoring stack
+  hosts: dci_ng:&dci_prometheus
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: quadlet.prometheus
+      tags:
+        - podman
+        - prometheus
+        - monitoring
+
+    - name: quadlet.alertmanager
+      tags:
+        - podman
+        - alertmanager
+        - monitoring
+
+    - name: quadlet.grafana
+      tags:
+        - podman
+        - grafana
+        - monitoring
+
+    - name: quadlet.blackbox_exporter
+      tags:
+        - podman
+        - monitoring
+
+    - name: quadlet.domain_exporter
+      tags:
+        - podman
+        - monitoring
+
+    - name: quadlet.nginx
+      tags:
+        - podman
+        - nginx
+        - monitoring
+
 ...

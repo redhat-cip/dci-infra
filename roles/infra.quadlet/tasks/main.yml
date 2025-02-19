@@ -1,0 +1,15 @@
+---
+- name: Ensure necessary packages are installed
+  ansible.builtin.dnf:
+    name: "{{ quadlet_packages }}"
+
+- name: Create quadlet subnets
+  vars:
+    _name: "{{ item.key }}"
+    _cidr: "{{ item.value }}"
+  ansible.builtin.template:
+    src: quadlet.network.j2
+    dest: "/etc/containers/systemd/{{ item.key }}.network"
+    mode: "0644"
+  loop: "{{ quadlet_container_networks | ansible.builtin.dict2items }}"
+...

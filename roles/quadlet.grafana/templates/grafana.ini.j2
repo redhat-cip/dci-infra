@@ -1,0 +1,25 @@
+# vim: filetype=ini
+app_mode = production
+instance_name = {{ ansible_fqdn }}
+
+[paths]
+data = /var/lib/grafana
+
+[server]
+protocol = http
+http_port = {{ grafana_http_port }}
+domain = {{ grafana_domain }}
+root_url = %(protocol)s://%(domain)s{{ grafana_web_path }}
+serve_from_sub_path = true
+
+[database]
+type = sqlite3
+path = grafana.db
+
+[auth]
+disable_login_form = true
+{% for _auth, _config in grafana_auths.items() %}
+[auth.{{ _auth }}]
+{{ _config }}
+
+{% endfor %}

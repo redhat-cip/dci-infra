@@ -1,0 +1,84 @@
+---
+- name: Manage group
+  ansible.builtin.group:
+    name: "{{ grafana_group }}"
+    state: present
+    system: true
+    gid: "{{ grafana_gid | default(omit) }}"
+
+- name: Manage user
+  ansible.builtin.user:
+    name: "{{ grafana_user }}"
+    state: present
+    system: true
+    uid: "{{ grafana_uid | default(omit) }}"
+    group: "{{ grafana_group }}"
+    home: "{{ grafana_data_dir }}"
+    shell: /usr/sbin/nologin
+
+- name: Manage directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+  loop:
+    - "{{ grafana_data_dir }}"
+    - "{{ grafana_config_dir }}/provisioning/datasources"
+
+- name: Render main configuration
+  ansible.builtin.template:
+    src: grafana.ini.j2
+    dest: "{{ grafana_config_dir }}/grafana.ini"
+    mode: '0644'
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+  notify:
+    - Restart grafana
+
+- name: Render datasource configuration
+  vars:
+    _name: "{{ item.key }}"
+    _conf: "{{ item.value }}"
+  ansible.builtin.template:
+    src: datasources.yml.j2
+    dest: "{{ grafana_config_dir }}/provisioning/datasources/{{ item.key | lower }}.yml"
+    mode: '0644'
+    owner: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+  loop: "{{ grafana_datasources | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  notify:
+    - Restart grafana
+
+- name: Create image quadlet
+  vars:
+    _quadlet: grafana
+    _config: "{{ grafana_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0640'
+  notify:
+    - Restart grafana
+
+- name: Create container quadlet
+  vars:
+    _quadlet: grafana
+    _config: "{{ grafana_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0640'
+  notify:
+    - Restart grafana
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: grafana.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

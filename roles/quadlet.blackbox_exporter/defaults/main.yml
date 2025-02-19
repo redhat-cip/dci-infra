@@ -1,0 +1,21 @@
+---
+blackbox_exporter_http_port: 9115
+blackbox_exporter_container_image: quay.io/prometheus/blackbox-exporter:latest
+blackbox_exporter_container_network: host
+blackbox_exporter_container_spec:
+  image: "{{ blackbox_exporter_container_image }}"
+  command: >
+    --config.file=/etc/blackbox.yml
+    --web.listen-address :{{ blackbox_exporter_http_port }}
+  ports:
+    - "{{ blackbox_exporter_http_port }}:{{ blackbox_exporter_http_port }}"
+  network: "{{ blackbox_exporter_container_network }}"
+  volumes:
+    - /etc/blackbox.yml:/etc/blackbox.yml:ro
+  security_labels:
+    disable: true
+  capabilities:
+    - CAP_NET_RAW
+  health:
+    cmd: "/bin/wget --spider localhost:{{ blackbox_exporter_http_port }}/-/healthy"
+...

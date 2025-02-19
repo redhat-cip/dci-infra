@@ -1,0 +1,5 @@
+---
+node_exporter_http_port: 9100
+node_exporter_version: 1.9.0
+node_exporter_bin: /usr/local/bin/node_exporter
+...

@@ -1,0 +1,8 @@
+---
+- name: Restart prometheus
+  ansible.builtin.systemd:
+    name: prometheus.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

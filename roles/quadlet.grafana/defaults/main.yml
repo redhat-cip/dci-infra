@@ -1,0 +1,22 @@
+---
+grafana_user: grafana
+grafana_group: grafana
+grafana_version: 11.1.3
+grafana_config_dir: /etc/grafana
+grafana_data_dir: /var/lib/grafana
+grafana_http_port: 3000
+grafana_domain: "{{ ansible_fqdn }}"
+grafana_web_path: /grafana
+grafana_container_image: "docker.io/grafana/grafana-oss:{{ grafana_version }}"
+grafana_container_network: host
+grafana_container_user: "{{ grafana_user }}:{{ grafana_group }}"
+grafana_container_spec:
+  image: "{{ grafana_container_image }}"
+  user: "{{ grafana_container_user }}"
+  ports:
+    - "{{ grafana_http_port }}:{{ grafana_http_port }}"
+  network: "{{ grafana_container_network }}"
+  volumes:
+    - "{{ grafana_config_dir }}:/etc/grafana:z,ro"
+    - "{{ grafana_data_dir }}:/grafana:Z"
+...

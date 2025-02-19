@@ -1,0 +1,8 @@
+[Unit]
+Description=The {{ _name }} container service network
+
+[Network]
+Subnet={{ _cidr }}
+Gateway={{ _cidr | ansible.utils.ipaddr('1') | ansible.utils.ipaddr('address') }}
+DisableDNS=false
+DNS={{ _cidr | ansible.utils.ipaddr('1') | ansible.utils.ipaddr('address') }}

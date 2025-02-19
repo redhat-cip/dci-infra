@@ -1,0 +1,7 @@
+---
+quadlet_packages:
+  - podman
+  - podman-plugins
+quadlet_container_networks:
+  quadlet: 192.168.100.0/24
+...

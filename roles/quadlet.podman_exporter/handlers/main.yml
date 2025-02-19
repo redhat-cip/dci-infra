@@ -1,0 +1,8 @@
+---
+- name: Restart podman-exporter
+  ansible.builtin.systemd:
+    name: podman-exporter.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

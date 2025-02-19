@@ -10,17 +10,10 @@
     state: started
     enabled: true
 
-- name: Build final firewalld configuration
-  ansible.builtin.set_fact:
-    _firewalld_config: "{{ _firewalld_config | default([]) + hostvars[inventory_hostname][item] }}"
-  loop: "{{ hostvars[inventory_hostname].keys() }}"
-  when:
-    - item.startswith("simple_firewalld_rules_")
-
-- name: Apply FirewallD config
+- name: Manage firewall zones
   ansible.builtin.include_tasks:
     file: firewalld.yml
-  loop: "{{ _firewalld_config }}"
+  loop: "{{ simple_firewalld_zones }}"
   loop_control:
     loop_var: _config
 ...

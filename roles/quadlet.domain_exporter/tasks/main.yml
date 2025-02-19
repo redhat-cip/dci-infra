@@ -1,0 +1,30 @@
+---
+- name: Create image quadlet
+  vars:
+    _quadlet: domain-exporter
+    _config: "{{ domain_exporter_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0644'
+  notify:
+    - Restart domain-exporter
+
+- name: Create container quadlet
+  vars:
+    _quadlet: domain-exporter
+    _config: "{{ domain_exporter_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0644'
+  notify:
+    - Restart domain-exporter
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: domain-exporter.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

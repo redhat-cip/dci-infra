@@ -1,0 +1,24 @@
+---
+nginx_user: root
+nginx_group: root
+nginx_listen_http_port: 80
+nginx_config_dir: /etc/nginx
+nginx_config_locations: {}
+nginx_container_image: docker.io/library/nginx:1-alpine
+nginx_container_ports:
+  - "{{ nginx_listen_http_port }}:80"
+nginx_container_volumes:
+  - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+nginx_container_network: host
+nginx_container_spec:
+  image: "{{ nginx_container_image }}"
+  ports: "{{ nginx_container_ports }}"
+  volumes: "{{ nginx_container_volumes }}"
+  network: "{{ nginx_container_network }}"
+  security_labels:
+    disable: true
+  capabilities:
+    - NET_ADMIN
+  health:
+    cmd: /usr/bin/test -f /var/run/nginx.pid
+...

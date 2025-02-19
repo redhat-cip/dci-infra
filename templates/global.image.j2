@@ -1,0 +1,12 @@
+[Unit]
+Description=The {{ _quadlet }} container image
+After=network-online.target
+
+[Image]
+Image={{ _config.image }}
+{% if _config.authfile | default('') != '' -%}
+AuthFile={{ _config.authfile }}
+{% endif %}
+{% if _config.creds | default('') != '' -%}
+Creds={{ _config.creds }}
+{% endif %}
