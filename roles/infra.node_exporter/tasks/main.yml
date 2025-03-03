@@ -1,0 +1,83 @@
+---
+- name: Check if node_exporter binary is present
+  ansible.builtin.stat:
+    path: "{{ node_exporter_bin }}-{{ node_exporter_version }}"
+  register: __bin
+
+- name: Download and install node_exporter
+  ignore_errors: "{{ ansible_check_mode }}"
+  when:
+    - not __bin.stat.exists
+  block:
+    - name: Set temp dir fact
+      ansible.builtin.set_fact:
+        __tmp_dir: "/tmp/node_exporter-{{ node_exporter_version }}"
+
+    - name: Create temp dir
+      ansible.builtin.file:
+        path: "{{ __tmp_dir }}"
+        state: directory
+        mode: '0750'
+
+    - name: Download node_exporter tarball
+      ansible.builtin.get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: "{{ __tmp_dir }}"
+        mode: "0660"
+
+    - name: Unarchive node_exporter tarball
+      ansible.builtin.unarchive:
+        src: "{{ __tmp_dir }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: "{{ __tmp_dir }}"
+        extra_opts: "--strip-components=1"
+        remote_src: true
+
+    - name: Copy binary to binary location
+      ansible.builtin.copy:
+        src: "{{ __tmp_dir }}/node_exporter"
+        dest: "{{ node_exporter_bin }}-{{ node_exporter_version }}"
+        remote_src: true
+        mode: "0755"
+        owner: root
+        group: root
+
+    - name: Symlink binary
+      ansible.builtin.file:
+        src: "{{ node_exporter_bin }}-{{ node_exporter_version }}"
+        dest: "{{ node_exporter_bin }}"
+        state: link
+
+    - name: Remove temp dir
+      ansible.builtin.file:
+        path: "{{ __tmp_dir }}"
+        state: absent
+
+- name: Enable access to port in firewall
+  ansible.posix.firewalld:
+    port: "{{ node_exporter_http_port }}/tcp"
+    zone: "{{ node_exporter_firewalld_zone | default(omit) }}"
+    state: enabled
+    immediate: true
+    permanent: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Create node_exporter service
+  vars:
+    _bin: "{{ node_exporter_bin }}"
+    _port: "{{ node_exporter_http_port }}"
+    _version: "{{ node_exporter_version }}"
+  ansible.builtin.template:
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
+    mode: "0660"
+  notify:
+    - Restart node_exporter
+
+- name: Manage node_exporter service
+  ansible.builtin.systemd_service:
+    name: node_exporter.service
+    state: started
+    enabled: true
+    daemon_reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

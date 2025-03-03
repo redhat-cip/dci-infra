@@ -1,0 +1,41 @@
+modules:
+  http_2xx:
+    prober: http
+    timeout: 2s
+    http:
+      preferred_ip_protocol: ip4
+      method: GET
+
+  http_2xx_ssl:
+    prober: http
+    timeout: 2s
+    http:
+      preferred_ip_protocol: ip4
+      method: GET
+      fail_if_not_ssl: true
+
+  http_401_ssl:
+    prober: http
+    timeout: 2s
+    http:
+      valid_status_codes:
+        - 401
+      preferred_ip_protocol: ip4
+      method: GET
+      fail_if_not_ssl: true
+
+  tcp:
+    prober: tcp
+
+  ssh:
+    prober: tcp
+    tcp:
+      query_response:
+        - expect: ^SSH-2.0-
+        - send: SSH-2.0-blackbox-ssh-check
+
+  icmp:
+    prober: icmp
+    timeout: 5s
+    icmp:
+      ttl: 5

@@ -1,0 +1,27 @@
+---
+podman_exporter_http_port: 9882
+podman_exporter_container_image: quay.io/navidys/prometheus-podman-exporter:latest
+podman_exporter_container_network: host
+podman_exporter_container_spec:
+  image: "{{ podman_exporter_container_image }}"
+  command: >
+    --collector.image
+    --collector.network
+    --collector.pod
+    --collector.volume
+    --web.listen-address :{{ podman_exporter_http_port }}
+  ports:
+    - "{{ podman_exporter_http_port }}:{{ podman_exporter_http_port }}"
+  user: root
+  network: "{{ podman_exporter_container_network }}"
+  volumes:
+    - "/run/podman/podman.sock:/run/podman/podman.sock:ro"
+  security_labels:
+    disable: true
+  requires:
+    - podman.socket
+  env:
+    CONTAINER_HOST: unix:///run/podman/podman.sock
+  health:
+    cmd: "/bin/wget --spider localhost:{{ podman_exporter_http_port }}/-/healthy"
+...

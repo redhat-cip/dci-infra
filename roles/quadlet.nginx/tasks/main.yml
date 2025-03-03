@@ -1,0 +1,72 @@
+---
+- name: Manage group
+  ansible.builtin.group:
+    name: "{{ nginx_group }}"
+    state: present
+    system: true
+    gid: "{{ nginx_gid | default(omit) }}"
+
+- name: Manage user
+  ansible.builtin.user:
+    name: "{{ nginx_user }}"
+    state: present
+    system: true
+    uid: "{{ nginx_uid | default(omit) }}"
+    group: "{{ nginx_group }}"
+    shell: "{{ nginx_user_shell | default(omit) }}"
+
+- name: Manage config directory
+  ansible.builtin.file:
+    path: "{{ nginx_config_dir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+
+- name: Render configuration
+  ansible.builtin.template:
+    src: "nginx.conf.j2"
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+  notify:
+    - Restart nginx
+
+- name: Create image quadlet
+  vars:
+    _quadlet: nginx
+    _config: "{{ nginx_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0640'
+  notify:
+    - Restart nginx
+
+- name: Create container quadlet
+  vars:
+    _quadlet: nginx
+    _config: "{{ nginx_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0640'
+  notify:
+    - Restart nginx
+
+- name: Enable access to web port in firewall
+  ansible.posix.firewalld:
+    port: "{{ nginx_listen_http_port }}/tcp"
+    zone: "{{ nginx_firewalld_zone | default(omit) }}"
+    state: enabled
+    immediate: true
+    permanent: true
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: nginx.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

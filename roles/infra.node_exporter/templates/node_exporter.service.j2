@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart={{ __node_exporter.bin }} --web.listen-address=:{{ __node_exporter.port }}
+ExecStart={{ _bin }}-{{ _version }} --web.listen-address=:{{ _port }}
 SyslogIdentifier=node_exporter
 Restart=always
 RestartSec=1

@@ -1,0 +1,38 @@
+---
+prometheus_user: prometheus
+prometheus_group: prometheus
+prometheus_version: 2.53.1
+prometheus_config_dir: /etc/prometheus
+prometheus_db_dir: /var/lib/prometheus
+prometheus_aws_credentials: ""
+prometheus_http_port: 9090
+prometheus_web_path: /prometheus
+prometheus_web_external_url: "http://{{ ansible_fqdn }}{{ prometheus_web_path }}"
+prometheus_environment: "{{ ansible_fqdn }}"
+prometheus_alertmanagers: {}
+prometheus_scrape_configs: {}
+prometheus_container_image: "quay.io/prometheus/prometheus:v{{ prometheus_version }}"
+prometheus_container_network: host
+prometheus_container_user: "{{ prometheus_user }}:{{ prometheus_group }}"
+prometheus_container_spec:
+  image: "{{ prometheus_container_image }}"
+  user: "{{ prometheus_container_user }}"
+  env_file: "{{ prometheus_config_dir }}/aws.credentials"
+  command: >
+    --config.file=/etc/prometheus/prometheus.yml
+    --storage.tsdb.path=/prometheus
+    --web.console.libraries=/usr/share/prometheus/console_libraries
+    --web.console.templates=/usr/share/prometheus/consoles
+    --web.listen-address=0.0.0.0:{{ prometheus_http_port }}
+    --web.external-url={{ prometheus_web_external_url }}
+    --web.route-prefix={{ prometheus_web_path }}
+  ports:
+    - "{{ prometheus_http_port }}:{{ prometheus_http_port }}"
+  network: "{{ prometheus_container_network }}"
+  volumes:
+    - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro
+    - /etc/prometheus/rules.d:/etc/prometheus/rules.d:z,ro
+    - "{{ prometheus_db_dir }}:/prometheus:Z"
+  health:
+    cmd: "/bin/wget --spider localhost:{{ prometheus_http_port }}"
+...

@@ -1,0 +1,38 @@
+---
+- name: Copy static configuration
+  ansible.builtin.copy:
+    src: blackbox.yml
+    dest: /etc/blackbox.yml
+    mode: '0644'
+  notify:
+    - Restart blackbox-exporter
+
+- name: Create image quadlet
+  vars:
+    _quadlet: blackbox-exporter
+    _config: "{{ blackbox_exporter_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0644'
+  notify:
+    - Restart blackbox-exporter
+
+- name: Create container quadlet
+  vars:
+    _quadlet: blackbox-exporter
+    _config: "{{ blackbox_exporter_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0644'
+  notify:
+    - Restart blackbox-exporter
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: blackbox-exporter.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

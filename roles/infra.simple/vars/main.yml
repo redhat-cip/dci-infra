@@ -7,8 +7,3 @@ _default_bastion_ssh:
     ec2-user@dci-bastion
   key_options:
     - from=10.31.3.201
-
-_default_node_exporter:
-  bin: /usr/local/bin/node_exporter
-  version: 1.8.2
-  port: 9100

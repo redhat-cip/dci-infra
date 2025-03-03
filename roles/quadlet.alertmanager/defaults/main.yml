@@ -1,0 +1,30 @@
+---
+alertmanager_user: alertmanager
+alertmanager_group: alertmanager
+alertmanager_version: 0.27.0
+alertmanager_config_dir: /etc/alertmanager
+alertmanager_db_dir: /var/lib/alertmanager
+alertmanager_http_port: 9093
+alertmanager_web_path: /alertmanager
+alertmanager_web_external_url: "http://{{ ansible_fqdn }}{{ alertmanager_web_path }}"
+alertmanager_container_image: "quay.io/prometheus/alertmanager:v{{ alertmanager_version }}"
+alertmanager_container_network: host
+alertmanager_container_user: "{{ alertmanager_user }}:{{ alertmanager_group }}"
+alertmanager_container_spec:
+  image: "{{ alertmanager_container_image }}"
+  user: "{{ alertmanager_container_user }}"
+  command: >
+    --config.file=/etc/alertmanager/alertmanager.yml
+    --storage.path=/alertmanager
+    --web.listen-address=0.0.0.0:{{ alertmanager_http_port }}
+    --web.external-url={{ alertmanager_web_external_url }}
+    --web.route-prefix={{ alertmanager_web_path }}
+  ports:
+    - "{{ alertmanager_http_port }}:{{ alertmanager_http_port }}"
+  network: "{{ alertmanager_container_network }}"
+  volumes:
+    - /etc/alertmanager:/etc/alertmanager:z,ro
+    - "{{ alertmanager_db_dir }}:/alertmanager:Z"
+  health:
+    cmd: "/bin/wget --spider localhost:{{ alertmanager_http_port }}"
+...

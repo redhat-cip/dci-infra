@@ -22,9 +22,3 @@ simple_services: {}
 
 # files
 simple_files: {}
-
-# containers
-simple_quadlet_subnet: 192.168.100.0/24
-simple_global_quadlets: {}  # to define in group_vars/all
-simple_group_quadlets: {}  # to define in group_vars/<group>
-simple_quadlets: {}  # to define in host_vars

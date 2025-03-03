@@ -1,0 +1,82 @@
+---
+- name: Manage group
+  ansible.builtin.group:
+    name: "{{ alertmanager_group }}"
+    state: present
+    system: true
+    gid: "{{ alertmanager_gid | default(omit) }}"
+
+- name: Manage user
+  ansible.builtin.user:
+    name: "{{ alertmanager_user }}"
+    state: present
+    system: true
+    uid: "{{ alertmanager_uid | default(omit) }}"
+    group: "{{ alertmanager_group }}"
+    home: "{{ alertmanager_db_dir }}"
+    shell: /usr/sbin/nologin
+
+- name: Manage directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+  loop:
+    - "{{ alertmanager_config_dir }}"
+    - "{{ alertmanager_config_dir }}/templates"
+    - "{{ alertmanager_db_dir }}"
+
+- name: Render main configuration
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: "{{ alertmanager_config_dir }}/alertmanager.yml"
+    mode: '0644'
+    owner: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+  notify:
+    - Restart alertmanager
+
+- name: Copy static templates
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ alertmanager_config_dir }}/templates/{{ item | basename }}"
+    mode: '0644'
+    owner: "{{ alertmanager_user }}"
+    group: "{{ alertmanager_group }}"
+  with_fileglob: 'templates/*.tmpl'
+  loop_control:
+    label: "{{ item | basename }}"
+  notify:
+    - Restart alertmanager
+
+- name: Create image quadlet
+  vars:
+    _quadlet: alertmanager
+    _config: "{{ alertmanager_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0640'
+  notify:
+    - Restart alertmanager
+
+- name: Create container quadlet
+  vars:
+    _quadlet: alertmanager
+    _config: "{{ alertmanager_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0640'
+  notify:
+    - Restart alertmanager
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: alertmanager.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...
