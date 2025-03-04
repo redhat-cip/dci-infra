@@ -1,7 +1,7 @@
 ---
 - name: Restart nginx
   ansible.builtin.systemd:
-    name: nginx.container
+    name: nginx.service
     state: restarted
     daemon-reload: true
   ignore_errors: "{{ ansible_check_mode }}"
