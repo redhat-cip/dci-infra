@@ -1,0 +1,9 @@
+---
+- name: Restart dci-ui
+  ansible.builtin.systemd:
+    name: dci-ui@{{ item }}.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  loop: "{{ range(0, dci_ui_container_scale) | list }}"
+...

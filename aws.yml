@@ -25,7 +25,7 @@
         - podman
 
 - name: Setup monitoring stack
-  hosts: dci_ng:&dci_prometheus
+  hosts: dci_prometheus:&dci_ng
   gather_facts: true
   become: true
 
@@ -64,4 +64,47 @@
         - nginx
         - monitoring
 
-...
+- name: Setup haproxy
+  hosts: dci_api:dci_doc:dci_ui:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: quadlet.haproxy
+      tags:
+        - haproxy
+        - podman
+
+# TODO
+# - name: Setup DCI-API
+#   hosts: dci_api:&dci_ng
+#   gather_facts: true
+#   become: true
+#
+#   roles:
+#     - name: quadlet.dci_api
+#       tags:
+#         - dci_api
+#         - podman
+#
+- name: Setup DCI-DOC
+  hosts: dci_doc:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: quadlet.dci_doc
+      tags:
+        - dci_doc
+        - podman
+
+- name: Setup DCI-UI
+  hosts: dci_ui:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: quadlet.dci_doc
+      tags:
+        - dci_ui
+        - podman

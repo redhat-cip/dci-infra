@@ -1,0 +1,59 @@
+global
+  stats socket /var/run/api.sock user haproxy group haproxy mode 660 level admin expose-fd listeners
+  log stdout format raw local0 info
+
+  mode http
+  option forwardfor
+  default-server init-addr last,none resolvers default
+  log global
+
+  # Retries
+  retries 5
+  retry-on all-retryable-errors
+  # If a backend fails, try the next one.
+  # Add an integer to retry the first backend N times.
+  option redispatch
+  # Timeouts
+  timeout connect 3s
+  timeout server 30s
+  timeout client 10s
+  timeout http-request 10s
+  # Wait for 5 minutes for graceful reload/restart, force stop after
+  hard-stop-after 5m
+
+{% if ssl_enabled | default(false) | bool %}
+# SSL config
+# generated 2025-03-11, Mozilla Guideline v5.7, HAProxy 3.0, OpenSSL 3.4.0, modern config
+# https://ssl-config.mozilla.org/#server=haproxy&version=3.0&config=modern&openssl=3.4.0&guideline=5.7
+  # modern configuration
+  ssl-default-bind-curves X25519:prime256v1:secp384r1
+  ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+  ssl-default-bind-options prefer-client-ciphers ssl-min-ver TLSv1.3 no-tls-tickets
+
+  ssl-default-server-curves X25519:prime256v1:secp384r1
+  ssl-default-server-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+  ssl-default-server-options ssl-min-ver TLSv1.3 no-tls-ticketsdefaults
+{% endif %}
+
+
+resolvers default
+  # Might be required depending on deployment method
+  # Must point to the nameserver for containers
+  # nameserver dns1 127.0.0.11:53
+  parse-resolv-conf
+  resolve_retries 5
+  timeout resolve 1s
+  timeout retry   1s
+  hold other      1s
+  hold refused    1s
+  hold nx         1s
+  hold timeout    1s
+  hold valid      1s
+  hold obsolete   1s
+
+frontend stats
+  bind *:8404
+  stats enable
+  stats uri /
+  stats refresh 10s
+

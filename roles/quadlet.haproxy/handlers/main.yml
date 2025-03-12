@@ -1,0 +1,14 @@
+---
+- name: Restart haproxy
+  ansible.builtin.systemd:
+    name: haproxy.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Reload haproxy
+  ansible.builtin.systemd:
+    name: haproxy.service
+    state: reloaded
+    daemon-reload: false
+  ignore_errors: "{{ ansible_check_mode }}"

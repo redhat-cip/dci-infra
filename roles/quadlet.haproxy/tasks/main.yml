@@ -1,0 +1,73 @@
+---
+- name: Manage group
+  ansible.builtin.group:
+    name: "{{ haproxy_group }}"
+    state: present
+    system: true
+    gid: "{{ haproxy_gid | default(omit) }}"
+
+- name: Manage user
+  ansible.builtin.user:
+    name: "{{ haproxy_user }}"
+    state: present
+    system: true
+    uid: "{{ haproxy_gid | default(omit) }}"
+    group: "{{ haproxy_group }}"
+    shell: "{{ haproxy_user_shell | default(omit) }}"
+
+- name: Manage config directory
+  ansible.builtin.file:
+    path: "{{ haproxy_config_dir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_group }}"
+
+- name: Render configuration
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ haproxy_config_dir }}/{{ item }}"
+    mode: '0644'
+    owner: "{{ haproxy_user }}"
+    group: "{{ haproxy_group }}"
+  notify:
+    - Reload haproxy
+  loop:
+    - 00_haproxy_global.cfg.j2
+    - 01_haproxy_dci.cfg.j2
+
+- name: Pull image for quadlet
+  containers.podman.podman_image:
+    name: "{{ haproxy_container_image }}"
+  notify:
+    - Restart haproxy
+
+- name: Create container quadlet
+  vars:
+    _quadlet: haproxy
+    _config: "{{ haproxy_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0640'
+  notify:
+    - Restart haproxy
+
+- name: Enable access to web port in firewall
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    zone: "{{ haproxy_firewalld_zone | default(omit) }}"
+    state: enabled
+    immediate: true
+    permanent: true
+  loop: haproxy_ports
+    - haproxy_listen_http_port
+    - haproxy_listen_https_port
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: haproxy.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

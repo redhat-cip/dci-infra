@@ -1,0 +1,72 @@
+---
+- name: HAProxy conf for dci-ui
+  block:
+    - name: Load HAProxy role handlers
+      ansible.builtin.import_role:
+        name: quadlet.haproxy
+        tasks_from: noop
+        handlers_from: main
+
+    - name: Render the HAproxy backend
+      ansible.builtin.template:
+        src: haproxy_backend.cfg.j2
+        dest: "{{ haproxy_config_dir }}/10_backend_dci_ui.cfg"
+        mode: '0640'
+      notify:
+        - Reload haproxy
+
+- name: Create the required amount of containers
+  vars:
+    _quadlet: dci-ui
+    _config: "{{ dci_ui_container_spec }}"
+  block:
+    - name: Pull image
+      containers.podman.podman_image:
+        name: "{{ _config.image }}"
+      notify:
+        - Restart dci-ui
+
+    - name: Create container quadlet
+      ansible.builtin.template:
+        src: "global.container.j2"
+        dest: "/etc/containers/systemd/{{ _quadlet }}@.container"
+        mode: '0640'
+      notify:
+        - Restart dci-ui
+
+    - name: Ensure service is started
+      ansible.builtin.systemd:
+        name: "{{ _quadlet }}@{{ item }}.service"
+        state: started
+        daemon-reload: true
+      ignore_errors: "{{ ansible_check_mode }}"
+      loop: "{{ range(0, _config.scale) | list }}"
+
+- name: Get count of configured containers
+  vars:
+    _quadlet: dci-ui
+  ansible.builtin.find:
+    paths: /etc/containers/systemd/
+    patterns: "{{ _quadlet }}@*.container"
+    file_type: link
+  register: _container_units_found
+
+- name: Remove over-scale containers
+  vars:
+    _quadlet: dci-ui
+  when: _container_units_found.matched > dci_ui_container_scale
+  block:
+    - name: Remove over-scale unit files
+      ansible.builtin.file:
+        dest: /etc/containers/systemd/{{ _quadlet }}@{{ item }}.quadlet
+        state: absent
+      loop: "{{ range(dci_ui_container_scale, _container_units_found.matched) | list }}"
+
+    - name: Stop over-scale services
+      ansible.builtin.systemd:
+        name: "{{ _quadlet }}@{{ item }}.service"
+        state: stopped
+        daemon-reload: true
+      ignore_errors: "{{ ansible_check_mode }}"
+      loop: "{{ range(dci_ui_container_scale, _container_units_found.matched) | list }}"
+...

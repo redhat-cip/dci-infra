@@ -1,0 +1,12 @@
+---
+dci_doc_container_image: quay.io/distributedci/dci-doc:latest
+dci_doc_container_network: host
+dci_doc_container_scale: 2
+dci_doc_container_spec:
+  image: "{{ dci_doc_container_image }}"
+  no_quadlet_image: true
+  network: "{{ dci_doc_container_network }}"
+  health:
+    cmd: /usr/bin/test -f /var/run/nginx.pid
+  scale: "{{ dci_doc_container_scale }}"
+...

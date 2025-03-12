@@ -10,12 +10,16 @@ Requires={{ r }}
 {% endfor %}
 
 [Container]
+{% if _config.no_quadlet_image | default(false) | bool %}
+Image={{ _config.image }}
+{% else %}
 Image={{ _quadlet }}.image
-ContainerName={{ _quadlet }}
+{% endif %}
+ContainerName={{ _quadlet }}{{ "-%i" if _config.scale is defined else "" %"}
 {% if 'command' in _config -%}
 Exec={{ _config.command }}
 {% endif %}
-HostName={{ _quadlet }}
+HostName={{ _quadlet }}{{ "-%i" if _config.scale is defined else "" %"}
 {% for e in _config.env | default({}) -%}
 Environment={{ e | upper }}="{{ _config.env[e] }}"
 {% endfor %}
@@ -60,11 +64,18 @@ SecurityLabelNested={{ 'true' if _config.security_labels.nested | bool else 'fal
 SecurityLabelType={{ _config.security_labels.type }}
 {% endif %}
 {% endif %}
+{% if _config.notify | default(false) | bool -%}
+Notify=true
+{%- endif %}
 
 [Service]
 Restart=always
 RestartSec=1
 StartLimitInterval=0
+{%- if _config.reload_commands is defined -%}
+{% for _command in _config.reload_commands %}
+ExecReload={{ _command }} {% endfor -%}
+{%- endif -%}
 
 [Install]
 WantedBy={{ _config.wanted_by | default('multi-user.target') }}

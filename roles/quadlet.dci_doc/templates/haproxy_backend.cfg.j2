@@ -1,0 +1,4 @@
+backend dci-doc
+{% for n in range(dci_doc_container_scale) %}
+  server doc{{ n }} dci-doc-{{ n }}:80 check
+{% endfor %}
