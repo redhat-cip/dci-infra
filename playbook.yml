@@ -26,7 +26,7 @@
     - doc
 
 - name: Common Configuration for nodes inside Red Hat's network
-  hosts: dci_internal
+  hosts: dci_internal:!dci_ng
   become: yes
   tasks:
     - include_role:
@@ -38,7 +38,7 @@
     - dci-internal
 
 - name: Install-PostgreSQL
-  hosts: dci_database
+  hosts: dci_database:!dci_ng
   become: yes
   roles:
     - postgresql
@@ -46,25 +46,25 @@
       become_user: "{{ yolo_backup_user|default(dci) }}"
 
 - name: Install httpd
-  hosts: dci_api:dci_ui:dci_packages:dci_doc:dci_blog
+  hosts: dci_api:dci_ui:dci_packages:dci_doc:dci_blog:!dci_ng
   become: yes
   roles:
     - httpd
 
 - name: Install-DCI-Control-Server
-  hosts: dci_api
+  hosts: dci_api:!dci_ng
   become: yes
   roles:
     - dci-api
 
 - name: Install-DCI-Worker
-  hosts: dci_worker
+  hosts: dci_worker:!dci_ng
   become: yes
   roles:
     - dci-worker
 
 - name: Install-WebAPP
-  hosts: dci_ui
+  hosts: dci_ui:!dci_ng
   become: yes
   roles:
     - dci-ui
@@ -79,7 +79,7 @@
     - dci-core
 
 - name: Install the packages node
-  hosts: dci_packages
+  hosts: dci_packages:!dci_ng
   become: yes
   roles:
     - packages
@@ -88,7 +88,7 @@
     - packages
 
 - name: Configure the jumpbox/bastion node
-  hosts: dci_bastion
+  hosts: dci_bastion:!dci_ng
   become: yes
   tasks:
     - import_role:
@@ -99,7 +99,7 @@
     - packages
 
 - name: Install the docs node
-  hosts: dci_doc
+  hosts: dci_doc:!dci_ng
   become: yes
   roles:
     - doc
@@ -108,7 +108,7 @@
     - doc
 
 - name: Install the blog node
-  hosts: dci_blog
+  hosts: dci_blog:!dci_ng
   become: yes
   roles:
     - dci-blog
@@ -117,7 +117,7 @@
     - blog
 
 - name: Install-Stats
-  hosts: dci_blog
+  hosts: dci_blog:!dci_ng
   become: yes
   roles:
     - dci-stats
@@ -126,7 +126,7 @@
     - stats
 
 - name: Install DCI registry
-  hosts: dci_registry
+  hosts: dci_registry:!dci_ng
   become: yes
   roles:
     - registry
@@ -134,7 +134,7 @@
     - registry
 
 - name: Install DCI Feeder
-  hosts: dci_feeder
+  hosts: dci_feeder:!dci_ng
   become: yes
   roles:
     - redis
@@ -144,7 +144,7 @@
     - feeder
 
 - name: Install DCI Feeder workers
-  hosts: dci_feeder_worker
+  hosts: dci_feeder_worker:!dci_ng
   become: yes
   tasks:
     - import_role:
@@ -154,7 +154,7 @@
     - feeder
 
 - name: Install DCI UMB
-  hosts: dci_umb
+  hosts: dci_umb:!dci_ng
   become: yes
   roles:
     - dci-umb
@@ -162,7 +162,7 @@
     - dci-umb
 
 - name: Install DCI Elasticsearch
-  hosts: dci_analytics
+  hosts: dci_analytics:!dci_ng
   become: yes
   roles:
     - elasticsearch
@@ -171,7 +171,7 @@
     - dci-core
 
 - name: Install DCI Analytics
-  hosts: dci_analytics
+  hosts: dci_analytics:!dci_ng
   become: yes
   roles:
     - dci-analytics
