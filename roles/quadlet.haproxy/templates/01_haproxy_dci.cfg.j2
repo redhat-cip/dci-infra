@@ -8,19 +8,19 @@ frontend dci-in
   option httpslog
 
 {% if "dci_api" in group_names %}
-  use_backend dci-api if { req.hdr(host) -m dom api.distributed-ci.io }
+  use_backend dci-api if { req.hdr(host) -m str api.distributed-ci.io }
 {% endif %}
 {% if "dci_ui" in group_names %}
-  use_backend dci-ui if { req.hdr(host) -m dom distributed-ci.io www.distributed-ci.io }
+  use_backend dci-ui if { req.hdr(host) -m str distributed-ci.io www.distributed-ci.io }
 {% endif %}
 {% if "dci_doc" in group_names %}
-  use_backend dci-doc if { req.hdr(host) -m dom doc.distributed-ci.io docs.distributed-ci.io }
+  use_backend dci-doc if { req.hdr(host) -m str doc.distributed-ci.io docs.distributed-ci.io }
 {% endif %}
 {% if "dci_blog" in group_names %}
-  use_backend dci-blog if { req.hdr(host) -m dom blog.distributed-ci.io }
+  use_backend dci-blog if { req.hdr(host) -m str blog.distributed-ci.io }
 {% endif %}
 {% if "dci_packages" in group_names %}
-  use_backend dci-packages if { req.hdr(host) -m dom packages.distributed-ci.io }
+  use_backend dci-packages if { req.hdr(host) -m str packages.distributed-ci.io }
 {% endif %}
 
 # Backends are defined in separate files
