@@ -242,7 +242,7 @@
   tags:
     - dci-core
 
-- name: Install UMB ca file (RH-IT-Root-CA)
+- name: Install UMB ca file
   copy:
     content: "{{ umb_ca }}"
     dest: "{{ umb_ca_file_path }}"
