@@ -25,16 +25,13 @@
 
 - name: Render configuration
   ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "{{ haproxy_config_dir }}/{{ item }}"
+    src: 00_haproxy_global.cfg.j2
+    dest: "{{ haproxy_config_dir }}/00_haproxy_global.cfg"
     mode: '0644'
     owner: "{{ haproxy_user }}"
     group: "{{ haproxy_group }}"
   notify:
     - Reload haproxy
-  loop:
-    - 00_haproxy_global.cfg.j2
-    - 01_haproxy_dci.cfg.j2
 
 - name: Pull image for quadlet
   containers.podman.podman_image:

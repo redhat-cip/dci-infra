@@ -1,26 +1,26 @@
 frontend dci-in
-{% if ssl_enabled | default(false) | bool -%}
+{% if ssl_enabled | default(false) | bool %}
   bind *:443 ssl crt {{ dci_haproxy_sslcertificatefile }} alpn h2,http/1.1
   http-request redirect scheme https unless { ssl_fc }
-{%- endif %}
+{% endif %}
   bind *:80
 
   option httpslog
 
-{% if "dci_api" in group_names -%}
-  use backend dci-api if { req.hdr(host) -m dom api.distributed-ci.io }
-{%- endif %}
-{% if "dci_ui" in group_names -%}
-  use backend dci-ui if { req.hdr(host) -m dom distributed-ci.io www.distributed-ci.io }
-{%- endif %}
-{% if "dci_doc" in group_names -%}
+{% if "dci_api" in group_names %}
+  use_backend dci-api if { req.hdr(host) -m dom api.distributed-ci.io }
+{% endif %}
+{% if "dci_ui" in group_names %}
+  use_backend dci-ui if { req.hdr(host) -m dom distributed-ci.io www.distributed-ci.io }
+{% endif %}
+{% if "dci_doc" in group_names %}
   use_backend dci-doc if { req.hdr(host) -m dom doc.distributed-ci.io docs.distributed-ci.io }
-{%- endif %}
-{% if "dci_blog" in group_names -%}
+{% endif %}
+{% if "dci_blog" in group_names %}
   use_backend dci-blog if { req.hdr(host) -m dom blog.distributed-ci.io }
-{%- endif %}
-{% if "dci_packages" in group_names -%}
+{% endif %}
+{% if "dci_packages" in group_names %}
   use_backend dci-packages if { req.hdr(host) -m dom packages.distributed-ci.io }
-{%- endif %}
+{% endif %}
 
 # Backends are defined in separate files

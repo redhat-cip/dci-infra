@@ -6,12 +6,13 @@ haproxy_listen_https_port: 443
 haproxy_config_dir: /etc/haproxy
 haproxy_container_image: docker.io/haproxytech/haproxy-alpine:3.0
 haproxy_container_ports:
+  - "8404:8404"
   - "{{ haproxy_listen_http_port }}:80"
   - "{{ haproxy_listen_https_port }}:443"
 haproxy_container_volumes:
   - "{{ haproxy_config_dir }}:{{ haproxy_config_dir }}:ro,z"
   - /etc/letsencrypt:/etc/letsencrypt:ro,z
-haproxy_container_network: host
+haproxy_container_network: systemd-quadlet
 haproxy_container_spec:
   image: "{{ haproxy_container_image }}"
   no_quadlet_image: true
@@ -22,6 +23,6 @@ haproxy_container_spec:
     cmd: /usr/bin/test -f /var/run/haproxy.pid
   command: "haproxy -f {{ haproxy_config_dir }}"
   reload_commands:
-    - podman exec haproxy -f {{ haproxy_config_dir }} -c
+    - podman exec haproxy haproxy -f {{ haproxy_config_dir }} -c
     - podman kill --signal USR2 haproxy
 ...

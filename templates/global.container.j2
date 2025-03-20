@@ -1,9 +1,11 @@
 [Unit]
 Description=The {{ _quadlet }} container
+{% if not (_config.no_quadnet_image | default(false)) | bool %}
 # start image service first
 After={{ _quadlet }}-image.service
 # this dependency is implicit, only here as a reminder
 # Requires={{ _quadlet }}-image.service
+{% endif %}
 {% for r in _config.requires | default([]) -%}
 After={{ r }}
 Requires={{ r }}
@@ -72,10 +74,11 @@ Notify=true
 Restart=always
 RestartSec=1
 StartLimitInterval=0
-{%- if _config.reload_commands is defined -%}
+{% if _config.reload_commands is defined -%}
 {% for _command in _config.reload_commands %}
-ExecReload={{ _command }} {% endfor -%}
-{%- endif -%}
+ExecReload={{ _command }}
+{% endfor %}
+{%- endif %}
 
 [Install]
 WantedBy={{ _config.wanted_by | default('multi-user.target') }}

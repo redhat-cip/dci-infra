@@ -1,6 +1,6 @@
 ---
 dci_ui_container_image: quay.io/distributedci/dci-ui:latest
-dci_ui_container_network: host
+dci_ui_container_network: systemd-quadlet
 dci_ui_container_scale: 2
 dci_ui_container_spec:
   image: "{{ dci_ui_container_image }}"

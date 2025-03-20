@@ -104,7 +104,20 @@
   become: true
 
   roles:
-    - name: quadlet.dci_doc
+    - name: quadlet.dci_ui
       tags:
         - dci_ui
+        - podman
+
+- name: Setup haproxy DCI frontend
+  hosts: dci_api:dci_doc:dci_ui:&dci_ng
+  gather_facts: true
+  become: true
+
+  tasks:
+    - ansible.builtin.import_role:
+        name: quadlet.haproxy
+        tasks_from: frontend_dci
+      tags:
+        - haproxy
         - podman
