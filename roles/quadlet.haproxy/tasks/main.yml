@@ -60,7 +60,7 @@
     state: enabled
     immediate: true
     permanent: true
-  loop: haproxy_ports
+  loop:
     - "{{ haproxy_listen_http_port }}"
     - "{{ haproxy_listen_https_port }}"
 
