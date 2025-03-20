@@ -19,8 +19,6 @@ haproxy_container_spec:
   ports: "{{ haproxy_container_ports }}"
   volumes: "{{ haproxy_container_volumes }}"
   network: "{{ haproxy_container_network }}"
-  health:
-    cmd: /usr/bin/test -f /var/run/haproxy.pid
   command: "haproxy -f {{ haproxy_config_dir }}"
   reload_commands:
     - podman exec haproxy haproxy -f {{ haproxy_config_dir }} -c
