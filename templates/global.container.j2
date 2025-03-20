@@ -15,11 +15,11 @@ Image={{ _config.image }}
 {% else %}
 Image={{ _quadlet }}.image
 {% endif %}
-ContainerName={{ _quadlet }}{{ "-%i" if _config.scale is defined else "" %"}
+ContainerName={{ _quadlet }}{{ "-%i" if _config.scale is defined else "" }}
 {% if 'command' in _config -%}
 Exec={{ _config.command }}
 {% endif %}
-HostName={{ _quadlet }}{{ "-%i" if _config.scale is defined else "" %"}
+HostName={{ _quadlet }}{{ "-%i" if _config.scale is defined else "" }}
 {% for e in _config.env | default({}) -%}
 Environment={{ e | upper }}="{{ _config.env[e] }}"
 {% endfor %}
