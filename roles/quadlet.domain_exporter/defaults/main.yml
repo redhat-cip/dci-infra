@@ -2,7 +2,7 @@
 domain_exporter_http_port: 9222
 domain_exporter_version: 1.24.0
 domain_exporter_container_image: docker.io/caarlos0/domain_exporter:v{{ domain_exporter_version }}
-domain_exporter_container_network: host
+domain_exporter_container_network: quadlet.network
 domain_exporter_container_spec:
   image: "{{ domain_exporter_container_image }}"
   ports:

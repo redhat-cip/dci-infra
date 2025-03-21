@@ -8,7 +8,7 @@ alertmanager_http_port: 9093
 alertmanager_web_path: /alertmanager
 alertmanager_web_external_url: "http://{{ ansible_fqdn }}{{ alertmanager_web_path }}"
 alertmanager_container_image: "quay.io/prometheus/alertmanager:v{{ alertmanager_version }}"
-alertmanager_container_network: host
+alertmanager_container_network: quadlet.network
 alertmanager_container_user: "{{ alertmanager_user }}:{{ alertmanager_group }}"
 alertmanager_container_spec:
   image: "{{ alertmanager_container_image }}"

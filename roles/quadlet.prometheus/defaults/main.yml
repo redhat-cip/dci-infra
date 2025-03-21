@@ -12,7 +12,7 @@ prometheus_environment: "{{ ansible_fqdn }}"
 prometheus_alertmanagers: {}
 prometheus_scrape_configs: {}
 prometheus_container_image: "quay.io/prometheus/prometheus:v{{ prometheus_version }}"
-prometheus_container_network: host
+prometheus_container_network: quadlet.network
 prometheus_container_user: "{{ prometheus_user }}:{{ prometheus_group }}"
 prometheus_container_spec:
   image: "{{ prometheus_container_image }}"

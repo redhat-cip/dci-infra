@@ -8,7 +8,7 @@ grafana_http_port: 3000
 grafana_domain: "{{ ansible_fqdn }}"
 grafana_web_path: /grafana
 grafana_container_image: "docker.io/grafana/grafana-oss:{{ grafana_version }}"
-grafana_container_network: host
+grafana_container_network: quadlet.network
 grafana_container_user: "{{ grafana_user }}:{{ grafana_group }}"
 grafana_container_spec:
   image: "{{ grafana_container_image }}"

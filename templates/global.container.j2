@@ -66,6 +66,9 @@ SecurityLabelNested={{ 'true' if _config.security_labels.nested | bool else 'fal
 SecurityLabelType={{ _config.security_labels.type }}
 {% endif %}
 {% endif %}
+{% for l in _config.labels | default({}) %}
+Label={{ l | lower }}="{{ _config.labels[l] }}"
+{% endfor %}
 {% if _config.notify | default(false) | bool -%}
 Notify=true
 {%- endif %}

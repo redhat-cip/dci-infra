@@ -1,6 +1,6 @@
 ---
 dci_doc_container_image: quay.io/distributedci/dci-doc:latest
-dci_doc_container_network: systemd-quadlet
+dci_doc_container_network: quadlet.network
 dci_doc_container_scale: 2
 dci_doc_container_spec:
   image: "{{ dci_doc_container_image }}"
@@ -9,4 +9,6 @@ dci_doc_container_spec:
   health:
     cmd: /usr/bin/test -f /var/run/nginx.pid
   scale: "{{ dci_doc_container_scale }}"
+  labels:
+    io.distributed-ci.app: dci_doc
 ...
