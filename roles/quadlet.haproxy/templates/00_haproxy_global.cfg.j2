@@ -54,8 +54,14 @@ resolvers default
   hold obsolete   1s
 
 frontend stats
-  bind *:8404
+  bind *:{{ haproxy_stats_port }}
   stats enable
   stats uri /
   stats refresh 10s
+
+frontend prometheus
+  bind *:{{ haproxy_prometheus_exporter_port }}
+  mode http
+  http-request use-service prometheus-exporter if { path /metrics }
+  no log
 
