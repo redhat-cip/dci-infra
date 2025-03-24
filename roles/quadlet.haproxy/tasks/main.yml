@@ -60,6 +60,7 @@
   loop:
     - "{{ haproxy_listen_http_port }}"
     - "{{ haproxy_listen_https_port }}"
+    - "{{ haproxy_prometheus_exporter_port }}"
 
 - name: Ensure service is started
   ansible.builtin.systemd:

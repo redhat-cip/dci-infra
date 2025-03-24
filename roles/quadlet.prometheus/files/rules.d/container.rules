@@ -2,11 +2,14 @@
 groups:
 - name: container
   rules:
-  - alert: container_stuck_starting
+  - alert: container_not_running_yet
     expr: >
-      podman_container_state == 0 or
-      podman_container_state == 1
-    for: 10m
+      (
+        podman_container_state * on (id)
+        group_left (name)
+        podman_container_info
+      ) <= 1
+    for: 5m
     labels:
       severity: critical
     annotations:
@@ -14,14 +17,16 @@ groups:
       description: >
         The container {{ $labels.name }} on instance
         {{ $labels.instance }} appears to be stuck
-        while starting with state {{ $value }}
-        (0=created, 1=initialized)
+        while starting with state={{ $value }}
+        (where: 0=created, 1=initialized)
 
   - alert: container_stuck_terminating
     expr: >
-      podman_container_state == 5 or
-      podman_container_state == 6 or
-      podman_container_state == 7
+      (
+        podman_container_state * on (id)
+        group_left (name)
+        podman_container_info
+      ) >= 5
     for: 5m
     labels:
       severity: critical
@@ -30,28 +35,23 @@ groups:
       description: >
         The container {{ $labels.name }} on instance
         {{ $labels.instance }} appears to be stuck
-        while terminating with state {{ $value }}
-        (5=exited, 6=removing, 7=stopping)
+        while terminating with state={{ $value }}
+        (where: 5=exited, 6=removing, 7=stopping)
 
-  - alert: container_unhealthy
-    expr: podman_container_health == 1
-    for: 1m
-    labels:
-      severity: critical
-    annotations:
-      summary: Unhealthy container
-      description: >
-        The container {{ $labels.name }} on instance
-        {{ $labels.instance }} reports not healthy
-
-  - alert: container_healthcheck_starting
-    expr: podman_container_health == 2
+  - alert: container_healthcheck_not_healthy
+    expr: >
+      (
+        podman_container_health * on (id)
+        group_left (name)
+        podman_container_info
+      ) >= 1
     for: 5m
     labels:
       severity: critical
     annotations:
-      summary: Container health check stuck in startup
+      summary: Container healthcheck not-healthy
       description: >
         The container {{ $labels.name }} on instance
-        {{ $labels.instance }} has health check stuck
-        in 'starting' for over 5 minutes
+        {{ $labels.instance }} health check appears
+        to be stuck with failing status={{ $value }}
+        (where: 1=unhealthy, 2=starting)
