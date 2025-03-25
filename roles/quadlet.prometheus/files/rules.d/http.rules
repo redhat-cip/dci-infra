@@ -2,7 +2,7 @@
 groups:
 - name: http
   rules:
-  - alert: http_probe_failed
+  - alert: blackbox_http_probe_failed
     expr: probe_success{job="blackbox_2xx_ssl"} == 0
     for: 5m
     labels:
@@ -10,13 +10,60 @@ groups:
     annotations:
       summary: URL endpoint is down
       description: >
-        URL endpoint {{ $labels.instance }} probing has failed for over 5 minutes
+        URL endpoint {{ $labels.instance }} probing has failed for over 5
+        minutes
 
-  - alert: http_status_code_2xx
+  - alert: blackbox_http_status_code_2xx
     expr: probe_http_status_code{job="blackbox_2xx_ssl"} >= 300
     for: 10m
     labels:
       severity: critical
     annotations:
       summary: URL returning != 2xx
-      description: URL endpoint {{ $labels.instance }} is returning != 2xx for over 10 minutes
+      description: >
+        URL endpoint {{ $labels.instance }} is returning != 2xx for over 10
+        minutes
+
+  - alert: haproxy_backend_active_servers
+    expr: haproxy_backend_active_servers{job="haproxy"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: No active servers in backend
+      description: >
+        There have been no active backend servers for proxy
+        {{ $labels.proxy }} on {{ $labels.instance }}
+
+  - alert: haproxy_backend_response_errors
+    expr: increase(haproxy_backend_response_errors_total{job="haproxy"}[1m]) > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Increase in backend response errors
+      description: >
+        There has been an increase in backend response errors for
+        proxy {{ $labels.proxy }} on {{ $labels.instance }}
+
+  - alert: haproxy_frontend_http_responses_4xx
+    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="4xx"}[1m]) > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Increase in 4xx response errors
+      description: >
+        There has been an increase in frontend response 4xx errors
+        for proxy {{ $labels.proxy }} on {{ $labels.instance }}
+
+  - alert: haproxy_frontend_http_responses_5xx
+    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="5xx"}[1m]) > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Increase in 5xx response errors
+      description: >
+        There has been an increase in frontend response 5xx errors
+        for proxy {{ $labels.proxy }} on {{ $labels.instance }}
