@@ -1,16 +1,30 @@
 ---
 - name: Install RH-IT-Root-CA required to access internal https resources
-  get_url:
+  ansible.builtin.get_url:
     url: https://password.corp.redhat.com/RH-IT-Root-CA.crt
     dest: /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
     checksum: sha256:86479b04ef23e30ba736c83da3f0c9d301beebdc97822521ca500118d3991c79
-    validate_certs: no
+    validate_certs: false
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify:
     - update-ca-trust
   tags:
     - dci-core
     - molecule-notest
 
+- name: Install 2022-IT-Root-CA required to access internal https resources
+  ansible.builtin.get_url:
+    url: https://certs.corp.redhat.com/certs/2022-IT-Root-CA.pem
+    dest: /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
+    checksum: sha256:e9713aed04b4ef3003edd10fc9c4f8ab875436e4a44195f0cbafcdf95e9bad2c
+    validate_certs: false
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - update-ca-trust
+  tags:
+    - dci-core
+    - molecule-notest

@@ -63,7 +63,7 @@
     owner: root
     group: root
 
-- name: Create the RH-IT-Root-CA certificate
+- name: Create the dci-umb certificate authority file
   copy:
     dest: '{{ dci_umb_ca_file_path }}'
     content: '{{ dci_umb_ca }}'
