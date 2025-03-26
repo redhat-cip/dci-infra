@@ -5,6 +5,7 @@ podman_exporter_container_network: quadlet.network
 podman_exporter_container_spec:
   image: "{{ podman_exporter_container_image }}"
   command: >
+    --collector.enhance-metrics
     --collector.image
     --collector.network
     --collector.pod
