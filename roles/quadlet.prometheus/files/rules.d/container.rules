@@ -48,6 +48,6 @@ groups:
       severity: warning  # no alert, just in the dashboard
     annotations:
       summary: No healthcheck defined
-    description: >
+      description: >
         The container {{ $labels.name }} on instance
         {{ $labels.instance }} does not have a healthcheck
