@@ -77,6 +77,9 @@ Notify=true
 Restart=always
 RestartSec=1
 StartLimitInterval=0
+{% if _config.timeoutstartsec | default(false) %}
+TimeoutStartSec={{ _config.timeoutstartsec }}
+{% endif %}
 {% if _config.reload_commands is defined -%}
 {% for _command in _config.reload_commands %}
 ExecReload={{ _command }}

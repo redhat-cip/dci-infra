@@ -23,6 +23,7 @@
     - name: Pull image
       containers.podman.podman_image:
         name: "{{ _config.image }}"
+        force: true
       notify:
         - Restart dci-ui
 

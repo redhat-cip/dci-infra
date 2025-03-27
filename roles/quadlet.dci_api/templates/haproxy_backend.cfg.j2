@@ -1,0 +1,6 @@
+backend dci-api
+  option httpchk HEAD /api/v1/
+
+{% for n in range(dci_api_container_scale) %}
+  server api{{ n }} dci-api-{{ n }}:5000 check
+{% endfor %}

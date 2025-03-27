@@ -75,18 +75,17 @@
         - haproxy
         - podman
 
-# TODO
-# - name: Setup DCI-API
-#   hosts: dci_api:&dci_ng
-#   gather_facts: true
-#   become: true
-#
-#   roles:
-#     - name: quadlet.dci_api
-#       tags:
-#         - dci_api
-#         - podman
-#
+- name: Setup DCI-API
+  hosts: dci_api:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: quadlet.dci_api
+      tags:
+        - dci_api
+        - podman
+
 - name: Setup DCI-DOC
   hosts: dci_doc:&dci_ng
   gather_facts: true

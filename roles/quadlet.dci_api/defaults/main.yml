@@ -1,0 +1,22 @@
+---
+dci_api_container_image: quay.io/distributedci/dci-control-server:latest
+dci_api_container_network: quadlet.network
+dci_api_container_scale: 4
+dci_api_container_spec:
+  image: "{{ dci_api_container_image }}"
+  no_quadlet_image: true
+  network: "{{ dci_api_container_network }}"
+  env_file: /etc/dci-api/dci-api.env
+  health:
+    cmd: curl -X HEAD http://localhost:5000/api/v1/
+  scale: "{{ dci_api_container_scale }}"
+  labels:
+    io.distributed-ci.app: dci_api
+  notify: true
+  timeoutstartsec: 300
+
+gunicorn_nb_workers: 1
+gunicorn_worker_connections: 100
+
+rhdl_api_url: "https://api.rhdl.distributed-ci.io/api/v1"
+...

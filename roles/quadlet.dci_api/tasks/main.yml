@@ -1,5 +1,5 @@
 ---
-- name: HAProxy conf for dci-doc
+- name: HAProxy conf for dci-api
   block:
     - name: Load HAProxy role handlers
       ansible.builtin.import_role:
@@ -10,22 +10,36 @@
     - name: Render the HAproxy backend
       ansible.builtin.template:
         src: haproxy_backend.cfg.j2
-        dest: "{{ haproxy_config_dir }}/10_backend_dci_doc.cfg"
+        dest: "{{ haproxy_config_dir }}/10_backend_dci_api.cfg"
         mode: '0640'
       notify:
         - Reload haproxy
 
+- name: Create container env directory
+  ansible.builtin.file:
+    path: /etc/dci-api/
+    mode: '0750'
+    state: directory
+
+- name: Create container env configuration
+  ansible.builtin.template:
+    src: dci-api.env.j2
+    dest: /etc/dci-api/dci-api.env
+    mode: '0640'
+  notify:
+    - Restart dci-api
+
 - name: Create the required amount of containers
   vars:
-    _quadlet: dci-doc
-    _config: "{{ dci_doc_container_spec }}"
+    _quadlet: dci-api
+    _config: "{{ dci_api_container_spec }}"
   block:
     - name: Pull image
       containers.podman.podman_image:
         name: "{{ _config.image }}"
         force: true
       notify:
-        - Restart dci-doc
+        - Restart dci-api
 
     - name: Create container quadlet
       ansible.builtin.template:
@@ -33,7 +47,7 @@
         dest: "/etc/containers/systemd/{{ _quadlet }}@.container"
         mode: '0640'
       notify:
-        - Restart dci-doc
+        - Restart dci-api
 
     - name: Ensure service is started
       ansible.builtin.systemd:
@@ -43,9 +57,9 @@
       ignore_errors: "{{ ansible_check_mode }}"
       loop: "{{ range(0, _config.scale) | list }}"
 
-- name: Get current count of configured containers
+- name: Get count of configured containers
   vars:
-    _quadlet: dci-doc
+    _quadlet: dci-api
   ansible.builtin.find:
     paths: /etc/containers/systemd/
     patterns: "{{ _quadlet }}@*.container"
@@ -54,14 +68,14 @@
 
 - name: Remove over-scale containers
   vars:
-    _quadlet: dci-doc
-  when: _container_units_found.matched > dci_doc_container_scale
+    _quadlet: dci-api
+  when: _container_units_found.matched > dci_api_container_scale
   block:
     - name: Remove over-scale unit files
       ansible.builtin.file:
         dest: /etc/containers/systemd/{{ _quadlet }}@{{ item }}.quadlet
         state: absent
-      loop: "{{ range(dci_doc_container_scale, _container_units_found.matched) | list }}"
+      loop: "{{ range(dci_api_container_scale, _container_units_found.matched) | list }}"
 
     - name: Stop over-scale services
       ansible.builtin.systemd:
@@ -69,5 +83,5 @@
         state: stopped
         daemon-reload: true
       ignore_errors: "{{ ansible_check_mode }}"
-      loop: "{{ range(dci_doc_container_scale, _container_units_found.matched) | list }}"
+      loop: "{{ range(dci_api_container_scale, _container_units_found.matched) | list }}"
 ...

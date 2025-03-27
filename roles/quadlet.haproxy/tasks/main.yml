@@ -36,6 +36,7 @@
 - name: Pull image for quadlet
   containers.podman.podman_image:
     name: "{{ haproxy_container_image }}"
+    force: true
   notify:
     - Restart haproxy
 
