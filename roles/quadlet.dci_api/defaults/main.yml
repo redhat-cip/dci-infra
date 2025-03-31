@@ -8,7 +8,7 @@ dci_api_container_spec:
   network: "{{ dci_api_container_network }}"
   env_file: /etc/dci-api/dci-api.env
   health:
-    cmd: curl -X HEAD http://localhost:5000/api/v1/
+    cmd: curl --head http://localhost:5000/api/v1/
   scale: "{{ dci_api_container_scale }}"
   labels:
     io.distributed-ci.app: dci_api
