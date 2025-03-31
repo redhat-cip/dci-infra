@@ -7,6 +7,11 @@ frontend dci-in
 
   option httpslog
 
+  # https://docs.haproxy.org/3.0/configuration.html#4-monitor-uri
+  # Could be enhanced with `monitor fail`, e.g.
+  # |> monitor fail if { nbsrv(webservers) eq 0 }
+  monitor-uri /healthcheck
+
 {% if "dci_api" in group_names %}
   use_backend dci-api if { req.hdr(host) -m str api.distributed-ci.io }
 {% endif %}
