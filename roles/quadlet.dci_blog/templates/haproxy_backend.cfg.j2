@@ -1,0 +1,5 @@
+backend dci-blog
+{% for n in range(dci_blog_container_scale) %}
+  server blog{{ n }} dci-blog-{{ n }}:80 check
+{% endfor %}
+

@@ -1,0 +1,9 @@
+---
+- name: Restart dci-blog
+  ansible.builtin.systemd:
+    name: dci-blog@{{ item }}.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  loop: "{{ range(0, dci_blog_container_scale) | list }}"
+...
