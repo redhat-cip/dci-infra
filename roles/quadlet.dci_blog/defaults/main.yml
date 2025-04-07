@@ -1,0 +1,14 @@
+---
+dci_blog_container_image: quay.io/distributedci/dci-blog:latest
+dci_blog_container_network: quadlet.network
+dci_blog_container_scale: 2
+dci_blog_container_spec:
+  image: "{{ dci_blog_container_image }}"
+  no_quadlet_image: true
+  network: "{{ dci_blog_container_network }}"
+  health:
+    cmd: /usr/bin/test -f /var/run/nginx.pid
+  scale: "{{ dci_blog_container_scale }}"
+  labels:
+    io.distributed-ci.app: dci_blog
+...

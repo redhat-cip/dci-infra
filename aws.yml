@@ -108,6 +108,17 @@
         - dci_ui
         - podman
 
+- name: Setup DCI-BLOG
+  hosts: dci_blog:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: quadlet.dci_blog
+      tags:
+        - dci_blog
+        - podman
+
 - name: Setup haproxy DCI frontend
   hosts: dci_api:dci_doc:dci_ui:&dci_ng
   gather_facts: true
