@@ -1,0 +1,17 @@
+---
+- name: HAProxy conf for dci-packages
+  block:
+    - name: Load HAProxy role handlers
+      ansible.builtin.import_role:
+        name: quadlet.haproxy
+        tasks_from: noop
+        handlers_from: main
+
+    - name: Render the HAproxy backend
+      ansible.builtin.template:
+        src: haproxy_backend.cfg.j2
+        dest: "{{ haproxy_config_dir }}/10_backend_dci_packages.cfg"
+        mode: '0640'
+      notify:
+        - Reload haproxy
+...
