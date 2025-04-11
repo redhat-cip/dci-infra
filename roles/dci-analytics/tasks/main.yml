@@ -1,4 +1,7 @@
 ---
+- name: Setup firewalld for dci-analytics
+  ansible.builtin.import_tasks: firewalld.yml
+
 - name: Create environment file used by the dci-analytics container
   template:
     src: "dci-analytics.env.j2"
