@@ -1,4 +1,13 @@
 ---
+- name: Setup SNS/SQS for consuming LB logs
+  hosts: localhost
+  gather_facts: false
+  become: false
+  roles:
+    - name: aws.lb_logs
+      tags:
+        - aws
+
 - name: Base setup for AWS infra
   hosts: dci_ng
   gather_facts: true
@@ -131,3 +140,4 @@
       tags:
         - haproxy
         - podman
+...

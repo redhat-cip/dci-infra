@@ -1,0 +1,103 @@
+---
+- name: Install AWS dependencies
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3-boto3
+      - python3-botocore
+    state: present
+
+- name: Bucket should exist already
+  community.aws.s3_bucket_info:
+    name: "{{ lb_logs_s3_bucket }}"
+  register: _bucket_info
+
+- name: Display bucket info
+  ansible.builtin.debug:
+    var: _bucket_info
+
+- name: Manage SNS topic
+  community.aws.sns_topic:
+    name: "{{ lb_logs_sns_topic }}"
+    state: present
+    display_name: "Topic for {{ lb_logs_s3_bucket }} ObjectCreated events"
+    region: "{{ lb_logs_region }}"
+    tags: "{{ lb_logs_default_tags }}"
+  register: _sns_topic
+
+- name: Manage SNS topic policy
+  community.aws.sns_topic:
+    name: "{{ lb_logs_sns_topic }}"
+    region: "{{ lb_logs_region }}"
+    policy:
+      Id: "publish-{{ lb_logs_s3_bucket }}"
+      Version: 2012-10-17
+      Statement:
+        - Sid: S3-Principal
+          Effect: Allow
+          Resource: "{{ _sns_topic.sns_arn }}"
+          Principal:
+            Service: s3.amazonaws.com
+          Action:
+            - sns:Publish
+          Condition:
+            ArnLike:
+              aws:SourceArn: "arn:aws:s3:*:*:{{ lb_logs_s3_bucket }}"
+  register: _sns_topic
+
+- name: Set event configuration for S3 bucket
+  community.aws.s3_bucket_notification:
+    event_name: "{{ lb_logs_sns_topic }}"
+    state: present
+    bucket_name: "{{ lb_logs_s3_bucket }}"
+    topic_arn: "{{ _sns_topic.sns_arn }}"
+    region: "{{ lb_logs_region }}"
+    events:
+      - "s3:ObjectCreated:*"
+    prefix: "{{ lb_logs_s3_prefix }}"
+    suffix: "{{ lb_logs_s3_suffix }}"
+  register: _s3_notification_config
+
+- name: Manage SQS Queue
+  community.aws.sqs_queue:
+    name: "{{ lb_logs_sqs_queue }}"
+    state: present
+    region: "{{ lb_logs_region }}"
+    queue_type: standard
+    message_retention_period: "{{ lb_logs_sqs_queue_retention_secs }}"
+    receive_message_wait_time_seconds: "{{ lb_logs_sqs_queue_wait_time_secs }}"
+    tags: "{{ lb_logs_default_tags }}"
+  register: _sqs_queue
+
+- name: Manage SQS Queue Policy
+  vars:
+    __policy:
+      Version: 2012-10-17
+      Statement:
+        - Sid: SNS-Principal
+          Effect: Allow
+          Resource: "{{ _sqs_queue.queue_arn }}"
+          Principal:
+            Service: sns.amazonaws.com
+          Action:
+            - sqs:SendMessage
+          Condition:
+            ArnLike:
+              aws:SourceArn: "{{ _sns_topic.sns_arn }}"
+  community.aws.sqs_queue:
+    name: "{{ lb_logs_sqs_queue }}"
+    region: "{{ lb_logs_region }}"
+    policy: "{{ __policy | to_json }}"
+  register: _sqs_queue
+
+- name: Subscribe SNS to SQS
+  community.aws.sns_topic:
+    name: "{{ lb_logs_sns_topic }}"
+    region: "{{ lb_logs_region }}"
+    subscriptions:
+      - endpoint: "{{ _sqs_queue.queue_arn }}"
+        protocol: sqs
+        attributes:
+          RawMessageDelivery: true
+  register: _sns_topic
+...

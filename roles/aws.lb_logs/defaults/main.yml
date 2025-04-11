@@ -1,0 +1,16 @@
+---
+lb_logs_dci_infra_arn: "arn:aws:iam::719072031044:user/dci-infra"
+lb_logs_dci_log_consumer_arn: "arn:aws:iam::719072031044:user/dci-lb-log-consumer"
+lb_logs_default_tags:
+  app-code: DCI-001
+  cost-center: "701"
+  service-phase: prod
+lb_logs_region: us-east-1
+lb_logs_s3_bucket: dci-lb-logs
+lb_logs_s3_prefix: dci-alb-prod/AWSLogs/
+lb_logs_s3_suffix: .log.gz
+lb_logs_sns_topic: "s3-object-created-{{ lb_logs_s3_bucket }}"
+lb_logs_sqs_queue: "{{ lb_logs_sns_topic }}"
+lb_logs_sqs_queue_retention_secs: 7200  # 2 hours
+lb_logs_sqs_queue_wait_time_secs: 10
+...
