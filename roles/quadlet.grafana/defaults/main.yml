@@ -18,5 +18,5 @@ grafana_container_spec:
   network: "{{ grafana_container_network }}"
   volumes:
     - "{{ grafana_config_dir }}:/etc/grafana:z,ro"
-    - "{{ grafana_data_dir }}:/grafana:Z"
+    - "{{ grafana_data_dir }}:/var/lib/grafana:Z"
 ...
