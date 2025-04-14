@@ -30,7 +30,7 @@
 
 - name: Allow port 80 for zone analytics-api
   ansible.posix.firewalld:
-    port: 80
+    port: "80/tcp"
     zone: analytics-api
     state: enabled
     permanent: true
