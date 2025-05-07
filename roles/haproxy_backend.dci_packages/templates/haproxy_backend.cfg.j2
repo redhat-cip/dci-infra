@@ -1,0 +1,12 @@
+resolvers dns_s3
+  parse-resolv-conf
+  hold valid 30s
+
+backend dci-packages
+  http-request set-header Host dci-packages-prod.s3-website-us-east-1.amazonaws.com
+  http-request del-header Authorization
+  http-response del-header x-amz-id-2
+  http-response del-header x-amz-requst-id
+  http-request do-resolve(txn.svcip,dns_s3,ipv4) str(dci-packages-prod.s3-website-us-east-1.amazonaws.com)
+  http-request set-dst var(txn.svcip)
+  server s3_svc 0.0.0.0:80 no-check
