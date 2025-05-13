@@ -119,6 +119,17 @@
         - dci_blog
         - podman
 
+- name: Setup DCI-PACKAGES
+  hosts: dci_packages:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - name: haproxy_backend.dci_packages
+      tags:
+        - dci_packages
+        - podman
+
 - name: Setup haproxy DCI frontend
   hosts: dci_api:dci_doc:dci_ui:&dci_ng
   gather_facts: true
