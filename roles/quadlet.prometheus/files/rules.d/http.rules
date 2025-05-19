@@ -36,34 +36,34 @@ groups:
         {{ $labels.proxy }} on {{ $labels.instance }}
 
   - alert: haproxy_backend_response_errors
-    expr: increase(haproxy_backend_response_errors_total{job="haproxy"}[1m]) > 0
+    expr: increase(haproxy_backend_response_errors_total{job="haproxy"}[5m]) > 0
     for: 5m
     labels:
       severity: critical
     annotations:
-      summary: Increase in backend response errors
+      summary: Increase in backend response errors (5m sampling)
       description: >
         There has been an increase in backend response errors for
         proxy {{ $labels.proxy }} on {{ $labels.instance }}
 
   - alert: haproxy_frontend_http_responses_4xx
-    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="4xx"}[1m]) > 0
+    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="4xx"}[5m]) > 0
     for: 5m
     labels:
       severity: critical
     annotations:
-      summary: Increase in 4xx response errors
+      summary: Increase in 4xx response errors (5m sampling)
       description: >
         There has been an increase in frontend response 4xx errors
         for proxy {{ $labels.proxy }} on {{ $labels.instance }}
 
   - alert: haproxy_frontend_http_responses_5xx
-    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="5xx"}[1m]) > 0
+    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="5xx"}[5m]) > 0
     for: 5m
     labels:
       severity: critical
     annotations:
-      summary: Increase in 5xx response errors
+      summary: Increase in 5xx response errors (5m sampling)
       description: >
         There has been an increase in frontend response 5xx errors
         for proxy {{ $labels.proxy }} on {{ $labels.instance }}
