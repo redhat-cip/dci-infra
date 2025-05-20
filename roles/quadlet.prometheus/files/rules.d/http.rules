@@ -46,17 +46,6 @@ groups:
         There has been an increase in backend response errors for
         proxy {{ $labels.proxy }} on {{ $labels.instance }}
 
-  - alert: haproxy_frontend_http_responses_4xx
-    expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="4xx"}[5m]) > 0
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: Increase in 4xx response errors (5m sampling)
-      description: >
-        There has been an increase in frontend response 4xx errors
-        for proxy {{ $labels.proxy }} on {{ $labels.instance }}
-
   - alert: haproxy_frontend_http_responses_5xx
     expr: increase(haproxy_frontend_http_responses_total{job="haproxy", proxy="dci-in", code="5xx"}[5m]) > 0
     for: 5m
