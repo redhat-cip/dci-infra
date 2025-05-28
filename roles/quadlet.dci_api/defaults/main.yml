@@ -17,6 +17,10 @@ dci_api_container_spec:
 
 gunicorn_nb_workers: 1
 gunicorn_worker_connections: 100
+gunicorn_max_requests: 0
+gunicorn_max_requests_jitter: 0
+gunicorn_timeout: 30
+gunicorn_graceful_timeout: 90
 
 rhdl_api_url: "https://api.rhdl.distributed-ci.io/api/v1"
 ...
