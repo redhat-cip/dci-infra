@@ -29,6 +29,12 @@
   tags:
     - users
 
+- name: Import registry credentials tasks
+  ansible.builtin.import_tasks:
+    file: registry_credentials.yml
+  tags:
+    - podman
+
 - name: Import firewall tasks
   ansible.builtin.import_tasks:
     file: firewall.yml

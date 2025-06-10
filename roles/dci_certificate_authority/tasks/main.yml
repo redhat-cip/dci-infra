@@ -1,0 +1,20 @@
+---
+- name: Verify if mandatory secrets are overriden
+  ansible.builtin.import_tasks:
+    file: verify_secrets.yml
+
+- name: Generate SSL CA & ownca Certificates
+  ansible.builtin.import_tasks:
+    file: ssl_ca.yml
+
+- name: Create Server Certificates
+  ansible.builtin.include_tasks:
+    file: ssl_cert.yml
+  loop: "{{ dci_certificate_authority_servercerts }}"
+  loop_control:
+    loop_var: dci_certificate_authority_servercert
+
+- name: Create vars file
+  ansible.builtin.import_tasks:
+    file: vars_file.yml
+...

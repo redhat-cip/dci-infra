@@ -1,0 +1,27 @@
+---
+- name: Create dci conf dir
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ postgresql_data_dir }}/dci_conf"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    mode: "0700"
+
+- name: Include DCI configuration from main file
+  ansible.builtin.lineinfile:
+    path: "{{ postgresql_data_dir }}/userdata/postgresql.conf"
+    line: "include_dir '{{ postgresql_data_dir }}/dci_conf'"
+    insertafter: EOF
+    create: false
+  notify: Reload postgresql
+
+- name: Manage configuration overrides
+  ansible.builtin.copy:
+    src: dci.conf
+    dest: "{{ postgresql_data_dir }}/dci_conf/dci.conf"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    mode: "0600"
+    setype: container_file_t
+  notify: Reload postgresql
+...

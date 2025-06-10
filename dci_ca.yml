@@ -1,0 +1,24 @@
+---
+#
+# Usage:
+#   ansible-playbook dci_ca.yml -e vault_pw=$(cat <vault_pwfile) -i <inventory_path> --vault-password-file=<vault_pwfile>
+#
+# Inventory must contain:
+#   env: <env name>
+#   dci_certificate_authority_passphrase: <a_secure_passphrase>
+#   dci_certificate_authority_servercerts:
+#     - name: some_name
+#       sans:
+#         - "DNS:some.hostname.com"
+#         - "DNS:someother.hostname.org"
+#         - "IP:10.0.0.254"
+#
+# It will create:
+#   - all certs in a local directory DCI_CA/<env_name>
+#   - an ansible vars file in DCI_CA/<env_name>/ca_vars.yml with vars vault encrypted with the `vault_pw` passed on the CLI
+#
+- hosts: localhost
+  tasks:
+    - name: Create Certificate Authority
+      include_role:
+        name: dci_certificate_authority

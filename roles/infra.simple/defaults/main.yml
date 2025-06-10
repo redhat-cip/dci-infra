@@ -12,6 +12,7 @@ simple_ssh_access: []
 # firewalld
 simple_firewalld_default_zone: public
 simple_firewalld_monitoring_zone: monitoring
+simple_firewalld_database_access_zone: postgresql-access
 simple_firewalld_config:
   - zone: "{{ simple_firewalld_default_zone }}"
     services:
@@ -22,3 +23,6 @@ simple_services: {}
 
 # files
 simple_files: {}
+
+# registry credentials
+simple_registry_credentials: {}

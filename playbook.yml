@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+# vim: set ft=yaml.ansible:
 #
 # Copyright 2015-2017 Red Hat, Inc.
 #
@@ -13,6 +14,43 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+
+- name: Perform some sanity checks
+  hosts: localhost
+  vars:
+    env_value: "{{ env | default('UNDEFINED', true) }}"
+    env_group: "{{ env_value }}:!dci_ng"
+    env_group_modifier: "&{{ env_group }}"
+  tasks:
+    - name: Validate argument_specs for the "env" variable
+      ansible.builtin.validate_argument_spec:
+        argument_spec: "{{ required_data }}"
+      vars:
+        required_data:
+          env:
+            description: The hostgroup that we must operate on (set with tag "env:<value>" in EC2 tags)
+            type: str
+            required: true
+
+    - name: Verify that the "env" var is set
+      ansible.builtin.assert:
+        that: env_value != "UNDEFINED"
+        fail_msg: "The 'env' var must be defined and set to a non-empty value and must be a non-empty hosts group!"
+        success_msg: "'env' is defined and non-empty."
+
+    - name: Verify that the hostgroup pointed by "env" is not empty
+      ansible.builtin.assert:
+        that: lookup("inventory_hostnames", env_group) | length > 0
+        fail_msg: "The hostgroup named '{{ env_group }}' does not contain any hosts."
+        success_msg: "Env hostgroup {{ env_group }} contains some hosts."
+
+    - name: Verify that there's one host in the 'dci_database' group for this environment
+      ansible.builtin.assert:
+        that: "{{ lookup('inventory_hostnames', 'dci_database:{{ env_group_modifier }}') | length > 0 }}"
+        fail_msg: "Host group 'dci_database:{{ env_group_modifier }}' does not contain any hosts. Can't continue."
+        success_msg: |
+          Hosts found in the dci_database:{{ env_group_modifier }} group: {{ lookup('inventory_hostnames', 'dci_database:{{ env_group_modifier }}') }}
+  run_once: true
 
 - name: Common-Configuration
   hosts: all:!dci_ng

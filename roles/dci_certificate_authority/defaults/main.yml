@@ -1,0 +1,11 @@
+---
+dci_certificate_authority_dir: "./DCI_CA/{{ env }}"
+
+# This is the passphrase for the certificate authority.
+# It needs to be defined
+dci_certificate_authority_passphrase: "{{ undef() }}"
+
+# Set this to the content of the CA key and cert
+# in your inventory to allow reusing the same CA on different machines
+dci_certificate_authority_key: "{{ undef() }}"
+dci_certificate_authority_cert: "{{ undef() }}"

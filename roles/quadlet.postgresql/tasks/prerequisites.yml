@@ -1,0 +1,39 @@
+---
+- name: Manage group
+  ansible.builtin.group:
+    name: "{{ postgresql_group }}"
+    state: present
+    system: true
+    gid: "{{ postgresql_gid | default(omit) }}"
+
+- name: Manage user
+  ansible.builtin.user:
+    name: "{{ postgresql_user }}"
+    state: present
+    system: true
+    uid: "{{ postgresql_gid | default(omit) }}"
+    group: "{{ postgresql_group }}"
+    shell: "{{ postgresql_user_shell | default(omit) }}"
+
+- name: Create container config directory
+  ansible.builtin.file:
+    path: "{{ postgresql_container_spec.env_file | dirname }}"
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+
+- name: Create database data directory
+  ansible.builtin.file:
+    path: "{{ postgresql_data_dir }}"
+    state: directory
+    mode: '0770'
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+
+- name: Install packages required by ansible to connect to postgresql
+  ansible.builtin.package:
+    name:
+      - python3-psycopg2
+      - python3-cryptography
+...

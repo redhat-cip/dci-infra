@@ -1,0 +1,54 @@
+---
+- name: Create a directory to store the CA data
+  ansible.builtin.file:
+    path: "{{ dci_certificate_authority_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Pre-create the key & certificate authority files with data from inventory/vars
+  block:
+    - name: Pre-create the key file with content from inventory/var
+      ansible.builtin.copy:
+        content: "{{ dci_certificate_authority_key }}"
+        dest: "{{ dci_certificate_authority_dir }}/ca-certificate.key"
+        mode: "0600"
+      when: dci_certificate_authority_key is defined
+
+    - name: Pre-create the certificate file with content from inventory/var
+      ansible.builtin.copy:
+        content: "{{ dci_certificate_authority_cert }}"
+        dest: "{{ dci_certificate_authority_dir }}/ca-certificate.pem"
+        mode: "0644"
+      when: dci_certificate_authority_cert is defined
+
+# Generate CA cert (if required)
+- name: Create private key with password protection
+  community.crypto.openssl_privatekey:
+    path: "{{ dci_certificate_authority_dir }}/ca-certificate.key"
+    passphrase: "{{ dci_certificate_authority_passphrase }}"
+    mode: "0600"
+
+- name: Create certificate signing request (CSR) for CA certificate
+  community.crypto.openssl_csr:
+    path: "{{ dci_certificate_authority_dir }}/ca-certificate.csr"
+    privatekey_path: "{{ dci_certificate_authority_dir }}/ca-certificate.key"
+    privatekey_passphrase: "{{ dci_certificate_authority_passphrase }}"
+    common_name: DCI Internal CA
+    use_common_name_for_san: false  # since we do not specify SANs, don't use CN as a SAN
+    basic_constraints:
+      - 'CA:TRUE'
+    basic_constraints_critical: true
+    key_usage:
+      - keyCertSign
+    key_usage_critical: true
+    mode: "0600"
+
+- name: Create self-signed CA certificate from CSR
+  community.crypto.x509_certificate:
+    path: "{{ dci_certificate_authority_dir }}/ca-certificate.pem"
+    csr_path: "{{ dci_certificate_authority_dir }}/ca-certificate.csr"
+    privatekey_path: "{{ dci_certificate_authority_dir }}/ca-certificate.key"
+    privatekey_passphrase: "{{ dci_certificate_authority_passphrase }}"
+    provider: selfsigned
+    mode: "0644"
+...

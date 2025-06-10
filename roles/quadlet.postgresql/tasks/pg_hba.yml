@@ -1,0 +1,49 @@
+---
+- name: Remove unnecessary connection methods from pg_hba.conf
+  community.postgresql.postgresql_pg_hba:
+    dest: "{{ postgresql_data_dir }}/userdata/pg_hba.conf"
+    contype: "{{ item.contype }}"
+    databases: "{{ item.databases }}"
+    users: "{{ item.users }}"
+    address: "{{ item.address | default(omit) }}"
+    method: "{{ item.method }}"
+    state: absent
+  notify: Reload postgresql
+  loop:
+    - contype: host
+      databases: all
+      users: all
+      address: all
+      method: md5
+    - contype: host
+      databases: replication
+      users: all
+      address: all
+      method: md5
+
+- name: Read info for the quadlet network
+  containers.podman.podman_network_info:
+    name: "systemd-quadlet"
+  register: podman_quadlet_network_info
+
+- name: Allow postgres user to connect to db from local machine in pg_hba.conf
+  community.postgresql.postgresql_pg_hba:
+    dest: "{{ postgresql_data_dir }}/userdata/pg_hba.conf"
+    contype: hostssl
+    databases: all
+    users: postgres
+    address: "{{ podman_quadlet_network_info.networks[0].subnets[0].gateway }}/32"
+    method: scram-sha-256
+  notify: Reload postgresql
+
+- name: Allow dci user to connect to db from apiips in pg_hba.conf
+  community.postgresql.postgresql_pg_hba:
+    dest: "{{ postgresql_data_dir }}/userdata/pg_hba.conf"
+    contype: hostssl
+    databases: "{{ dbname }}"
+    users: "{{ dbuser }}"
+    address: "{{ item }}/32"
+    method: scram-sha-256
+  notify: Reload postgresql
+  loop: "{{ apiips }}"
+...

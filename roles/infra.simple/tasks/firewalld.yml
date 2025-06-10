@@ -16,10 +16,11 @@
 - name: Set zone sources  # noqa: ignore-errors
   ansible.posix.firewalld:
     zone: "{{ _config.zone }}"
-    source: "{{ _config.source }}"
+    source: "{{ item }}"
     state: enabled
     permanent: true
     immediate: true
   when: _config.source is defined
   ignore_errors: "{{ ansible_check_mode }}"
+  loop: "{{ _config.source | list }}"
 ...

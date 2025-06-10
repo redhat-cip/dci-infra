@@ -1,0 +1,27 @@
+---
+postgresql_user: postgres
+postgresql_group: postgres
+postgresql_gid: 26
+postgresql_container_image: registry.redhat.io/rhel9/postgresql-16:latest
+postgresql_listen_port: 5432
+postgresql_ca_dir: /etc/ssl/postgres_ca
+postgresql_data_dir: /var/lib/pgsql/data
+postgresql_container_ports:
+  - "{{ postgresql_listen_port }}:5432"
+postgresql_container_volumes:
+  - "{{ postgresql_data_dir }}:/var/lib/pgsql/data:Z"
+postgresql_container_network: quadlet.network
+postgresql_firewalld_zone: "{{ simple_firewalld_database_access_zone }}"
+postgresql_container_spec:
+  image: "{{ postgresql_container_image }}"
+  no_quadlet_image: true
+  ports: "{{ postgresql_container_ports }}"
+  volumes: "{{ postgresql_container_volumes }}"
+  network: "{{ postgresql_container_network }}"
+  env_file: /etc/postgresql-container/container.env
+  reload_commands:
+    - podman exec postgresql kill -HUP 1
+  labels:
+    io.distributed-ci.svc: postgresql
+postgresql_admin_password: CHANGEME
+...

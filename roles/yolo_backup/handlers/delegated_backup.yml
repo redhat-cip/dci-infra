@@ -1,7 +1,7 @@
 ---
 - name: Run yolo backup with 'current' tag
   ansible.builtin.command: "{{ dci_db_backup_command }}"
-  delegate_to: "{{ groups.dci_database | first }}"
+  delegate_to: "{{ lookup('inventory_hostnames', yolo_backup_host_selector) | split(',') | sort | first }}"
   become: true
   become_user: "{{ yolo_backup_user | default('dci') }}"
   # Backups can take some time

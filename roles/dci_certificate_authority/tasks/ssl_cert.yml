@@ -1,0 +1,73 @@
+---
+# Generate self-signed certificate
+- name: Sanity checks
+  block:
+    - name: Check that dci_certificate_authority_servercert is set and contains the required keys
+      ansible.builtin.assert:
+        that:
+          - dci_certificate_authority_servercert is defined
+          - dci_certificate_authority_servercert.name is defined
+          - dci_certificate_authority_servercert.sans is defined
+        fail_msg: "dci_certificate_authority_servercert is not defined or is missing some keys (name, sans)"
+        success_msg: "OK"
+
+    - name: Check that dci_certificate_authority_servercert.name is set
+      ansible.builtin.assert:
+        that: dci_certificate_authority_servercert.name|length > 0
+        fail_msg: "dci_certificate_authority_servercert.name is empty. set it to a valid hostname"
+        success_msg: "OK"
+
+    - name: Check that the SAN is not empty
+      ansible.builtin.assert:
+        that: dci_certificate_authority_servercert.sans|length > 0
+        fail_msg: "There's no Subject Alt Names defined in dci_certificate_authority_servercert.sans"
+        success_msg: "OK"
+
+- name: Create the directory for the certificate
+  ansible.builtin.file:
+    path: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}"
+    state: directory
+    mode: "0755"
+
+- name: Pre-create the files for the certificate if defined in vars
+  block:
+    - name: Pre-create file for private key
+      ansible.builtin.copy:
+        content: "{{ dci_certificate_authority_servercert.key }}"
+        dest: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.key"
+        mode: "0600"
+      when: dci_certificate_authority_servercert.key is defined
+
+    - name: Pre-create file for the certficate
+      ansible.builtin.copy:
+        content: "{{ dci_certificate_authority_servercert.cert }}"
+        dest: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.pem"
+        mode: "0644"
+      when: dci_certificate_authority_servercert.cert is defined
+
+- name: Create private key for new certificate
+  community.crypto.openssl_privatekey:
+    path: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.key"
+  run_once: true
+
+- name: Create certificate signing request (CSR) for new certificate
+  community.crypto.openssl_csr:
+    path: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.csr"
+    privatekey_path: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.key"
+    subject_alt_name: "{{ dci_certificate_authority_servercert.sans }}"
+    mode: "0600"
+  run_once: true
+
+- name: Sign certificate with our CA
+  community.crypto.x509_certificate:
+    path: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.pem"
+    csr_path: "{{ dci_certificate_authority_dir }}/{{ dci_certificate_authority_servercert.name }}/certificate.csr"
+    provider: ownca
+    ownca_path: "{{ dci_certificate_authority_dir }}/ca-certificate.pem"
+    ownca_privatekey_path: "{{ dci_certificate_authority_dir }}/ca-certificate.key"
+    ownca_privatekey_passphrase: "{{ dci_certificate_authority_passphrase }}"
+    ownca_not_after: +3653d  # valid for ten years
+    ownca_not_before: "-1d"  # valid since yesterday
+    mode: "0600"
+  run_once: true
+...

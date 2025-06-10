@@ -1,0 +1,14 @@
+---
+- name: Restart postgresql
+  ansible.builtin.systemd:
+    name: postgresql.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Reload postgresql
+  ansible.builtin.systemd:
+    name: postgresql.service
+    state: reloaded
+    daemon-reload: false
+  ignore_errors: "{{ ansible_check_mode }}"

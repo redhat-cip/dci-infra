@@ -1,10 +1,64 @@
+# -*- encoding: utf-8 -*-
+# vim: set ft=yaml.ansible:
+#
+# Copyright 2024-2025 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
 ---
+- name: Perform some sanity checks
+  hosts: localhost
+  vars:
+    env_value: "{{ env | default('UNDEFINED', true) }}"
+    env_group: "{{ env_value }}:&dci_ng"
+    env_group_modifier: "&{{ env_group }}"
+  tasks:
+    - name: Validate argument_specs for the "env" variable
+      ansible.builtin.validate_argument_spec:
+        argument_spec: "{{ required_data }}"
+      vars:
+        required_data:
+          env:
+            description: The hostgroup that we must operate on (set with tag "env:<value>" in EC2 tags)
+            type: str
+            required: true
+
+    - name: Verify that the "env" var is set
+      ansible.builtin.assert:
+        that: env_value != "UNDEFINED"
+        fail_msg: "The 'env' var must be defined and set to a non-empty value and must be a non-empty hosts group!"
+        success_msg: "'env' is defined and non-empty."
+
+    - name: Verify that the hostgroup pointed by "env" is not empty
+      ansible.builtin.assert:
+        that: lookup("inventory_hostnames", env_group) | length > 0
+        fail_msg: "The hostgroup named '{{ env_group }}' does not contain any hosts."
+        success_msg: "Env hostgroup {{ env_group }} contains some hosts."
+
+    - name: Verify that there's one host in the 'dci_database' group for this environment
+      ansible.builtin.assert:
+        that: "{{ lookup('inventory_hostnames', 'dci_database:{{ env_group_modifier }}') | length > 0 }}"
+        fail_msg: "Host group 'dci_database:{{ env_group_modifier }}' does not contain any hosts. Can't continue."
+        success_msg: |
+          Hosts found in the dci_database:{{ env_group_modifier }} group: {{ lookup('inventory_hostnames', 'dci_database:{{ env_group_modifier }}') }}
+  run_once: true
+
 - name: Setup SNS/SQS for consuming LB logs
   hosts: localhost
   gather_facts: false
   become: false
   roles:
-    - name: aws.lb_logs
+    - role: aws.lb_logs
       tags:
         - aws
 
@@ -14,21 +68,21 @@
   become: true
 
   roles:
-    - name: infra.simple
+    - role: infra.simple
       tags:
         - base
 
-    - name: infra.node_exporter
+    - role: infra.node_exporter
       tags:
         - base
         - node_exporter
 
-    - name: infra.quadlet
+    - role: infra.quadlet
       tags:
         - base
         - podman
 
-    - name: quadlet.podman_exporter
+    - role: quadlet.podman_exporter
       tags:
         - base
         - podman
@@ -39,39 +93,50 @@
   become: true
 
   roles:
-    - name: quadlet.prometheus
+    - role: quadlet.prometheus
       tags:
         - podman
         - prometheus
         - monitoring
 
-    - name: quadlet.alertmanager
+    - role: quadlet.alertmanager
       tags:
         - podman
         - alertmanager
         - monitoring
 
-    - name: quadlet.grafana
+    - role: quadlet.grafana
       tags:
         - podman
         - grafana
         - monitoring
 
-    - name: quadlet.blackbox_exporter
+    - role: quadlet.blackbox_exporter
       tags:
         - podman
         - monitoring
 
-    - name: quadlet.domain_exporter
+    - role: quadlet.domain_exporter
       tags:
         - podman
         - monitoring
 
-    - name: quadlet.nginx
+    - role: quadlet.nginx
       tags:
         - podman
         - nginx
         - monitoring
+
+- name: Setup postgresql database
+  hosts: dci_database:&dci_ng
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: quadlet.postgresql
+      tags:
+        - postgresql
+        - podman
 
 - name: Setup haproxy
   hosts: dci_api:dci_doc:dci_ui:&dci_ng
@@ -79,7 +144,7 @@
   become: true
 
   roles:
-    - name: quadlet.haproxy
+    - role: quadlet.haproxy
       tags:
         - haproxy
         - podman
@@ -90,7 +155,8 @@
   become: true
 
   tasks:
-    - ansible.builtin.import_role:
+    - name: Import yolo_backup handlers
+      ansible.builtin.import_role:
         # Include only the handler to run db backup before
         # updating dci-control-server/dci-api
         # It *needs* to be included *before* the quadlet.dci_api role so
@@ -102,13 +168,17 @@
         - dci_api
         - dci_core
         - yolo_backup
-    - ansible.builtin.import_role:
+
+    - name: Setup DCI-API containers
+      ansible.builtin.import_role:
         name: quadlet.dci_api
       tags:
         - dci_api
         - dci_core
         - podman
-    - ansible.builtin.import_role:
+
+    - name: Add statsd statsd_exporter
+      ansible.builtin.import_role:
         name: quadlet.statsd_exporter
       tags:
         - dci_api
@@ -121,7 +191,7 @@
   become: true
 
   roles:
-    - name: quadlet.dci_doc
+    - role: quadlet.dci_doc
       tags:
         - dci_doc
         - podman
@@ -132,7 +202,7 @@
   become: true
 
   roles:
-    - name: quadlet.dci_ui
+    - role: quadlet.dci_ui
       tags:
         - dci_ui
         - podman
@@ -143,7 +213,7 @@
   become: true
 
   roles:
-    - name: quadlet.dci_blog
+    - role: quadlet.dci_blog
       tags:
         - dci_blog
         - podman
@@ -154,7 +224,7 @@
   become: true
 
   roles:
-    - name: haproxy_backend.dci_packages
+    - role: haproxy_backend.dci_packages
       tags:
         - dci_packages
         - podman
@@ -165,7 +235,8 @@
   become: true
 
   tasks:
-    - ansible.builtin.import_role:
+    - name: Install haproxy
+      ansible.builtin.import_role:
         name: quadlet.haproxy
         tasks_from: frontend_dci
       tags:

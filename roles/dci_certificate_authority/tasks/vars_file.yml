@@ -1,0 +1,33 @@
+---
+- name: Gather all server certs in one var
+  block:
+    - name: Initialize server_certs_data
+      ansible.builtin.set_fact:
+        server_certs_data: {}
+    - name: Merge each certificate into server_certs_data
+      ansible.builtin.set_fact:
+        server_certs_data: >-
+          {{
+            server_certs_data | combine({
+              item.name: {
+                'cert': lookup('file', '{{ dci_certificate_authority_dir }}/{{ item.name }}/certificate.pem') | vault(vault_pw),
+                'key': lookup('file', '{{ dci_certificate_authority_dir }}/{{ item.name }}/certificate.key') | vault(vault_pw),
+              }
+            })
+          }}
+      loop: "{{ dci_certificate_authority_servercerts }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+- name: Write vars file for CA
+  vars:
+    ca:
+      dci_ca:
+        ca_cert: "{{ lookup('file', '{{ dci_certificate_authority_dir }}/ca-certificate.pem') | vault(vault_pw) }}"
+        ca_key: "{{ lookup('file', '{{ dci_certificate_authority_dir }}/ca-certificate.key') | vault(vault_pw) }}"
+        servercerts: "{{ server_certs_data }}"
+  ansible.builtin.copy:
+    content: "{{ ca | to_nice_yaml(default_style='|', explicit_start=true) }}"
+    dest: "{{ dci_certificate_authority_dir }}/ca_vars.yml"
+    mode: "0600"
+...
