@@ -21,6 +21,7 @@ prometheus_container_spec:
   command: >
     --config.file=/etc/prometheus/prometheus.yml
     --storage.tsdb.path=/prometheus
+    --storage.tsdb.retention.time=90d
     --web.console.libraries=/usr/share/prometheus/console_libraries
     --web.console.templates=/usr/share/prometheus/consoles
     --web.listen-address=0.0.0.0:{{ prometheus_http_port }}
