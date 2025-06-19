@@ -26,9 +26,10 @@ ExecStart=/usr/bin/podman run \
     --replace \
     --env-file=/etc/dci-feeder-api/feeder-container.env \
     --name dci-feeder-api \
-	--user {{ feeder_dci_user.uid }}:{{ feeder_dci_user.group }} \
+    --user {{ feeder_dci_user.uid }}:{{ feeder_dci_user.group }} \
     --label io.containers.autoupdate=registry \
     --volume /etc/dci-feeder-api/ocp-pull-secret.json:{{ feeder_ocp_pullsecret_file }} \
+    --volume /etc/dci-feeder-api/ocp-ignored-images.json:/etc/dci-feeder-api/ocp-ignored-images.json \
     --volume /var/log/dci-feeder-api:/var/log/dci-feeder-api:z registry.distributed-ci.io/distributedci/dci-feeder-api:latest gunicorn wsgi:application \
     --workers 4 \
     --access-logfile /var/log/dci-feeder-api/gunicorn-access.log \
