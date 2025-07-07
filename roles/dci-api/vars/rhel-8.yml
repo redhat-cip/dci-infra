@@ -1,9 +1,0 @@
----
-postgres_client_packages:
-  - "@postgresql:9.6"
-  - postgresql
-dciclient_package: python3-dciclient
-dciauth_package: python3-dciauth
-dci_db_check_command: >
-    . /etc/dci_db.sh &&
-    psql -w -c 'SELECT count(*) FROM users'

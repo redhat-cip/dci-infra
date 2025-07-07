@@ -1,9 +1,0 @@
----
-- name: Install Prometheus Apache Exporter & Mtail
-  include_role:
-    name: "{{ role_name_item }}"
-  loop:
-    - prometheus-apache-exporter
-    - mtail
-  loop_control:
-    loop_var: role_name_item

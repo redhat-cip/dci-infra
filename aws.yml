@@ -80,11 +80,25 @@
   gather_facts: true
   become: true
 
-  roles:
-    - name: quadlet.dci_api
-      tags:
-        - dci_api
-        - podman
+  tasks:
+    - include_role:
+        # Include only the handler to run db backup before
+        # updating dci-control-server/dci-api
+        # It *needs* to be included *before* the quadlet.dci_api role so
+        # that the handler can run before quadlet.dci_api handlers
+        name: yolo_backup
+        tasks_from: noop.yml
+        handlers_from: delegated_backup.yml
+        tags:
+          - dci_api
+          - dci_core
+          - yolo_backup
+    - include_role:
+        name: quadlet.dci_api
+        tags:
+          - dci_api
+          - dci_core
+          - podman
 
 - name: Setup DCI-DOC
   hosts: dci_doc:&dci_ng

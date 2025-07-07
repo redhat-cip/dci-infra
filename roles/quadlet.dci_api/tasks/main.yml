@@ -39,6 +39,7 @@
         name: "{{ _config.image }}"
         force: true
       notify:
+        - Run yolo backup with 'current' tag
         - Restart dci-api
 
     - name: Create container quadlet
@@ -49,7 +50,34 @@
       notify:
         - Restart dci-api
 
-    - name: Ensure service is started
+    - name: Get count of configured containers
+      ansible.builtin.find:
+        paths: /etc/containers/systemd/
+        patterns: "{{ _quadlet }}@*.container"
+        file_type: link
+      register: _container_units_found
+
+    - name: Remove over-scale containers
+      when: _container_units_found.matched > dci_api_container_scale
+      block:
+        - name: Remove over-scale unit files
+          ansible.builtin.file:
+            dest: /etc/containers/systemd/{{ _quadlet }}@{{ item }}.quadlet
+            state: absent
+          loop: "{{ range(dci_api_container_scale, _container_units_found.matched) | list }}"
+
+        - name: Stop over-scale services
+          ansible.builtin.systemd:
+            name: "{{ _quadlet }}@{{ item }}.service"
+            state: stopped
+            daemon-reload: true
+          ignore_errors: "{{ ansible_check_mode }}"
+          loop: "{{ range(dci_api_container_scale, _container_units_found.matched) | list }}"
+
+    - name: Allow to perfom the database backup & restart the current containers before the next task which starts the service
+      ansible.builtin.meta: flush_handlers
+
+    - name: Ensure all required services are started
       ansible.builtin.systemd:
         name: "{{ _quadlet }}@{{ item }}.service"
         state: started
@@ -57,31 +85,4 @@
       ignore_errors: "{{ ansible_check_mode }}"
       loop: "{{ range(0, _config.scale) | list }}"
 
-- name: Get count of configured containers
-  vars:
-    _quadlet: dci-api
-  ansible.builtin.find:
-    paths: /etc/containers/systemd/
-    patterns: "{{ _quadlet }}@*.container"
-    file_type: link
-  register: _container_units_found
-
-- name: Remove over-scale containers
-  vars:
-    _quadlet: dci-api
-  when: _container_units_found.matched > dci_api_container_scale
-  block:
-    - name: Remove over-scale unit files
-      ansible.builtin.file:
-        dest: /etc/containers/systemd/{{ _quadlet }}@{{ item }}.quadlet
-        state: absent
-      loop: "{{ range(dci_api_container_scale, _container_units_found.matched) | list }}"
-
-    - name: Stop over-scale services
-      ansible.builtin.systemd:
-        name: "{{ _quadlet }}@{{ item }}.service"
-        state: stopped
-        daemon-reload: true
-      ignore_errors: "{{ ansible_check_mode }}"
-      loop: "{{ range(dci_api_container_scale, _container_units_found.matched) | list }}"
 ...

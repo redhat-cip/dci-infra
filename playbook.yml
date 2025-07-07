@@ -45,18 +45,6 @@
     - role: yolo_backup
       become_user: "{{ yolo_backup_user|default(dci) }}"
 
-- name: Install httpd
-  hosts: dci_api:!dci_ng
-  become: yes
-  roles:
-    - httpd
-
-- name: Install-DCI-Control-Server
-  hosts: dci_api:!dci_ng
-  become: yes
-  roles:
-    - dci-api
-
 - name: Install-DCI-Worker
   hosts: dci_worker:!dci_ng
   become: yes
