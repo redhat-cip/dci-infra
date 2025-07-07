@@ -46,7 +46,7 @@
       become_user: "{{ yolo_backup_user|default(dci) }}"
 
 - name: Install httpd
-  hosts: dci_api:dci_ui:!dci_ng
+  hosts: dci_api:!dci_ng
   become: yes
   roles:
     - httpd
