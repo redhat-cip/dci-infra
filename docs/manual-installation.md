@@ -149,35 +149,6 @@ If one decide to go with the httpd + mod\_wsgi route, this is a working virtual 
 </VirtualHost>
 ```
 
-### DCI-UI
-
-System packages are available for `dci-ui` in CentOS 7. See [Repositories]() for information about getting the DCI repositories.
-
-To install dci-ui, simply install the package
-
-``` sourceCode
-#> yum -y install dci-ui
-```
-
-In order to serve those files we recommend using httpd with a vhost that looks like the following:
-
-``` sourceCode
-<VirtualHost *:80>
-  ServerName my.dci.com
-  ServerAdmin root@my.dci.com
-
-  CustomLog logs/my.dci.com_access_log combined
-  ErrorLog logs/my.dci.com_error_log
-  DocumentRoot /srv/www/dci-ui
-
-  <Directory /srv/www/dci-ui>
-     AllowOverride None
-     Require all granted
-  </Directory>
-
-</VirtualHost>
-```
-
 ### SELinux
 
 If - as recommended - you are using httpd to serve the content of DCI, some actions needs to be taken to make it work seemlessly with SELinux

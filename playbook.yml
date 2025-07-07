@@ -63,12 +63,6 @@
   roles:
     - dci-worker
 
-- name: Install-WebAPP
-  hosts: dci_ui:!dci_ng
-  become: yes
-  roles:
-    - dci-ui
-
 - name: Install-fail2ban
   hosts: all:!dci_ng
   become: yes

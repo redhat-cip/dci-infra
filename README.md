@@ -17,7 +17,6 @@ deploy the minimal service required.
 - common: Package update, repository setup and DCI stuff.
 - dci-api: Install the DCI API (dci-control-server).
 - dci-repo: Install SSL content for nginx.
-- dci-ui: Install DCI WebAPP (dci-ui).
 - dci-worker: Install the DCI zmq worker.
 - doc: Install the DCI documentation (dci-doc).
 - fail2ban: Install fail2ban and rules.
