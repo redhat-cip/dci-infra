@@ -46,7 +46,7 @@
       become_user: "{{ yolo_backup_user|default(dci) }}"
 
 - name: Install httpd
-  hosts: dci_api:dci_ui:dci_packages:dci_doc:dci_blog:!dci_ng
+  hosts: dci_api:dci_ui:dci_packages:!dci_ng
   become: yes
   roles:
     - httpd
@@ -91,33 +91,6 @@
   tags:
     - dci-core
     - packages
-
-- name: Install the docs node
-  hosts: dci_doc:!dci_ng
-  become: yes
-  roles:
-    - doc
-  tags:
-    - dci-core
-    - doc
-
-- name: Install the blog node
-  hosts: dci_blog:!dci_ng
-  become: yes
-  roles:
-    - dci-blog
-  tags:
-    - dci-core
-    - blog
-
-- name: Install-Stats
-  hosts: dci_blog:!dci_ng
-  become: yes
-  roles:
-    - dci-stats
-  tags:
-    - dci-core
-    - stats
 
 - name: Install DCI registry
   hosts: dci_registry:!dci_ng
