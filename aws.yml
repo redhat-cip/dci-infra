@@ -89,16 +89,16 @@
         name: yolo_backup
         tasks_from: noop.yml
         handlers_from: delegated_backup.yml
-        tags:
-          - dci_api
-          - dci_core
-          - yolo_backup
+      tags:
+        - dci_api
+        - dci_core
+        - yolo_backup
     - include_role:
         name: quadlet.dci_api
-        tags:
-          - dci_api
-          - dci_core
-          - podman
+      tags:
+        - dci_api
+        - dci_core
+        - podman
 
 - name: Setup DCI-DOC
   hosts: dci_doc:&dci_ng
