@@ -9,6 +9,12 @@
     state: restarted
     enabled: yes
 
+- name: Restart dci-analytics-worker container
+  systemd:
+    name: "dci-analytics-worker.service"
+    state: restarted
+    enabled: yes
+
 - name: Restart dci-analytics-sync timer
   systemd:
     name: dci-analytics-sync.timer

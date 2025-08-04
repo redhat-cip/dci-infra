@@ -17,10 +17,12 @@
     - dci-analytics-sync.service
     - dci-analytics-sync.timer
     - dci-analytics.service
+    - dci-analytics-worker.service
   notify:
     - Reload systemd for dci-analytics
     - Restart dci-analytics container
     - Restart dci-analytics-sync timer
+    - Restart dci-analytics-worker container
 
 - name: Flush handlers
   meta: flush_handlers
@@ -33,6 +35,7 @@
     - dci-analytics.service
     - dci-analytics-sync.timer
     - dci-analytics-sync.service
+    - dci-analytics-worker.service
 
 - name: Update dci-analytics container with podman auto-update
   ansible.builtin.shell: podman auto-update

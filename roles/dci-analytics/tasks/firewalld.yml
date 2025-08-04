@@ -14,32 +14,46 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 ---
-- name: Create a firewalld zone to handle incoming connections to the analytics service
+- name: Remove old analytics-api zone
   ansible.posix.firewalld:
     zone: analytics-api
     permanent: true
+    state: absent
+
+- name: Create a firewalld zone to handle incoming connections to the analytics services
+  ansible.posix.firewalld:
+    zone: analytics
+    permanent: true
     state: present
-  register: firewalld_zone_analytics_api_result
+  register: firewalld_zone_analytics_result
 
 - name: Reload firewalld if the zone was created  # noqa: no-handler
   ansible.builtin.command:
     cmd: firewall-cmd --reload
-  when: firewalld_zone_analytics_api_result.changed|default(false)
-  register: firewall_cmd_reload_analytics_api_zone
-  changed_when: firewall_cmd_reload_analytics_api_zone.rc == 0
+  when: firewalld_zone_analytics_result.changed|default(false)
+  register: firewall_cmd_reload_analytics_zone
+  changed_when: firewall_cmd_reload_analytics_zone.rc == 0
 
-- name: Allow port 80 for zone analytics-api
+- name: Allow port 80 for zone analytics
   ansible.posix.firewalld:
     port: "80/tcp"
-    zone: analytics-api
+    zone: analytics
     state: enabled
     permanent: true
     immediate: true
 
-- name: Allow servers defined in apiips into the analytics-api zone
+- name: Allow port 5672 (rabbitmq) for zone analytics
+  ansible.posix.firewalld:
+    port: "5672/tcp"
+    zone: analytics
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Allow servers defined in apiips into the analytics zone
   ansible.posix.firewalld:
     source: "{{ item }}/32"
-    zone: analytics-api
+    zone: analytics
     state: enabled
     permanent: true
     immediate: true
