@@ -15,7 +15,7 @@ ExecStartPre=/bin/rm -f %t/container-dci-analytics-worker.pid %t/container-dci-a
 ExecStart=/usr/bin/podman run --network=host --conmon-pidfile=%t/container-dci-analytics-worker.pid --cidfile=%t/container-dci-analytics-worker.ctr-id --cgroups=no-conmon -d --replace --name dci-analytics-worker --label "io.containers.autoupdate=registry" --env-file=/etc/dci-analytics.env --entrypoint=/opt/dci-analytics/bin/run-worker quay.io/distributedci/dci-analytics:latest
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/container-dci-analytics-worker.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile=%t/container-dci-analytics-worker.ctr-id
-PIDFile=%t/container-dci-analytics-worker.pid,
+PIDFile=%t/container-dci-analytics-worker.pid
 Type=exec
 
 [Install]
