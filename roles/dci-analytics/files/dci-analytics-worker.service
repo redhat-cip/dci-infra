@@ -16,7 +16,7 @@ ExecStart=/usr/bin/podman run --network=host --conmon-pidfile=%t/container-dci-a
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/container-dci-analytics-worker.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile=%t/container-dci-analytics-worker.ctr-id
 PIDFile=%t/container-dci-analytics-worker.pid,
-Type=forking
+Type=exec
 
 [Install]
 WantedBy=multi-user.target default.target
