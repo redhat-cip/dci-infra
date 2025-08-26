@@ -1,0 +1,23 @@
+---
+statsd_exporter_web_port: 9102
+statsd_exporter_metrics_port: 9125
+statsd_exporter_container_image: docker.io/prom/statsd-exporter:latest
+statsd_exporter_container_network: quadlet.network
+statsd_exporter_config_path: /etc/statsd-exporter.yml
+statsd_exporter_config_mappings: {}
+statsd_exporter_container_spec:
+  image: "{{ statsd_exporter_container_image }}"
+  command: >
+    --web.listen-address="0.0.0.0:{{ statsd_exporter_web_port }}"
+    --statsd.listen-udp="0.0.0.0:{{ statsd_exporter_metrics_port }}"
+    --statsd.listen-tcp="0.0.0.0:{{ statsd_exporter_metrics_port }}"
+    --statsd.mapping-config={{ statsd_exporter_config_path }}
+  ports:
+    - "{{ statsd_exporter_web_port }}:{{ statsd_exporter_web_port }}"
+    - "{{ statsd_exporter_metrics_port }}:{{ statsd_exporter_metrics_port }}"
+  volumes:
+    - "{{ statsd_exporter_config_path }}:{{ statsd_exporter_config_path }}:ro"
+  network: "{{ statsd_exporter_container_network }}"
+  health:
+    cmd: "/bin/wget --spider localhost:{{ statsd_exporter_web_port }}/-/healthy"
+...

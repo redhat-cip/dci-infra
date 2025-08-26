@@ -1,0 +1,49 @@
+---
+- name: Render statsd-config.yml
+  vars:
+    _mappings: "{{ statsd_exporter_config_mappings }}"
+  ansible.builtin.template:
+    src: statsd-config.yml.j2
+    dest: "{{ statsd_exporter_config_path }}"
+    mode: '0644'
+  notify:
+    - Restart statsd-exporter
+
+- name: Create image quadlet
+  vars:
+    _quadlet: statsd-exporter
+    _config: "{{ statsd_exporter_container_spec }}"
+  ansible.builtin.template:
+    src: "global.image.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.image"
+    mode: '0644'
+  notify:
+    - Restart statsd-exporter
+
+- name: Create container quadlet
+  vars:
+    _quadlet: statsd-exporter
+    _config: "{{ statsd_exporter_container_spec }}"
+  ansible.builtin.template:
+    src: "global.container.j2"
+    dest: "/etc/containers/systemd/{{ _quadlet }}.container"
+    mode: '0644'
+  notify:
+    - Restart statsd-exporter
+
+- name: Enable access to web port in firewall
+  ansible.posix.firewalld:
+    port: "{{ statsd_exporter_http_port }}/tcp"
+    zone: "{{ statsd_exporter_firewalld_zone | default(omit) }}"
+    state: enabled
+    immediate: true
+    permanent: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Ensure service is started
+  ansible.builtin.systemd:
+    name: statsd-exporter.service
+    state: started
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...

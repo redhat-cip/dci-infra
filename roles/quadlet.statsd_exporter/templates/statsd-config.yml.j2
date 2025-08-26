@@ -1,0 +1,9 @@
+## defaults go here
+defaults:
+
+## mappings go here
+mappings:
+{% for name, config in _mappings.items() -%}
+- name: "{{ name }}"
+  {{ config | to_nice_yaml(indent=2) }}
+{% endfor -%}
