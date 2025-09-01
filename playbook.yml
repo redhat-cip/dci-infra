@@ -45,12 +45,6 @@
     - role: yolo_backup
       become_user: "{{ yolo_backup_user|default(dci) }}"
 
-- name: Install-DCI-Worker
-  hosts: dci_worker:!dci_ng
-  become: yes
-  roles:
-    - dci-worker
-
 - name: Install-fail2ban
   hosts: all:!dci_ng
   become: yes
