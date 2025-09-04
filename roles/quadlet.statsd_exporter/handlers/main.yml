@@ -1,0 +1,8 @@
+---
+- name: Restart statsd-exporter
+  ansible.builtin.systemd:
+    name: statsd-exporter.service
+    state: restarted
+    daemon-reload: true
+  ignore_errors: "{{ ansible_check_mode }}"
+...
