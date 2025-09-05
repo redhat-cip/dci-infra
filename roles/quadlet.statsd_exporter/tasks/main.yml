@@ -33,7 +33,7 @@
 
 - name: Enable access to web port in firewall
   ansible.posix.firewalld:
-    port: "{{ statsd_exporter_http_port }}/tcp"
+    port: "{{ statsd_exporter_web_port }}/tcp"
     zone: "{{ statsd_exporter_firewalld_zone | default(omit) }}"
     state: enabled
     immediate: true
