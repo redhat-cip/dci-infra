@@ -5,5 +5,5 @@ defaults:
 mappings:
 {% for name, config in _mappings.items() -%}
 - name: "{{ name }}"
-  {{ config | to_nice_yaml(indent=2) }}
+  {{ config | to_nice_yaml(indent=2) | indent(2) }}
 {% endfor -%}

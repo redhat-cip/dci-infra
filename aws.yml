@@ -90,7 +90,7 @@
   become: true
 
   tasks:
-    - include_role:
+    - ansible.builtin.import_role:
         # Include only the handler to run db backup before
         # updating dci-control-server/dci-api
         # It *needs* to be included *before* the quadlet.dci_api role so
@@ -102,13 +102,13 @@
         - dci_api
         - dci_core
         - yolo_backup
-    - include_role:
+    - ansible.builtin.import_role:
         name: quadlet.dci_api
       tags:
         - dci_api
         - dci_core
         - podman
-    - include_role:
+    - ansible.builtin.import_role:
         name: quadlet.statsd_exporter
       tags:
         - dci_api
