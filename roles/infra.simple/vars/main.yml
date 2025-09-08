@@ -3,7 +3,7 @@ _default_bastion_ssh:
   user: ec2-user
   key: >
     ecdsa-sha2-nistp256
-    AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAABBBLZ9tKbJyot2A8siJFtZ89olV2RCBLziw/STEwqZhF8tpz9gc9Q4yP+Zpcntx31pwNaT8dJ96Bj4UjxooB35PoU=
+    AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLZ9tKbJyot2A8siJFtZ89olV2RCBLziw/STEwqZhF8tpz9gc9Q4yP+Zpcntx31pwNaT8dJ96Bj4UjxooB35PoU=
     ec2-user@dci-bastion
   key_options:
     - from=10.31.3.201
