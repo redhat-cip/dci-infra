@@ -21,6 +21,7 @@ gunicorn_max_requests: 0
 gunicorn_max_requests_jitter: 0
 gunicorn_timeout: 30
 gunicorn_graceful_timeout: 90
+gunicorn_extra_cmd_args: ""
 
 rhdl_api_url: "https://api.rhdl.distributed-ci.io/api/v1"
 ...
