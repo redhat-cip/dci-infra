@@ -1,0 +1,11 @@
+---
+postgres_conf: /var/lib/pgsql/data/postgresql.conf
+postgres_mem_conf: /var/lib/pgsql/data/memory.conf
+postgres_auth_conf: /var/lib/pgsql/data/pg_hba.conf
+postgres_service: postgresql
+postgres_packages:
+  - "@postgresql:16"
+  - postgresql
+  - postgresql-server
+  - python3-psycopg2
+postgres_init_cmd: postgresql-setup --initdb --debug
