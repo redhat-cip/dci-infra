@@ -1,0 +1,8 @@
+frontend dci-in
+  bind *:80
+
+  option httpslog
+
+  default_backend dci-ui
+
+  use_backend dci-api if { path_dir -i /api/ }

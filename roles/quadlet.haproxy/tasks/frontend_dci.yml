@@ -1,7 +1,7 @@
 ---
 - name: Render configuration
   ansible.builtin.template:
-    src: 01_haproxy_dci.cfg.j2
+    src: "{{ haproxy_template | default('01_haproxy_dci.cfg.j2') }}"
     dest: "{{ haproxy_config_dir }}/01_haproxy_dci.cfg"
     mode: '0644'
     owner: "{{ haproxy_user }}"
