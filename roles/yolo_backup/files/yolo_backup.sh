@@ -9,19 +9,23 @@ PERIOD="${1:-current}"
 BUCKET="${2:-dci-db-backups-prod}"
 BASEDIR="/tmp"
 
-function usage(){
-    grep "^#~" $0 | sed -e "s/#~//" | sed -e "s/PROG/$(basename $0)/"
+function usage() {
+  grep "^#~" $0 | sed -e "s/#~//" | sed -e "s/PROG/$(basename $0)/"
 }
 
-function do_snap(){
-    # this should create the snapshot with pg_dump
-    TS="$1"
+function do_snap() {
+  # this should create the snapshot with pg_dump
+  TS="$1"
+  if [ -f /usr/bin/pg_dump ]; then
     /usr/bin/pg_dump -d dci -Fc --file "${BASEDIR}/db_dump-${TS}"
+  else
+    sudo podman exec postgresql pg_dump -d dci -Fc >"${BASEDIR}/db_dump-${TS}"
+  fi
 }
 
-function fail(){
-    echo $1
-    exit $2
+function fail() {
+  echo $1
+  exit $2
 }
 
 NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
