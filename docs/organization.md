@@ -48,6 +48,6 @@ Each of those git repositories are also mirrored in GitHub, under the [redhat-ci
  * dci-ui: <https://github.com/redhat-cip/dci-ui>
  * python-dciclient: <https://github.com/redhat-cip/python-dciclient>
  * dci-infra: <https://github.com/redhat-cip/dci-infra>
- * dci-infra-data-quickstart: <https://github.com/redhat-cip/dci-infra-data-quickstart>
+ * dci-infra-data-quickstart: <https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart>
  * dci-doc: <http://softwarefactory-project.io/r/dci-doc>
 

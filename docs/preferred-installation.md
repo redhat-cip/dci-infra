@@ -6,19 +6,19 @@ There are a few ways to install the DCI Control-Server, but the preferred and do
 
 The DCI team provides an [ansible playbook](https://www.ansible.com) to automate the install of the DCI Control-Server in a repository called [dci-infra](https://github.com/redhat-cip/dci-infra).
 
-It should not be necessary to change anything in the `dci-infra` repository. A complementary repository where your local override data should live is contained within the [dci-infra-data-quickstart](https://github.com/redhat-cip/dci-infra-data-quickstart) repository.
+It should not be necessary to change anything in the `dci-infra` repository. A complementary repository where your local override data should live is contained within the [dci-infra-data-quickstart](https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart) repository.
 
 If you find an area that can be made more dynamic in the `dci-infra` repository, or you find a bug, please feel free to submit a ticket or pull request on the [Github](https://github.com/redhat-cip/dci-infra/issues) tracker.
 
 ## dci-infra-data-quickstart
 
-[dci-infra-data-quickstart](https://github.com/redhat-cip/dci-infra-data-quickstart) is where all your custom modifications should live.
+[dci-infra-data-quickstart](https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart) is where all your custom modifications should live.
 
-The [dci-infra](https://github.com/redhat-cip/dci-infra) repository provides all the installation logic and orchestration. It installs packages, edits configuration files, and starts services. The values necessary for the configuration files are read from the [dci-infra-data-quickstart](https://github.com/redhat-cip/dci-infra-data-quickstart) project.
+The [dci-infra](https://github.com/redhat-cip/dci-infra) repository provides all the installation logic and orchestration. It installs packages, edits configuration files, and starts services. The values necessary for the configuration files are read from the [dci-infra-data-quickstart](https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart) project.
 
-The [dci-infra-data-quickstart](https://github.com/redhat-cip/dci-infra-data-quickstart) can be seen as a deployed environment, with each clone/branch of this project being a different environment.
+The [dci-infra-data-quickstart](https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart) can be seen as a deployed environment, with each clone/branch of this project being a different environment.
 
-To get started, simply clone the [dci-infra-data-quickstart](https://github.com/redhat-cip/dci-infra-data-quickstart) repository, amend the `group_vars/all` file (and create a `vhost_vars/X` file if necessary) to match your infrastructure.
+To get started, simply clone the [dci-infra-data-quickstart](https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart) repository, amend the `group_vars/all` file (and create a `vhost_vars/X` file if necessary) to match your infrastructure.
 
 After modifying the configuration, the workflow continues as follows:
 
@@ -32,7 +32,7 @@ In summary it should look like:
 ``` sourceCode
 #> git clone https://github.com/redhat-cip/dci-infra
 #> cd dci-infra
-#> git clone https://github.com/redhat-cip/dci-infra-data-quickstart data
+#> git clone https://gitlab.cee.redhat.com/dci/dci-infra-data-quickstart data
 #> ansible-galaxy install -r installed_roles -p roles/
 #> ansible-playbook -i data/hosts playbook.yml --tags dci-core
 ```
