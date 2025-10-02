@@ -133,6 +133,8 @@
   become: true
 
   roles:
+    - role: yolo_backup
+      become_user: "{{ yolo_backup_user|default('dci') }}"
     - role: quadlet.postgresql
       tags:
         - postgresql

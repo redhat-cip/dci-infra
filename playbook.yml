@@ -81,7 +81,7 @@
   roles:
     - postgresql
     - role: yolo_backup
-      become_user: "{{ yolo_backup_user|default(dci) }}"
+      become_user: "{{ yolo_backup_user|default('dci') }}"
 
 - name: Install-fail2ban
   hosts: all:!dci_ng

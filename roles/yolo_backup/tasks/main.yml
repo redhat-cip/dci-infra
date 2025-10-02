@@ -10,6 +10,7 @@
       package:
         name: awscli
       become: true
+      become_user: root
       when:
         - not aws_cli_binary.stat.exists|default(False)
 
@@ -32,6 +33,8 @@
         src: aws_credentials.j2
         dest: ~/.aws/credentials
         mode: 0600
+  tags:
+    - aws
 
 - name: yolo_backup
   block:
