@@ -75,14 +75,6 @@
     - dci-core
     - dci-internal
 
-- name: Install-PostgreSQL
-  hosts: dci_database:!dci_ng
-  become: yes
-  roles:
-    - postgresql
-    - role: yolo_backup
-      become_user: "{{ yolo_backup_user|default('dci') }}"
-
 - name: Install-fail2ban
   hosts: all:!dci_ng
   become: yes
