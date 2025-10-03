@@ -36,6 +36,6 @@ echo $(date -Iseconds) "  >>>> Starting snapshot creation"
 do_snap $NOW || fail "Snapshot creation failed" 2
 echo $(date -Iseconds) "  <<<< Finished snapshot"
 echo $(date -Iseconds) "  >>>> Sending to S3"
-/usr/local/bin/aws s3 cp "$BASEDIR/db_dump-$NOW" s3://$BUCKET/$PERIOD/db_dump-$NOW --only-show-errors && rm -fv "${BASEDIR}/db_dump-$NOW" || fail "Upload failed" 3
+aws s3 cp "$BASEDIR/db_dump-$NOW" s3://$BUCKET/$PERIOD/db_dump-$NOW --only-show-errors && rm -fv "${BASEDIR}/db_dump-$NOW" || fail "Upload failed" 3
 echo $(date -Iseconds) "  <<<< Sent"
-/usr/local/bin/aws s3 ls s3://$BUCKET/$PERIOD/db_dump-$NOW
+aws s3 ls s3://$BUCKET/$PERIOD/db_dump-$NOW
