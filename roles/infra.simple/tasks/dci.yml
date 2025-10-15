@@ -7,10 +7,10 @@
 - name: Install DCI Release
   ansible.builtin.dnf:
     name: "https://packages.distributed-ci.io/dci-release.el{{ ansible_distribution_major_version }}.noarch.rpm"
-    state: present
+    state: latest
 
 - name: Install DCI SSH Public Keys
   ansible.builtin.dnf:
     name: dci-sshpubkeys
-    state: present
+    state: latest
 ...
