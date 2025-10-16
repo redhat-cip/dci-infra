@@ -91,6 +91,11 @@
     - import_role:
         name: packages
         tasks_from: zuul_user
+    - import_role:
+        name: dci.certbot
+        # The remaining part of the certbot role is not relevant anymore and has to be reworked
+        tasks_from: ssh_key
+
   tags:
     - dci-core
     - packages
