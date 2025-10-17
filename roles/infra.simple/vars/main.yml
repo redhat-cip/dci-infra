@@ -5,4 +5,4 @@ _default_bastion_ssh:
     ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKLZqDoT+xyUUtLYTvsqD9e4SRrLHdk9YpkVZ/deuFYl
     ec2-user@dci-bastion
   key_options:
-    - from=10.31.3.201
+    - from="10.31.3.201"
