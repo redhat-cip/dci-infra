@@ -1,7 +1,8 @@
 ---
 - name: Create ssh key for certbot user
   ansible.builtin.copy:
-    content: "{{ certbot_ssh_key }}"
+    content: |
+      {{ certbot_ssh_key }}
     dest: "~/.ssh/id_{{ certbot_key_format | default('ed25519') }}"
     owner: "{{ certbot_user }}"
     group: "{{ certbot_group }}"
