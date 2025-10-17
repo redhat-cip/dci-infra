@@ -6,4 +6,5 @@
     owner: "{{ certbot_user }}"
     group: "{{ certbot_group }}"
     mode: "0600"
-  become: "{{ certbot_user }}"
+  become: true
+  become_user: "{{ certbot_user }}"
